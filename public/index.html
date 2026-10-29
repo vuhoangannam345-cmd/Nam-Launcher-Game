@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Nam PC - Game Library</title>
+    <!-- Nhúng Font chữ Roboto hiện đại -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <!-- Nhúng FontAwesome để làm các icon bộ lọc -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- SECTION 1: HERO HEADER (Đặc trưng của theme Mesmerize) -->
+    <header class="hero-section">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">AN NAM PC</h1>
+            <p class="hero-subtitle">Thư viện Game Crack chuyên nghiệp - Không giới hạn băng thông</p>
+            <div class="hero-buttons">
+                <a href="#library" class="btn btn-primary">Khám Phá Ngay</a>
+                <a href="admin.html" class="btn btn-secondary">Quản Trị Hệ Thống</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 2: BỘ LỌC NÂNG CAO (Giao diện chuẩn 7Launcher) -->
+    <main id="library" class="container">
+        <section class="filter-panel">
+            <div class="filter-group search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-input" placeholder="Tìm kiếm game bằng tên...">
+            </div>
+            
+            <div class="filter-grid">
+                <!-- Bộ lọc Thể loại (Genre) -->
+                <div class="filter-item">
+                    <label><i class="fa-solid fa-gamepad"></i> Thể Loại</label>
+                    <select id="filter-genre">
+                        <option value="all">Tất cả thể loại</option>
+                        <option value="action">Hành Động (Action)</option>
+                        <option value="survival">Sinh Tồn (Survival)</option>
+                        <option value="rpg">Nhập Vai (RPG)</option>
+                        <option value="openworld">Thế Giới Mở (Open World)</option>
+                    </select>
+                </div>
+
+                <!-- Bộ lọc Chế độ chơi (Mode) -->
+                <div class="filter-item">
+                    <label><i class="fa-solid fa-users"></i> Chế Độ Chơi</label>
+                    <select id="filter-mode">
+                        <option value="all">Tất cả chế độ</option>
+                        <option value="single">Chơi Đơn (Single-player)</option>
+                        <option value="multi">Chơi Mạng (Multiplayer)</option>
+                        <option value="coop">Hợp Tác (Co-op)</option>
+                    </select>
+                </div>
+
+                <!-- Bộ lọc Năm phát hành -->
+                <div class="filter-item">
+                    <label><i class="fa-solid fa-calendar-days"></i> Năm Phát Hành</label>
+                    <select id="filter-year">
+                        <option value="all">Tất cả các năm</option>
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="before_2024">Trước 2024</option>
+                    </select>
+                </div>
+            </div>
+            <button id="btn-reset-filters" class="btn btn-reset"><i class="fa-solid fa-rotate-left"></i> Đặt lại bộ lọc</button>
+        </section>
+
+        <!-- SECTION 3: LƯỚI HIỂN THỊ GAME CARD -->
+        <section class="game-catalog">
+            <h2 class="section-title">Danh sách Game tìm thấy (<span id="game-count">0</span>)</h2>
+            <div id="game-grid" class="game-grid-container">
+                <!-- Dữ liệu Game Card sẽ được Javascript tự động render vào đây từ file database.json -->
+                <div class="loading">Đang tải dữ liệu thư viện game...</div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 An Nam PC. Toàn bộ hạ tầng được vận hành tự động qua GitHub & Cloudflare Pages.</p>
+    </footer>
+
+    <!-- Nhúng mã logic điều khiển bộ lọc -->
+    <script src="js/app.js"></script>
+</body>
+</html>
