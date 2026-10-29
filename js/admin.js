@@ -50,8 +50,7 @@
   async function savePosts(message) {
     const content = JSON.stringify(state.posts, null, 2);
     await GH.putFile("data/posts.json", content, state.postsSha, message);
-    // Fetch lại để đồng bộ sha mới
-    await loadPosts();
+    await loadPosts(); // Fetch lại để đồng bộ sha mới
   }
 
   async function addPost(post) {
@@ -86,6 +85,10 @@
   }
 
   async function saveSite(site) {
+    // Lấy sha mới nhất từ GitHub ngay trước khi lưu để tránh lỗi 422/409
+    const freshFile = await GH.getFile("data/site.json");
+    state.siteSha = freshFile ? freshFile.sha : null;
+    
     const content = JSON.stringify(site, null, 2);
     await GH.putFile("data/site.json", content, state.siteSha, "Update site settings");
     await loadSite();
@@ -186,7 +189,7 @@
 
   // Auto slug
   document.getElementById("f-title")?.addEventListener("input", (e) => {
-    if (state.editingId) return; // không auto khi đang sửa
+    if (state.editingId) return;
     const slugEl = document.getElementById("f-slug");
     if (slugEl && !slugEl._manual) {
       slugEl.value = slugifyVi(e.target.value);
@@ -251,11 +254,7 @@
         content: document.getElementById("f-content").value,
         thumbnail: document.getElementById("f-thumbnail").value.trim(),
         category: document.getElementById("f-category").value,
-        tags: document
-          .getElementById("f-tags")
-          .value.split(",")
-          .map((t) => t.trim())
-          .filter(Boolean),
+        tags: document.getElementById("f-tags").value.split(",").map((t) => t.trim()).filter(Boolean),
         downloadUrl: document.getElementById("f-download").value.trim(),
         featured: document.getElementById("f-featured").checked
       };
@@ -269,12 +268,7 @@
         toast("Đã cập nhật bài viết!", "success");
       } else {
         const today = new Date().toISOString().slice(0, 10);
-        await addPost({
-          id: genId(),
-          ...data,
-          createdAt: today,
-          updatedAt: today
-        });
+        await addPost({ id: genId(), ...data, createdAt: today, updatedAt: today });
         toast("Đã thêm bài viết mới!", "success");
       }
 
