@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — GameHub</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body data-page="admin">
+  <!-- ========== LOGIN ========== -->
+  <div class="login-screen" id="login-screen">
+    <div class="login-box">
+      <h1>🔐 Admin Login</h1>
+      <p class="muted">Nhập mật khẩu quản trị để tiếp tục</p>
+      <form id="login-form" autocomplete="off">
+        <input
+          type="password"
+          id="login-password"
+          placeholder="Mật khẩu"
+          autocomplete="current-password"
+          required
+        />
+        <button type="submit" class="btn btn-primary">Đăng nhập</button>
+      </form>
+      <div class="login-error" id="login-error"></div>
+    </div>
+  </div>
+
+  <!-- ========== DASHBOARD ========== -->
+  <div class="dashboard" id="dashboard" style="display: none">
+    <aside class="dash-sidebar">
+      <div class="dash-brand">
+        <span>🎮</span>
+        <strong>GameHub Admin</strong>
+      </div>
+      <nav class="dash-nav">
+        <button class="dash-tab active" data-tab="posts">📝 Bài viết</button>
+        <button class="dash-tab" data-tab="compose">✍️ Soạn bài</button>
+        <button class="dash-tab" data-tab="site">⚙️ Cài đặt site</button>
+        <button class="dash-tab" data-tab="github">🔗 Cấu hình GitHub</button>
+      </nav>
+      <div class="dash-footer">
+        <a href="index.html" class="btn btn-ghost" target="_blank">↗ Xem site</a>
+        <button class="btn btn-danger" id="btn-logout">Đăng xuất</button>
+      </div>
+    </aside>
+
+    <main class="dash-main">
+      <!-- TAB: POSTS -->
+      <section class="tab-panel active" data-panel="posts">
+        <div class="panel-header">
+          <h2>Danh sách bài viết</h2>
+          <div class="panel-actions">
+            <button class="btn btn-ghost" id="btn-reload-posts">↻ Tải lại</button>
+            <button class="btn btn-primary" id="btn-new-post">+ Thêm bài mới</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="posts-table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Ảnh</th>
+                <th>Tiêu đề</th>
+                <th>Thể loại</th>
+                <th>Ngày</th>
+                <th>Nổi bật</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="posts-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB: COMPOSE -->
+      <section class="tab-panel" data-panel="compose">
+        <div class="panel-header">
+          <h2 id="compose-title">Soạn bài mới</h2>
+        </div>
+        <form id="post-form" class="admin-form">
+          <input type="hidden" id="f-id" />
+
+          <div class="form-row">
+            <label>
+              Tiêu đề *
+              <input id="f-title" required />
+            </label>
+            <label>
+              Slug *
+              <input id="f-slug" required />
+            </label>
+          </div>
+
+          <label>
+            Mô tả ngắn
+            <textarea id="f-excerpt" rows="2"></textarea>
+          </label>
+
+          <label>
+            Nội dung HTML
+            <div class="content-toolbar" id="content-toolbar">
+              <button type="button" data-insert="h2">H2</button>
+              <button type="button" data-insert="h3">H3</button>
+              <button type="button" data-insert="p">¶</button>
+              <button type="button" data-insert="b">B</button>
+              <button type="button" data-insert="i">I</button>
+              <button type="button" data-insert="ul">UL</button>
+              <button type="button" data-insert="img">IMG</button>
+              <button type="button" data-insert="link">🔗</button>
+              <button type="button" data-insert="video">▶</button>
+            </div>
+            <textarea id="f-content" rows="12" placeholder="<h2>...</h2><p>...</p>"></textarea>
+          </label>
+
+          <div class="form-row">
+            <label>
+              Thumbnail URL
+              <input id="f-thumbnail" placeholder="https://..." />
+            </label>
+            <label>
+              Hoặc upload file
+              <input type="file" id="f-upload" accept="image/*" />
+            </label>
+          </div>
+          <div class="thumb-preview" id="thumb-preview"></div>
+
+          <div class="form-row">
+            <label>
+              Thể loại
+              <select id="f-category"></select>
+            </label>
+            <label>
+              Tags (phẩy phân cách)
+              <input id="f-tags" placeholder="action, rpg, indie" />
+            </label>
+          </div>
+
+          <label>
+            Link tải game
+            <input id="f-download" placeholder="https://..." />
+          </label>
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="f-featured" />
+            <span>⭐ Đánh dấu nổi bật (hiện ở Hero)</span>
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="btn-save-post">💾 Lưu bài</button>
+            <button type="button" class="btn btn-ghost" id="btn-cancel-edit">Hủy</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- TAB: SITE -->
+      <section class="tab-panel" data-panel="site">
+        <div class="panel-header">
+          <h2>Cài đặt site</h2>
+        </div>
+        <form id="site-form" class="admin-form">
+          <label>
+            Tên web
+            <input id="s-name" />
+          </label>
+          <label>
+            Logo URL (để trống dùng emoji)
+            <input id="s-logo" placeholder="https://..." />
+          </label>
+          <label>
+            Mô tả
+            <textarea id="s-desc" rows="3"></textarea>
+          </label>
+          <label>
+            Màu chủ đạo
+            <input type="color" id="s-color" />
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 Lưu cài đặt</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- TAB: GITHUB -->
+      <section class="tab-panel" data-panel="github">
+        <div class="panel-header">
+          <h2>Cấu hình GitHub</h2>
+        </div>
+        <form id="gh-form" class="admin-form" autocomplete="off">
+          <label>
+            Username
+            <input id="g-user" placeholder="your-username" />
+          </label>
+          <label>
+            Repo
+            <input id="g-repo" placeholder="my-game-blog" />
+          </label>
+          <label>
+            Branch
+            <input id="g-branch" placeholder="main" value="main" />
+          </label>
+          <label>
+            Personal Access Token (fine-grained, chỉ Contents: Read & Write)
+            <input type="password" id="g-pat" placeholder="github_pat_..." />
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 Lưu cấu hình</button>
+            <button type="button" class="btn btn-ghost" id="btn-test-conn">🔍 Kiểm tra kết nối</button>
+          </div>
+          <div class="conn-status" id="conn-status"></div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/github-api.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
