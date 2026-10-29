@@ -33,7 +33,7 @@ const GH = (() => {
     };
   }
 
-  // ---------- Base64 helpers (hỗ trợ Unicode) ----------
+  // ---------- Base64 helpers ----------
   function b64EncodeUnicode(str) {
     return btoa(unescape(encodeURIComponent(str)));
   }
@@ -57,10 +57,7 @@ const GH = (() => {
     }
   }
 
-  /**
-   * GET file. Trả {content, sha} hoặc null nếu chưa tồn tại.
-   * content luôn là string (đã decode base64).
-   */
+  /** GET file. Trả {content, sha} hoặc null nếu chưa tồn tại. */
   async function getFile(path) {
     const { branch } = getConfig();
     const url = `${baseUrl()}/${path}?ref=${branch || "main"}&t=${Date.now()}`;
@@ -78,10 +75,7 @@ const GH = (() => {
     };
   }
 
-  /**
-   * PUT file. Nếu sha == null → tạo mới.
-   * Retry 1 lần khi 409 (sha conflict).
-   */
+  /** PUT file. Nếu sha == null → tạo mới. */
   async function putFile(path, content, sha, message) {
     const { branch } = getConfig();
     const body = {
@@ -100,12 +94,12 @@ const GH = (() => {
 
     let res = await doPut();
 
-    // 409 → fetch lại sha mới và retry 1 lần
-    if (res.status === 409) {
+    // Xử lý lỗi 409 (sha conflict) HOẶC 422 (thiếu sha) -> Fetch lại sha mới và retry
+    if (res.status === 409 || res.status === 422) {
       const fresh = await getFile(path);
       if (fresh && fresh.sha) {
         body.sha = fresh.sha;
-        res = await doPut();
+        res = await doPut(); // Thử lại 1 lần
       }
     }
 
@@ -134,10 +128,7 @@ const GH = (() => {
     return res.json();
   }
 
-  /**
-   * Upload ảnh lên assets/uploads/{timestamp}-{filename}.
-   * Trả URL raw để dùng làm thumbnail.
-   */
+  /** Upload ảnh lên assets/uploads/{timestamp}-{filename}. */
   async function uploadImage(file) {
     const { user, repo, branch } = getConfig();
     if (!user || !repo) throw new Error("Chưa cấu hình GitHub.");
@@ -161,7 +152,6 @@ const GH = (() => {
     await handleAuthError(res);
     if (!res.ok) throw new Error(`Lỗi upload: HTTP ${res.status}`);
 
-    // URL raw
     const br = branch || "main";
     return `https://raw.githubusercontent.com/${user}/${repo}/${br}/${path}`;
   }
