@@ -7,7 +7,7 @@ const Auth = (() => {
 
   /** Hash SHA-256 của chuỗi (Web Crypto) */
   async function sha256(str) {
-    const buf = new TextEncoder().encode(str);
+    const buf = new TextEncoder().encode(str.trim()); // Đã thêm .trim() để tránh khoảng trắng thừa
     const hash = await crypto.subtle.digest("SHA-256", buf);
     return Array.from(new Uint8Array(hash))
       .map((b) => b.toString(16).padStart(2, "0"))
