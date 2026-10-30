@@ -43,7 +43,7 @@
       <div class="header-inner">
         <a href="index.html" class="brand">
           <span class="brand-logo">${logoHtml}</span>
-          <span class="brand-name">${escapeHtml(site.name || "Nam Gaming")}</span>
+          <span class="brand-name">${escapeHtml(site.name || "GameHub")}</span>
         </a>
         <nav class="header-nav">
           <a href="index.html">Trang chủ</a>
@@ -57,7 +57,7 @@
       <nav class="mobile-nav" id="mobile-nav">
         <a href="index.html">Trang chủ</a>
         <a href="index.html#categories">Thể loại</a>
-        <!-- ĐÃ XÓA LINK QUẢN TRỊ Ở ĐÂY -->
+        <a href="admin.html">Quản trị</a>
       </nav>
     `;
 
@@ -82,13 +82,13 @@
     el.innerHTML = `
       <div class="footer-inner">
         <div>
-          <h4>${escapeHtml(site.name || "Nam Gaming")}</h4>
+          <h4>${escapeHtml(site.name || "GameHub")}</h4>
           <p>${escapeHtml(site.description || "")}</p>
         </div>
         <div>
           <h4>Liên kết</h4>
           <p><a href="index.html">Trang chủ</a></p>
-          <!-- ĐÃ XÓA LINK QUẢN TRỊ Ở ĐÂY -->
+          <p><a href="admin.html">Quản trị</a></p>
         </div>
         <div>
           <h4>Disclaimer</h4>
@@ -96,7 +96,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        © ${new Date().getFullYear()} ${escapeHtml(site.name || "Nam Gaming")}. All rights reserved.
+        © ${new Date().getFullYear()} ${escapeHtml(site.name || "GameHub")}. All rights reserved.
       </div>
     `;
   }
@@ -389,7 +389,7 @@
   }
 
   function updateSEO(post, site) {
-    document.title = `${post.title} — ${site.name || "Nam Gaming"}`;
+    document.title = `${post.title} — ${site.name || "GameHub"}`;
     const setMeta = (sel, attr, val) => {
       const el = document.querySelector(sel);
       if (el) el.setAttribute(attr, val);
