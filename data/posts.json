@@ -277,5 +277,24 @@
     "featured": false,
     "createdAt": "2026-10-30",
     "updatedAt": "2026-10-30"
+  },
+  {
+    "id": "p_mvv371hkqb4ibz",
+    "title": "Counter-Strike 1.6",
+    "slug": "counter-strike-16",
+    "excerpt": "Tải ngay Counter-Strike 1.6 - Tựa game bắn súng huyền thoại gắn liền với tuổi thơ của bao thế hệ game thủ.",
+    "content": "<h2>Giới thiệu về Counter-Strike 1.6</h2>\n<p><b>Counter-Strike 1.6</b> (thường được gọi tắt là <b>CS 1.6</b>) là một trong những tựa game bắn súng góc nhìn thứ nhất (FPS) mang tính biểu tượng và thành công nhất mọi thời đại do Valve phát triển. Trò chơi là sự đối đầu kinh điển giữa hai phe <b>Counter-Terrorists (Đặc nhiệm)</b> và <b>Terrorists (Khủng bố)</b> qua các nhiệm vụ đặt bom, giải cứu con tin.</p>\n\n<h2>Đặc điểm nổi bật</h2>\n<ul>\n  <li><b>Lối chơi chiến thuật đỉnh cao:</b> Đòi hỏi kỹ năng ngắm bắn chuẩn xác, phản xạ nhanh và sự phối hợp nhịp nhàng giữa các đồng đội.</li>\n  <li><b>Bản đồ huyền thoại:</b> Trải nghiệm lại những map đấu quen thuộc như de_dust2, de_inferno, cs_assault, cs_italy,...</li>\n  <li><b>Cấu hình nhẹ nhàng:</b> Tương thích hoàn hảo với mọi máy tính từ cấu hình thấp đến cao, không lo giật lag.</li>\n</ul>\n\n<h2>Hướng dẫn cài đặt</h2>\n<p>Bấm vào nút tải về bên dưới để nhận bộ cài, giải nén và bắt đầu tham gia những trận đấu súng đỉnh cao cùng bạn bè ngay lập tức!</p>\n<p>BQ bởi se7en.ws , chúng tôi không liên quan</p>",
+    "thumbnail": "https://se7en.ws/wp-content/uploads/2020/03/counter-strike-1-6-screenshot-01.jpg",
+    "category": "Hành động",
+    "tags": [
+      "action",
+      "shooter",
+      "counter-strike",
+      "classic"
+    ],
+    "downloadUrl": "https://se7en.ws/away/aHR0cHM6Ly9kbDIuY3MtZ29vZGdhbWUucnUvQ291bnRlci1TdHJpa2UlMjAxLjZfZW5nLmV4ZQ==",
+    "featured": false,
+    "createdAt": "2026-10-30",
+    "updatedAt": "2026-10-30"
   }
 ]
