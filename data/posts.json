@@ -372,5 +372,24 @@
     "featured": false,
     "createdAt": "2026-10-30",
     "updatedAt": "2026-10-30"
+  },
+  {
+    "id": "p_mvv5ue28031geh",
+    "title": "Farming Simulator 25",
+    "slug": "farming-simulator-25",
+    "excerpt": "Trở thành một nông dân thực thụ, quản lý trang trại hiện đại với vô số máy móc tiên tiến và các loại cây trồng mới trong Farming Simulator 25.",
+    "content": "<h2>Giới thiệu về Farming Simulator 25</h2>\n<p><b>Farming Simulator 25</b> đưa loạt game mô phỏng nông nghiệp đình đám lên một tầm cao mới với đồ họa chân thực, công nghệ vật lý cải tiến và vô số tính năng gameplay hấp dẫn. Bạn sẽ xây dựng và vận hành đế chế nông nghiệp của riêng mình, từ việc canh tác đất đai, trồng trọt, chăn nuôi cho đến quản lý chuỗi cung ứng toàn cầu.</p>\n\n<h2>Điểm nổi bật của phiên bản 25</h2>\n<ul>\n  <li><b>Bản đồ và Môi trường đa dạng:</b> Khám phá các vùng đất mới từ Bắc Mỹ với không gian rộng lớn, Đông Á với hệ thống ruộng bậc thang cho đến các cảnh quan tươi đẹp tại Trung Âu.</li>\n  <li><b>Thêm nhiều loại cây trồng và vật nuôi:</b> Trải nghiệm trồng lúa nước, rau cải cùng nhiều loại cây trồng mới, bên cạnh việc chăm sóc thêm các loài động vật trang trại quen thuộc.</li>\n  <li><b>Hơn 400 cỗ máy nông nghiệp chân thực:</b> Sử dụng trang thiết bị từ hơn 150 thương hiệu máy móc nông nghiệp hàng đầu thế giới như John Deere, Case IH, Fendt, CLAAS,...</li>\n  <li><b>Đồ họa và Hiệu ứng cải tiến:</b> Công nghệ đồ họa mới mang lại hiệu ứng thời tiết, mặt nước, bùn đất và chu kỳ ngày đêm sống động hơn bao giờ hết.</li>\n</ul>\n\n<h2>Cấu hình yêu cầu cho PC</h2>\n<h3>Cấu hình tối thiểu (Minimum):</h3>\n<ul>\n  <li><b>Hệ điều hành:</b> Windows 10/11 (64-bit)</li>\n  <li><b>Bộ xử lý (CPU):</b> Intel Core i5-6400 / AMD Ryzen 5 1400 trở lên</li>\n  <li><b>Bộ nhớ (RAM):</b> 8 GB RAM</li>\n  <li><b>Card đồ họa (GPU):</b> Nvidia GeForce GTX 1050 Ti / AMD Radeon RX 570 (hoặc tương đương từ 4GB VRAM)</li>\n  <li><b>DirectX:</b> Phiên bản 12</li>\n  <li><b>Dung lượng ổ cứng:</b> Trống khoảng 45GB</li>\n</ul>\n\n<h3>Cấu hình đề nghị (Recommended):</h3>\n<ul>\n  <li><b>Hệ điều hành:</b> Windows 10/11 (64-bit)</li>\n  <li><b>Bộ xử lý (CPU):</b> Intel Core i7-10700 / AMD Ryzen 5 5600X hoặc cao hơn</li>\n  <li><b>Bộ nhớ (RAM):</b> 16 GB RAM</li>\n  <li><b>Card đồ họa (GPU):</b> Nvidia GeForce RTX 2070 / AMD Radeon RX 5700 XT (hoặc cao hơn)</li>\n  <li><b>DirectX:</b> Phiên bản 12</li>\n  <li><b>Dung lượng ổ cứng:</b> Ổ cứng SSD trống từ 45GB trở lên</li>\n</ul>\n\n<h2>Hướng dẫn cài đặt</h2>\n<p>Bấm vào link tải phía dưới, tiến hành giải nén bộ cài và làm theo các bước hướng dẫn trên màn hình để bắt đầu sự nghiệp làm nông dân triệu phú ngay hôm nay!</p>",
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPk0GjOOjIpr3tYnKMP2Lii3WcHld50kRFKKuQ5Hl0cQ&s=10",
+    "category": "Hành động",
+    "tags": [
+      "simulation",
+      "farming",
+      "open-world",
+      "management"
+    ],
+    "downloadUrl": "https://byxatab.com/index.php?do=download&id=20376",
+    "featured": false,
+    "createdAt": "2026-10-30",
+    "updatedAt": "2026-10-30"
   }
 ]
