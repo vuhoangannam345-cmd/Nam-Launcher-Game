@@ -82,21 +82,21 @@
     el.innerHTML = `
       <div class="footer-inner">
         <div>
-          <h4>${escapeHtml(site.name || "GameHub")}</h4>
+          <h4>${escapeHtml(site.name || "Nam Gaming")}</h4>
           <p>${escapeHtml(site.description || "")}</p>
         </div>
         <div>
           <h4>Liên kết</h4>
           <p><a href="index.html">Trang chủ</a></p>
-          <p><a href="admin.html">Quản trị</a></p>
+          <p><a href="admin.html">NPanel</a></p>
         </div>
         <div>
-          <h4>Disclaimer</h4>
+          <h4>Tuyên bố miễn trừ trách nhiệm</h4>
           <p>Website chỉ chia sẻ thông tin và liên kết. Mọi bản quyền game thuộc về nhà phát hành.</p>
         </div>
       </div>
       <div class="footer-bottom">
-        © ${new Date().getFullYear()} ${escapeHtml(site.name || "GameHub")}. All rights reserved.
+        © ${new Date().getFullYear()} ${escapeHtml(site.name || "NamGaming")}. All rights reserved.
       </div>
     `;
   }
@@ -181,7 +181,7 @@
 
     const shown = posts.slice(0, state.page * POSTS_PER_PAGE);
     if (posts.length === 0) {
-      grid.innerHTML = `<div class="empty" style="grid-column:1/-1">Không tìm thấy bài viết phù hợp 🤖</div>`;
+      grid.innerHTML = `<div class="empty" style="grid-column:1/-1">Mệt quá, không tìm thấy bài viết phù hợp </div>`;
       if (moreWrap) moreWrap.innerHTML = "";
       return;
     }
@@ -245,7 +245,7 @@
 
     el.innerHTML = `
       <div class="widget">
-        <h3>🔥 Bài mới</h3>
+        <h3>🔥 Bài Viết Mới</h3>
         <ul class="widget-list">
           ${recent
             .map(
@@ -264,7 +264,7 @@
         </ul>
       </div>
       <div class="widget" id="categories">
-        <h3>📂 Danh mục</h3>
+        <h3>📂 Thể Loại</h3>
         <ul class="cat-list">
           ${Object.entries(catCounts)
             .map(
@@ -278,7 +278,7 @@
         </ul>
       </div>
       <div class="widget">
-        <h3>🏷️ Tag cloud</h3>
+        <h3>🏷️ Thẻ Phân Loại</h3>
         <div class="tag-cloud">
           ${tags
             .map(
@@ -341,7 +341,7 @@
         : ""}
       ${post.downloadUrl
         ? `<div class="download-cta">
-             <p>Sẵn sàng chơi? Tải game ngay bên dưới 👇</p>
+             <p>Suy nghĩ kĩ chưa ?, Tải game nhá :)</p>
              <a class="btn btn-primary" href="${escapeHtml(post.downloadUrl)}" target="_blank" rel="noopener">
                ⬇ Tải game
              </a>
@@ -367,7 +367,7 @@
       return;
     }
     el.innerHTML = `
-      <h2>Bài liên quan</h2>
+      <h2>Bài Viết Liên Quan</h2>
       <div class="related-grid">
         ${related
           .map(
