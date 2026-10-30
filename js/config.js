@@ -2,12 +2,10 @@
 // config.js — Cấu hình toàn cục + helper tiện ích
 // ============================================================
 
-// SHA-256 hash của mật khẩu admin. (Mật khẩu: "Admin1223")
-// Chuỗi hash dưới đây đã được kiểm tra độc lập, độ dài chuẩn 64 ký tự.
+// SHA-256 hash của mật khẩu "Admin1223"
 const ADMIN_PASSWORD_HASH =
-  "0f9b6e4da4ff3b21f5d13f5a8e7c2f5f9a3c7b5e1d2f4a6b8c0d2e4f6a8b0c2d";
+  "a2456e35e0e7f08039b5c46c214e6d85d475a93e1601e1ebdbe1b6e08b1e0d8b";
 
-// Thông tin site mặc định (Sẽ tự động ghi đè khi bạn lưu trên Admin)
 const SITE_INFO = {
   name: "Nam Gaming",
   logo: "https://i.postimg.cc/0w7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png",
