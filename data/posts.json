@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "id": "p_mvuiou97c78991",
+    "title": "Call Of Duty : Modern Warfare 4",
+    "slug": "call-of-duty-modern-warfare-4",
+    "excerpt": "Game Call Of Duty : Modern Warfare 4 Launcher",
+    "content": "<h2>Giới thiệu về Call of Duty: Modern Warfare 4 (7Launcher)</h2>\n<p><b>Call of Duty: Modern Warfare 4</b> phiên bản phát hành qua <b>7Launcher</b> mang đến trải nghiệm cài đặt và quản lý tựa game huyền thoại này một cách nhanh chóng, gọn nhẹ và tối ưu nhất cho người chơi trên PC.</p>\n\n<h2>Các tính năng nổi bật của bản 7Launcher</h2>\n<ul>\n    <li><b>Cài đặt tự động:</b> Trình cài đặt thông minh giúp tích hợp sẵn các tệp cần thiết mà không sợ lỗi thiếu file.</li>\n    <li><b>Trình quản lý tiện lợi:</b> Cho phép kiểm tra cập nhật bản vá, sửa lỗi game hoặc kiểm tra tính toàn vẹn của tệp game trực tiếp trên giao diện launcher.</li>\n    <li><b>Tối ưu hóa hệ thống:</b> Giảm thiểu xung đột phần mềm và giúp game khởi động mượt mà hơn trên các dòng máy tính khác nhau.</li>\n</ul>\n\n<h2>Hướng dẫn cài đặt và chơi game</h2>\n<p>Việc cài đặt tựa game này qua 7Launcher vô cùng đơn giản với các bước cơ bản sau đây:</p>\n<ol>\n    <li>Tải tệp cài đặt launcher về máy tính của bạn.</li>\n    <li>Chạy tệp thiết lập và chọn đường dẫn thư mục lưu trữ game trên ổ cứng.</li>\n    <li>Chờ quá trình tải và tự động cấu hình hoàn tất.</li>\n    <li>Nhấn <b>Play</b> trực tiếp từ giao diện 7Launcher để bắt đầu bước vào chiến trường khốc liệt!</li>\n</ol>",
+    "thumbnail": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/7940/header.jpg?t=1780962383",
+    "category": "Chiến thuật",
+    "tags": [
+      "action"
+    ],
+    "downloadUrl": "https://7launcher.com/dl/7l_call-of-duty-modern-warfare-4_installer.exe",
+    "featured": true,
+    "createdAt": "2026-10-30",
+    "updatedAt": "2026-10-30"
+  }
+]
