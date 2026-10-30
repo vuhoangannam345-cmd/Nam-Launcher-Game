@@ -734,45 +734,6 @@ h1, h2, h3, h4 {
   border-bottom: none;
 }
 
-/* ---------- Donate Widget (QR Code) ---------- */
-.donate-widget {
-  background: linear-gradient(135deg, rgba(255, 107, 0, 0.1), rgba(255, 0, 128, 0.1));
-  border: 1px solid rgba(255, 107, 0, 0.4);
-  text-align: center;
-  padding: 1.5rem 1rem;
-}
-.donate-widget h3 {
-  color: #ff6b00 !important;
-  border-bottom: none !important;
-  margin-bottom: 0.5rem !important;
-}
-.donate-widget p {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  margin-bottom: 1rem;
-}
-.donate-qr {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin: 0 auto 1rem;
-  border: 2px solid rgba(255, 107, 0, 0.5);
-  padding: 5px;
-  background: #fff;
-  box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-.donate-qr:hover {
-  transform: scale(1.05);
-}
-.donate-note {
-  font-size: 0.8rem;
-  color: #ff6b00;
-  font-weight: bold;
-  margin-top: 0.5rem;
-}
-
 /* ---------- Responsive ---------- */
 @media (max-width: 1200px) {
   .posts-grid {
