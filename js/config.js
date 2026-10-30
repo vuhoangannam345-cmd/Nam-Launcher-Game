@@ -4,7 +4,7 @@
 
 // SHA-256 hash của mật khẩu admin. (Mật khẩu mới: "Admin1223")
 const ADMIN_PASSWORD_HASH =
-  "235adf0d1c3237e4bbda6e2db8df75e3487b8a4420a41b27b06b9ad8cf4a8791";
+  "cf1fb58e6ba8f9b3e792127bdc46f6f8a6f92e3564b2782b2b57248659fdbcb7";
 
 // Thông tin site mặc định (Sẽ tự động ghi đè khi bạn lưu trên Admin)
 const SITE_INFO = {
