@@ -14,5 +14,19 @@
     "featured": true,
     "createdAt": "2026-10-30",
     "updatedAt": "2026-10-30"
+  },
+  {
+    "id": "p_mvuiwj9txhp4sj",
+    "title": "Grand Theft Auto V Legacy v3890.0",
+    "slug": "grand-theft-auto-v-legacy-v38900",
+    "excerpt": "Game GTA 5 Legacy launcher cho pc",
+    "content": "<h2>Giới thiệu về GTA 5</h2>\n<p><strong>Grand Theft Auto V (GTA 5)</strong> là một trong những tựa game thế giới mở vĩ đại nhất mọi thời đại do Rockstar Games phát triển. Lấy bối cảnh tại thành phố hư cấu Los Santos, người chơi sẽ hóa thân vào 3 nhân vật chính với những câu chuyện đan xen đầy kịch tính: Michael, Franklin và Trevor.</p>\n\n<blockquote>\"Không chỉ là một game hành động, GTA 5 còn là một bức tranh châm biếm sắc nét về xã hội Mỹ đương đại.\"</blockquote>\n\n<h2>Điểm nổi bật của game</h2>\n<ul>\n  <li><strong>Thế giới mở rộng lớn:</strong> Khám phá Los Santos và Blaine County với hơn 100 giờ chơi.</li>\n  <li><strong>3 nhân vật chính:</strong> Chuyển đổi linh hoạt giữa 3 nhân vật với kỹ năng và cốt truyện riêng biệt.</li>\n  <li><strong>Đồ họa đỉnh cao:</strong> Hệ thống ánh sáng, thời tiết và vật lý chân thực đến từng chi tiết.</li>\n  <li><strong>Chế độ GTA Online:</strong> Thế giới trực tuyến đầy rẫy những phi vụ và trò chơi giải trí (Không hỗ trợ).</li>\n</ul>\n\n<h2>Cấu hình yêu cầu (PC)</h2>\n<p>Để trải nghiệm GTA 5 mượt mà nhất, máy tính của bạn cần đáp ứng các cấu hình sau:</p>\n\n<h3>Cấu hình tối thiểu (Minimum)</h3>\n<ul>\n  <li><strong>Hệ điều hành:</strong> Windows 10 64-bit</li>\n  <li><strong>Bộ xử lý (CPU):</strong> Intel Core i5 3470 @ 3.2GHz hoặc AMD X8 FX-8350 @ 4GHz</li>\n  <li><strong>Bộ nhớ (RAM):</strong> 8 GB</li>\n  <li><strong>Card đồ họa (GPU):</strong> NVIDIA GTX 660 2GB hoặc AMD HD 7870 2GB</li>\n  <li><strong>Dung lượng trống:</strong> 105 GB</li>\n</ul>\n\n<h3>Cấu hình khuyến nghị (Recommended)</h3>\n<ul>\n  <li><strong>Hệ điều hành:</strong> Windows 10/11 64-bit</li>\n  <li><strong>Bộ xử lý (CPU):</strong> Intel Core i5 3th hoặc AMD Ryzen 5 </li>\n  <li><strong>Bộ nhớ (RAM):</strong> 8 GB</li>\n  <li><strong>Card đồ họa (GPU):</strong> NVIDIA GTX 750 hoặc cao hơn hoặc AMD RX cao hơn</li>\n  <li><strong>Dung lượng trống:</strong> 105 GB (Nên cài trên ổ SSD để load map nhanh hơn)</li>\n</ul>\n\n<h2>Trải nghiệm mượt mà với 7Launcher</h2>\n<p>Để việc cài đặt và quản lý phiên bản game trở nên đơn giản, nhanh chóng và hạn chế tối đa lỗi phát sinh, bạn có thể sử dụng gói cài đặt tích hợp sẵn qua <b>7Launcher</b>. Trình khởi chạy này hỗ trợ tự động cấu hình và cập nhật tệp game một cách tối ưu nhất cho người chơi trên PC.</p>\n\n<h2>Lời kết</h2>\n<p>GTA 5 chắc chắn là tựa game mà bất kỳ game thủ nào cũng phải trải nghiệm ít nhất một lần. Nếu bạn thấy bài viết hữu ích, hãy bấm nút tải game bên dưới để ủng hộ mình nhé!</p>",
+    "thumbnail": "https://raw.githubusercontent.com/vuhoangannam345-cmd/Nam-Launcher-Game/main/assets/uploads/1793337566752-nhanh-tay-nhan-ngay-gta-v-tri-gia-450000-vnd-dang-mien-phi-tren-epic-game-store-1-800x333.jpg",
+    "category": "Nhập vai",
+    "tags": [],
+    "downloadUrl": "https://7launcher.com/?lang=en&download=&kcccount=https://7launcher.com/dl/7l_gta-v_latest_setup.exe",
+    "featured": false,
+    "createdAt": "2026-10-30",
+    "updatedAt": "2026-10-30"
   }
 ]
