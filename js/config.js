@@ -2,9 +2,9 @@
 // config.js — Cấu hình toàn cục + helper tiện ích
 // ============================================================
 
-// SHA-256 hash của mật khẩu admin. (Mặc định: "admin123")
+// SHA-256 hash của mật khẩu admin. (Mật khẩu mới: "Namgaming2013")
 const ADMIN_PASSWORD_HASH =
-  "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
+  "b3e442652fb2da45aee05b9a77c8a573b215de07d0e540b24e3a3b36a20a9023";
 
 // Thông tin site mặc định (Sẽ tự động ghi đè khi bạn lưu trên Admin)
 const SITE_INFO = {
