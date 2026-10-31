@@ -1,21 +1,18 @@
 /* ============================================================
-   NAM GAMING 2026 - CYBERPUNK MATRIX (ULTRA DETAILED)
-   Tác giả: Senior UI/UX
+   NAM GAMING 2026 - CYBERPUNK MATRIX (FIXED & ULTRA DETAILED)
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap');
 
-/* --- 1. HỆ THỐNG BIẾN (CSS VARIABLES) --- */
+/* --- 1. BIẾN HỆ THỐNG --- */
 :root {
-  /* Màu Dark Mode (Cyberpunk Blue/Black) */
   --bg-body: #050914;
-  --bg-surface: rgba(10, 18, 32, 0.75); /* Kính mờ */
-  --bg-surface-hover: rgba(15, 28, 50, 0.9);
+  --bg-surface: rgba(10, 18, 32, 0.85);
+  --bg-surface-hover: rgba(15, 28, 50, 0.95);
   
-  --color-primary: #00f0ff; /* Neon Cyan */
-  --color-primary-glow: rgba(0, 240, 255, 0.5);
-  --color-secondary: #ff0055; /* Neon Pink */
-  --color-secondary-glow: rgba(255, 0, 85, 0.5);
+  --primary: #00f0ff; 
+  --primary-glow: rgba(0, 240, 255, 0.5);
+  --secondary: #ff0055;
   
   --text-heading: #ffffff;
   --text-main: #e2e8f0;
@@ -23,30 +20,21 @@
   
   --border-color: rgba(0, 240, 255, 0.25);
   --border-hover: rgba(0, 240, 255, 0.8);
-  --shadow-neon: 0 0 15px var(--color-primary-glow);
-  --shadow-neon-hover: 0 0 25px var(--color-primary-glow), 0 0 50px rgba(0, 240, 255, 0.2);
+  --shadow-neon: 0 0 15px var(--primary-glow);
   
-  /* Typography */
-  --font-display: 'Orbitron', sans-serif;
+  --font-heading: 'Orbitron', sans-serif;
   --font-body: 'Chakra Petch', sans-serif;
-  
-  /* Layout */
   --max-width: 1400px;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
 }
 
 [data-theme="light"] {
-  /* Màu Light Mode (Tech Light) */
   --bg-body: #f0f4f8;
-  --bg-surface: rgba(255, 255, 255, 0.85);
-  --bg-surface-hover: rgba(255, 255, 255, 0.95);
+  --bg-surface: rgba(255, 255, 255, 0.9);
+  --bg-surface-hover: rgba(255, 255, 255, 1);
   
-  --color-primary: #0284c7;
-  --color-primary-glow: rgba(2, 132, 199, 0.3);
-  --color-secondary: #e11d48;
-  --color-secondary-glow: rgba(225, 29, 72, 0.3);
+  --primary: #0284c7;
+  --primary-glow: rgba(2, 132, 199, 0.3);
+  --secondary: #e11d48;
   
   --text-heading: #0f172a;
   --text-main: #1e293b;
@@ -54,252 +42,173 @@
   
   --border-color: rgba(2, 132, 199, 0.2);
   --border-hover: rgba(2, 132, 199, 0.6);
-  --shadow-neon: 0 4px 15px var(--color-primary-glow);
-  --shadow-neon-hover: 0 8px 25px var(--color-primary-glow);
+  --shadow-neon: 0 4px 15px var(--primary-glow);
 }
 
-/* --- 2. RESET & BASE STYLES --- */
+/* --- 2. RESET & CHỐNG VỠ LAYOUT --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-
+html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-body);
   background-color: var(--bg-body);
   color: var(--text-main);
   line-height: 1.6;
   min-height: 100vh;
-  overflow-x: hidden; /* Chống tràn ngang */
-  transition: background-color 0.4s ease, color 0.4s ease;
-  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color 0.4s, color 0.4s;
   position: relative;
 }
 
-/* Chặn đứng mọi thẻ a bị JS bắn lỗi ra ngoài body */
+/* BẢO HIỂM CHỐNG LỖI ẢNH TO ĐÙNG */
+img { 
+  max-width: 100%; 
+  height: auto; 
+  display: block; 
+  object-fit: cover; 
+}
+
 body > a { display: none !important; }
+a { color: inherit; text-decoration: none; transition: 0.3s; }
+button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 
-/* Tùy chỉnh thanh cuộn (Scrollbar) */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-body); }
-::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-primary-glow); }
-
-/* --- 3. LỚP NỀN MATRIX (FIXED BACKGROUND) --- */
+/* --- 3. NỀN MATRIX --- */
 #matrix-canvas {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  z-index: -1; /* Nằm dưới cùng, không bao giờ đè giao diện */
-  opacity: 0.15;
-  pointer-events: none; /* Click xuyên qua lớp nền */
+  position: fixed; inset: 0; width: 100vw; height: 100vh;
+  z-index: -1; opacity: 0.15; pointer-events: none;
 }
 [data-theme="light"] #matrix-canvas { opacity: 0.08; }
 
-/* --- 4. NÚT CHUYỂN SÁNG/TỐI (THEME TOGGLE) --- */
+/* --- 4. NÚT SÁNG/TỐI --- */
 .theme-toggle {
-  position: fixed;
-  top: 20px; right: 20px;
-  z-index: 9999;
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  background: var(--bg-surface);
-  border: 1px solid var(--color-primary);
-  color: var(--text-main);
-  font-size: 1.2rem;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-neon);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: fixed; top: 20px; right: 20px; z-index: 9999;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--bg-surface); border: 1px solid var(--primary);
+  font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-neon); transition: 0.4s;
 }
-.theme-toggle:hover {
-  transform: rotate(180deg) scale(1.1);
-  background: var(--color-primary);
-  color: var(--bg-body);
-}
+.theme-toggle:hover { transform: rotate(180deg) scale(1.1); background: var(--primary); color: var(--bg-body); }
 
-/* --- 5. HEADER (MENU & SEARCH) --- */
+/* --- 5. HEADER & MENU --- */
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: var(--bg-surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--bg-surface); backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
 }
-.header-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 1rem 24px;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
+/* Ép buộc thẻ header-inner (do main.js render) */
+.site-header > * {
+  max-width: var(--max-width); margin: 0 auto; padding: 1rem 24px;
+  display: flex; align-items: center; gap: 1rem;
 }
-.brand { display: flex; align-items: center; gap: 0.75rem; }
-.brand-logo { width: 42px; height: 42px; border-radius: var(--radius-md); box-shadow: var(--shadow-neon); }
-.brand-name {
-  font-family: var(--font-display);
-  font-size: 1.4rem; font-weight: 900;
-  color: var(--color-primary);
-  text-transform: uppercase; letter-spacing: 2px;
-  text-shadow: var(--shadow-neon);
-}
-.header-inner > a, .header-nav a {
-  font-family: var(--font-body);
-  font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
-  padding: 0.5rem; position: relative;
-  color: var(--text-muted);
-  transition: color 0.3s;
-}
-.header-inner > a::after, .header-nav a::after {
-  content: ''; position: absolute;
-  bottom: 0; left: 50%; width: 0; height: 2px;
-  background: var(--color-primary);
-  transition: all 0.3s; transform: translateX(-50%);
-}
-.header-inner > a:hover, .header-nav a:hover { color: var(--color-primary); }
-.header-inner > a:hover::after, .header-nav a:hover::after { width: 100%; box-shadow: var(--shadow-neon); }
 
-/* Search Box */
-.search-box { flex: 1; max-width: 400px; margin-left: auto; position: relative; }
-.search-box input {
-  width: 100%; padding: 0.7rem 1rem 0.7rem 2.5rem;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  color: var(--text-main); outline: none;
-  font-family: var(--font-body);
-  transition: all 0.3s;
+/* --- 6. KHU VỰC BÀI VIẾT MỚI (SIDEBAR FIX) --- */
+.sidebar-column {
+  background: var(--bg-surface); border: 1px solid var(--border-color);
+  border-radius: 8px; padding: 1.5rem; backdrop-filter: blur(10px);
 }
-.search-box input:focus { border-color: var(--color-primary); box-shadow: var(--shadow-neon); background: rgba(0, 240, 255, 0.05); }
-.search-box::before { content: '🔍'; position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); opacity: 0.6; }
+.sidebar-column h2, .sidebar-column h3 {
+  font-family: var(--font-heading); color: var(--primary);
+  font-size: 1rem; text-transform: uppercase; margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;
+}
+/* Bóp nhỏ ảnh trong sidebar */
+.sidebar-column img {
+  width: 70px !important; height: 50px !important;
+  border-radius: 4px; border: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+/* Cấu trúc từng bài viết nhỏ trong sidebar */
+.sidebar-column a {
+  display: flex !important; gap: 1rem; align-items: center;
+  padding: 0.5rem 0; border-bottom: 1px dashed var(--border-color);
+}
+.sidebar-column a:hover { color: var(--primary); transform: translateX(5px); }
+.sidebar-column span, .sidebar-column p { font-size: 0.85rem; color: var(--text-muted); }
 
-/* --- 6. HERO BANNER (NỔI BẬT) --- */
+/* --- 7. LƯỚI BÀI VIẾT CHÍNH (POSTS GRID FIX) --- */
+.layout-wrapper {
+  max-width: var(--max-width); margin: 2rem auto; padding: 0 24px;
+  display: grid; grid-template-columns: 1fr 320px; gap: 2rem;
+}
+.posts-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;
+}
+/* Ép mọi thẻ div con bên trong posts-grid thành Card */
+.posts-grid > div {
+  background: var(--bg-surface); border: 1px solid var(--border-color);
+  border-radius: 8px; overflow: hidden; display: flex; flex-direction: column;
+  transition: 0.3s; cursor: pointer;
+}
+.posts-grid > div:hover {
+  transform: translateY(-5px); box-shadow: var(--shadow-neon);
+  border-color: var(--border-hover);
+}
+/* Ảnh thumbnail bài viết */
+.posts-grid > div img {
+  width: 100% !important; height: 180px !important;
+  object-fit: cover; transition: 0.5s;
+}
+.posts-grid > div:hover img { transform: scale(1.05); }
+/* Chữ bên trong card */
+.posts-grid > div > *:not(img) { padding: 0.5rem 1rem; }
+.posts-grid h3, .posts-grid h4 {
+  font-family: var(--font-body); font-size: 1.05rem; font-weight: 700;
+  color: var(--text-heading); line-height: 1.4;
+}
+.posts-grid > div:hover h3 { color: var(--primary); }
+.posts-grid p { font-size: 0.9rem; color: var(--text-muted); }
+
+/* --- 8. CÁC NÚT BẤM (FILTERS) --- */
+.filters-section {
+  max-width: var(--max-width); margin: 2rem auto 1rem; padding: 0 24px;
+  display: flex; flex-wrap: wrap; gap: 0.8rem;
+}
+.filters-section > * {
+  padding: 0.5rem 1.2rem; background: var(--bg-surface);
+  border: 1px solid var(--border-color); color: var(--text-muted);
+  border-radius: 4px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;
+}
+.filters-section > *:hover, .filters-section > *.active {
+  background: var(--primary); color: var(--bg-body); border-color: var(--primary);
+  box-shadow: var(--shadow-neon);
+}
+
+/* --- 9. HERO BANNER (NẾU CÓ) --- */
 .hero-section { max-width: var(--max-width); margin: 2rem auto 0; padding: 0 24px; }
-.hero-card {
-  position: relative; border-radius: var(--radius-lg); overflow: hidden;
-  min-height: 450px; display: flex; align-items: flex-end;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+.hero-section > div {
+  position: relative; border-radius: 12px; overflow: hidden;
+  min-height: 400px; border: 1px solid var(--border-color);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 3rem 2rem;
+  background-size: cover !important; background-position: center !important;
 }
-.hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: -2; transition: transform 0.8s; }
-.hero-card:hover .hero-bg { transform: scale(1.05); }
-.hero-card::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, var(--bg-body) 0%, rgba(5,9,20,0.6) 50%, transparent 100%); }
-/* Hiệu ứng Scanline TV cũ */
-.hero-card::before {
-  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 3px);
-  opacity: 0.4;
+.hero-section > div::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, var(--bg-body), transparent);
+  z-index: 1;
 }
-.hero-content { position: relative; z-index: 1; padding: 3rem; max-width: 800px; }
-.hero-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); color: #fff; text-shadow: 0 0 20px var(--color-primary-glow); margin-bottom: 1rem; line-height: 1.1; }
-.hero-excerpt { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.5rem; }
+.hero-section h1, .hero-section h2, .hero-section p { position: relative; z-index: 2; }
+.hero-section h1 { font-family: var(--font-heading); font-size: 2.5rem; color: #fff; text-shadow: 0 0 15px var(--primary); }
+.hero-section p { color: var(--text-main); font-size: 1.1rem; }
 
-/* --- 7. BỘ LỌC THỂ LOẠI --- */
-.filters-section { max-width: var(--max-width); margin: 2rem auto 1rem; padding: 0 24px; display: flex; flex-wrap: wrap; gap: 0.8rem; }
-.cat-filter {
-  padding: 0.5rem 1.2rem;
-  background: var(--bg-surface); border: 1px solid var(--border-color);
-  color: var(--text-muted); font-weight: 600; font-size: 0.85rem;
-  text-transform: uppercase; cursor: pointer; border-radius: var(--radius-sm);
-  transition: all 0.3s;
+/* --- 10. FOOTER & FLAGCOUNTER --- */
+.site-footer {
+  border-top: 1px solid var(--border-color); background: var(--bg-surface);
+  padding: 3rem 24px 2rem; text-align: center; margin-top: 4rem;
 }
-.cat-filter:hover { border-color: var(--color-primary); color: var(--color-primary); box-shadow: var(--shadow-neon); }
-.cat-filter.active { background: var(--color-primary); color: var(--bg-body); border-color: var(--color-primary); box-shadow: var(--shadow-neon); font-weight: 800; }
+.footer-flagcounter { margin-top: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.footer-flagcounter__title { font-family: var(--font-heading); color: var(--primary); font-size: 1rem; }
+.footer-flagcounter img { border-radius: 4px; border: 1px solid var(--primary); }
 
-/* --- 8. LƯỚI BÀI VIẾT (POST CARDS) --- */
-.layout-wrapper { max-width: var(--max-width); margin: 2rem auto 4rem; padding: 0 24px; display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 2rem; }
-.posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-
-.post-card {
-  background: var(--bg-surface); border: 1px solid var(--border-color);
-  border-radius: var(--radius-md); overflow: hidden;
-  display: flex; flex-direction: column; cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  position: relative;
-}
-/* Viền phát sáng Gradient khi Hover */
-.post-card::before {
-  content: ''; position: absolute; inset: -1px; border-radius: inherit;
-  background: linear-gradient(45deg, var(--color-primary), var(--color-secondary), var(--color-primary));
-  background-size: 300% 300%;
-  z-index: -1; opacity: 0; transition: opacity 0.3s;
-}
-.post-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.4); border-color: transparent; }
-.post-card:hover::before { opacity: 1; animation: borderGlow 3s linear infinite; }
-@keyframes borderGlow { 100% { filter: hue-rotate(360deg); } }
-
-.post-thumb { aspect-ratio: 16/9; overflow: hidden; position: relative; background: var(--bg-surface-hover); }
-.post-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-.post-card:hover .post-thumb img { transform: scale(1.1); }
-.post-cat {
-  position: absolute; top: 10px; left: 10px;
-  padding: 0.2rem 0.7rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
-  background: var(--color-primary); color: var(--bg-body);
-  border-radius: 2px; box-shadow: var(--shadow-neon);
-}
-.post-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; flex: 1; background: var(--bg-surface); position: relative; z-index: 1; }
-.post-title { font-size: 1.1rem; font-weight: 700; color: var(--text-heading); transition: color 0.3s; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.post-card:hover .post-title { color: var(--color-primary); }
-.post-excerpt { font-size: 0.9rem; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
-.post-date { font-size: 0.8rem; color: var(--color-primary); font-weight: 600; margin-top: auto; }
-
-/* --- 9. SIDEBAR --- */
-.sidebar-column { display: flex; flex-direction: column; gap: 1.5rem; }
-.widget { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; position: relative; overflow: hidden; }
-.widget::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 30px; background: var(--color-primary); box-shadow: var(--shadow-neon); }
-.widget h3 { font-family: var(--font-display); font-size: 0.95rem; color: var(--color-primary); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
-
-/* --- 10. FOOTER & FLAG COUNTER --- */
-.site-footer { border-top: 1px solid var(--border-color); background: var(--bg-surface); backdrop-filter: blur(16px); padding: 3rem 24px 2rem; }
-.footer-inner { max-width: var(--max-width); margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
-.footer-inner h4 { font-family: var(--font-display); font-size: 0.9rem; color: var(--color-primary); margin-bottom: 1rem; text-transform: uppercase; }
-.footer-inner p, .footer-inner a { font-size: 0.9rem; color: var(--text-muted); }
-.footer-inner a:hover { color: var(--color-primary); }
-.footer-bottom { max-width: var(--max-width); margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid var(--border-color); text-align: center; font-size: 0.85rem; color: var(--text-muted); }
-
-.footer-flagcounter { max-width: var(--max-width); margin: 2rem auto 0; padding-top: 2rem; border-top: 1px dashed var(--border-color); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
-.footer-flagcounter__title { font-family: var(--font-display); font-size: 1rem; color: var(--color-primary); letter-spacing: 2px; }
-.footer-flagcounter img { border-radius: 4px; border: 1px solid var(--border-color); transition: transform 0.3s; }
-.footer-flagcounter img:hover { transform: scale(1.05); box-shadow: var(--shadow-neon); }
-
-/* --- 11. RESPONSIVE (CHUẨN 2026) --- */
-/* Tablet (Dưới 1024px) */
+/* --- 11. RESPONSIVE (MOBILE 2026) --- */
 @media (max-width: 1024px) {
   .layout-wrapper { grid-template-columns: 1fr; }
   .sidebar-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
 }
-
-/* Mobile (Dưới 768px) */
 @media (max-width: 768px) {
-  .header-inner { flex-wrap: wrap; justify-content: center; padding: 1rem; }
-  .header-inner > a, .header-nav a { font-size: 0.85rem; }
-  .search-box { max-width: 100%; order: 3; margin-top: 10px; }
-  
-  .hero-card { min-height: 320px; }
-  .hero-content { padding: 1.5rem; }
-  .hero-title { font-size: 1.8rem; }
-  
   .posts-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-  .post-body { padding: 0.9rem; }
-  .post-title { font-size: 0.95rem; }
-  .post-date { font-size: 0.7rem; }
-  
-  /* Nút Theme Toggle xuống dưới góc phải cho ngón tay cái dễ bấm */
-  .theme-toggle { top: auto; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--color-primary); color: var(--bg-body); }
+  .hero-section h1 { font-size: 1.8rem; }
+  .theme-toggle { top: auto; bottom: 20px; right: 20px; background: var(--primary); color: var(--bg-body); }
 }
-
-/* Mobile dọc (Dưới 480px) */
 @media (max-width: 480px) {
   .posts-grid { grid-template-columns: 1fr; }
-  .layout-wrapper { padding: 0 16px; }
-  .hero-title { font-size: 1.5rem; }
-}
-
-/* Giảm hiệu ứng cho người dùng chóng mặt */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  #matrix-canvas { display: none; }
 }
