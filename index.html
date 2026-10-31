@@ -82,5 +82,46 @@
       }
     }, 500); // Đợi 0.5s để main.js render xong footer
   </script>
+
+  <!-- ======================================================== -->
+  <!-- MÃ BẢO VỆ NỘI DUNG (CHỐNG CHUỘT PHẢI, F12, COPY) -->
+  <!-- ======================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Chặn chuột phải (Menu ngữ cảnh)
+      document.addEventListener('contextmenu', event => event.preventDefault());
+
+      // 2. Chặn các phím tắt phổ biến (F12, Ctrl+Shift+I, Ctrl+U, Ctrl+C, Ctrl+S)
+      document.addEventListener('keydown', function(e) {
+        // Chặn F12
+        if (e.key === 'F12' || e.keyCode === 123) {
+          e.preventDefault();
+          return false;
+        }
+        // Chặn Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (Mở DevTools)
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+          e.preventDefault();
+          return false;
+        }
+        // Chặn Ctrl+U (Xem mã nguồn)
+        if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.keyCode === 85)) {
+          e.preventDefault();
+          return false;
+        }
+        // Chặn Ctrl+C (Copy) và Ctrl+S (Lưu)
+        if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.keyCode === 67 || e.keyCode === 83)) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      // 3. Chặn kéo thả ảnh (Drag & Drop)
+      document.addEventListener('dragstart', function(e) {
+        if (e.target.nodeName.toUpperCase() === "IMG") {
+          e.preventDefault();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
