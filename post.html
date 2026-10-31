@@ -4,13 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Đang tải… — Nam Gaming</title>
-  <meta name="description" content="Chi tiết bài viết trên Nam Gaming" />
-  <meta property="og:title" id="og-title" content="Nam Gaming" />
-  <meta property="og:description" id="og-desc" content="" />
-  <meta property="og:image" id="og-image" content="" />
-  <meta property="og:type" content="article" />
   
-  <!-- Nhúng Font chữ Cyberpunk -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -19,40 +13,30 @@
 </head>
 <body data-page="post">
   
-  <!-- NỀN MATRIX -->
   <canvas id="matrix-canvas"></canvas>
-
-  <!-- NÚT SÁNG/TỐI -->
   <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">🌙</button>
 
-  <!-- HEADER -->
   <header class="site-header" id="site-header"></header>
 
-  <!-- NỘI DUNG CHÍNH -->
   <main class="site-main">
-    <!-- Phần chi tiết bài viết -->
+    <!-- Thẻ rỗng, main.js sẽ render nội dung vào -->
     <article class="post-detail-wrapper" id="post-detail"></article>
 
     <div class="layout-wrapper">
       <div class="main-column">
-        <!-- Bài viết liên quan -->
         <section class="related-section" id="related-posts"></section>
       </div>
       <aside class="sidebar-column" id="sidebar"></aside>
     </div>
   </main>
 
-  <!-- FOOTER -->
   <footer class="site-footer" id="site-footer"></footer>
 
-  <!-- SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
   
   <script>
-    // ==========================================
-    // 1. HIỆU ỨNG MƯA MATRIX (TỰ ĐỘNG CO GIÃN)
-    // ==========================================
+    // Copy y hệt đoạn script Matrix, Theme, Flag Counter ở trên vào đây
     document.addEventListener("DOMContentLoaded", () => {
       const canvas = document.getElementById('matrix-canvas');
       const ctx = canvas.getContext('2d');
@@ -67,14 +51,12 @@
         drops = [];
         for (let x = 0; x < columns; x++) drops[x] = 1;
       }
-
       function drawMatrix() {
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
         ctx.fillStyle = isDark ? 'rgba(5, 11, 20, 0.1)' : 'rgba(240, 244, 248, 0.1)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = isDark ? '#00f0ff' : '#0284c7';
         ctx.font = fontSize + 'px monospace';
-
         for (let i = 0; i < drops.length; i++) {
           const text = letters.charAt(Math.floor(Math.random() * letters.length));
           ctx.fillText(text, i * fontSize, drops[i] * fontSize);
@@ -82,20 +64,14 @@
           drops[i]++;
         }
       }
-
       window.addEventListener('resize', resizeCanvas);
       resizeCanvas();
       setInterval(drawMatrix, 50);
 
-      // ==========================================
-      // 2. LOGIC ĐỔI SÁNG/TỐI
-      // ==========================================
       const themeToggleBtn = document.getElementById('theme-toggle');
       const currentTheme = localStorage.getItem('theme') || 'dark';
-      
       document.documentElement.setAttribute('data-theme', currentTheme);
       themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
-
       themeToggleBtn.addEventListener('click', () => {
         let newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', newTheme);
@@ -103,9 +79,6 @@
         themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
       });
 
-      // ==========================================
-      // 3. FLAG COUNTER
-      // ==========================================
       setTimeout(() => {
         const footer = document.getElementById('site-footer');
         if (footer) {
