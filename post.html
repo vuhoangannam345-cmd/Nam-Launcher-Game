@@ -1,32 +1,33 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark">
+<html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>Chi tiết Game - Nam Gaming</title>
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đang tải… — Nam Gaming</title>
+  <meta name="description" content="Chi tiết bài viết trên nam Gaming" />
+  <meta property="og:title" id="og-title" content="Nam Gaming" />
+  <meta property="og:description" id="og-desc" content="" />
+  <meta property="og:image" id="og-image" content="" />
+  <meta property="og:type" content="article" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body data-page="post">
-  
-  <canvas id="matrix-canvas"></canvas>
   <header class="site-header" id="site-header"></header>
 
-  <main class="site-main">
-    <!-- NỘI DUNG BÀI VIẾT -->
-    <article id="post-detail" class="post-detail-wrapper"></article>
+  <main>
+    <article class="post-detail" id="post-detail"></article>
 
-    <div class="layout-wrapper">
-      <div class="main-column">
-        <!-- BÀI VIẾT LIÊN QUAN -->
-        <section id="related-posts" class="related-section"></section>
+    <div class="layout">
+      <div class="main-col">
+        <section class="related" id="related-posts"></section>
       </div>
-      <!-- SIDEBAR -->
-      <aside id="sidebar" class="sidebar-column"></aside>
+      <aside class="sidebar" id="sidebar"></aside>
     </div>
   </main>
 
@@ -34,55 +35,5 @@
 
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
-  
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // MƯA MATRIX
-      const canvas = document.getElementById('matrix-canvas');
-      const ctx = canvas.getContext('2d');
-      let drops = [];
-      const fontSize = 16;
-      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
-
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const columns = Math.floor(canvas.width / fontSize);
-        drops = [];
-        for (let x = 0; x < columns; x++) drops[x] = 1;
-      }
-
-      function drawMatrix() {
-        ctx.fillStyle = 'rgba(5, 11, 20, 0.1)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#00f0ff';
-        ctx.font = fontSize + 'px monospace';
-        for (let i = 0; i < drops.length; i++) {
-          const text = letters.charAt(Math.floor(Math.random() * letters.length));
-          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-          drops[i]++;
-        }
-      }
-      window.addEventListener('resize', resizeCanvas);
-      resizeCanvas();
-      setInterval(drawMatrix, 50);
-
-      // FLAG COUNTER
-      setTimeout(() => {
-        const footer = document.getElementById('site-footer');
-        if (footer) {
-          footer.insertAdjacentHTML('beforeend', `
-            <div class="footer-flagcounter">
-              <div class="footer-flagcounter__title">🌍 LƯỢT TRUY CẬP</div>
-              <a href="https://info.flagcounter.com/omR5" target="_blank">
-                <img src="https://s05.flagcounter.com/count/omR5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0" loading="lazy">
-              </a>
-            </div>
-          `);
-        }
-      }, 1000);
-    });
-  </script>
 </body>
 </html>
