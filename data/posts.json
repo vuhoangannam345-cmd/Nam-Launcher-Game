@@ -488,5 +488,26 @@
     "featured": false,
     "createdAt": "2026-10-31",
     "updatedAt": "2026-10-31"
+  },
+  {
+    "id": "p_mvwfh0b565ljzp",
+    "title": "(PC) CS:GO Offline NoSteam",
+    "slug": "pc-csgo-offline-nosteam",
+    "excerpt": "Tải ngay phiên bản CS:GO Offline cho PC. Trải nghiệm tựa game bắn súng đỉnh cao, đồ họa sắc nét, chơi mượt mà không cần kết nối mạng.",
+    "content": "<h2>Giới thiệu về CS:GO Offline</h2>\n<p><strong>Counter-Strike: Global Offensive (CS:GO)</strong> là một trong những tượng đài game bắn súng góc nhìn thứ nhất (FPS) huyền thoại trên toàn thế giới. Phiên bản CS:GO Offline mang đến cho game thủ những trận đấu súng đỉnh cao với bot thông minh, giúp bạn luyện tập kỹ năng ngắm bắn (aim), phản xạ và chiến thuật mà không cần lo về đường truyền internet.</p>\n\n<h2>Cấu hình yêu cầu (System Requirements)</h2>\n<ul>\n    <li><strong>Hệ điều hành (OS):</strong> Windows 7 / 8 / 10 / 11 (64-bit)</li>\n    <li><strong>Bộ vi xử lý (CPU):</strong> Intel Core 2 Duo E6600 / AMD Phenom X3 8750 hoặc tốt hơn</li>\n    <li><strong>Bộ nhớ RAM:</strong> Tối thiểu 2GB (Khuyến nghị 4GB trở lên)</li>\n    <li><strong>Card đồ họa (GPU):</strong> Card màn hình tương thích DirectX 9 với ít nhất 256MB VRAM (NVIDIA GeForce 8800 GT / ATI Radeon HD 3870 hoặc cao hơn)</li>\n    <li><strong>DirectX:</strong> Phiên bản 9.0c</li>\n    <li><strong>Dung lượng trống:</strong> Khoảng 15GB - 20GB ổ cứng</li>\n</ul>\n\n<h2>Điểm nổi bật của phiên bản</h2>\n<p>✔ Hỗ trợ chơi offline mượt mà với hệ thống Bot đa dạng độ khó.<br>\n✔ Đầy đủ bản đồ kinh điển, kho vũ khí và hiệu ứng âm thanh chuẩn xác.<br>\n✔ Cài đặt đơn giản, dung lượng tối ưu cho các dòng máy tầm trung.</p>\n\n<h2>Hướng dẫn cài đặt</h2>\n<p>1. Tải file ISO từ đường dẫn bên dưới.<br>\n2. Tiến hành giải nén hoặc Mount file ISO ra ổ đĩa ảo.<br>\n3. Chạy file cài đặt và làm theo hướng dẫn trên màn hình.<br>\n4. Vào game và chiến đấu ngay lập tức!</p>",
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWv7GzxxnM56nO8wcpKa9nE8mjsD6_5FCW4QTM9mSjSw&s=10",
+    "category": "Hành động",
+    "tags": [
+      "action",
+      "fps",
+      "shooter",
+      "csgo",
+      "offline",
+      "pc-game"
+    ],
+    "downloadUrl": "https://archive.org/download/nosteam-csgo-v-1.36.2.0-offline-multi/Nosteam%20CSGO%20v1.36.2.0%20OFFLINE-MULTI.iso",
+    "featured": false,
+    "createdAt": "2026-10-31",
+    "updatedAt": "2026-10-31"
   }
 ]
