@@ -1,4 +1,5 @@
 # ❓ FAQ - Câu Hỏi Thường Gặp
+<img width="1200" height="621" alt="image" src="https://github.com/user-attachments/assets/c427ea48-5781-4187-b307-304ac031ae3e" />
 
 ### F: Sao bạn lại làm về cái này?
 **A:** [Thở dài]Đơn giản vì mình đam mê game! Mình tạo ra "Nam Gaming" như một góc nhỏ để lưu trữ, tổng hợp và chia sẻ những tựa game hay, những bản mod thú vị, hoặc đơn giản là nơi để anh em gamer tìm thấy những trò chơi giải trí sau giờ học, giờ làm căng thẳng. Mình muốn xây dựng một cộng đồng nơi mọi người có thể tìm thấy những siêu phẩm game mà không phải mất quá nhiều thời gian tìm kiếm.
@@ -32,3 +33,13 @@
 
 ### F: Tôi muốn báo cáo vi phạm bản quyền / Gỡ bài viết thì sao?
 **A:** Mình luôn tôn trọng quyền sở hữu trí tuệ của các nhà phát hành. Nếu bạn là chủ sở hữu hợp pháp và muốn mình gỡ bỏ một nội dung nào đó, vui lòng gửi email về địa chỉ: **cskhvhpcvn@gmail.com**. Mình sẽ xử lý ngay lập tức trong vòng 24h.
+
+---
+
+### F: Tôi thấy khá nhiều web có tên giống bạn như: namgmvn.com, .net, .io ,...etc?
+**A:** Trời ơi tôi chỉ có mỗi web này namgmvn.pages.dev thôi vì tôi không đủ tiền mua tên miền !!!
+
+---
+
+### F: Bạn có mạng xã hội không ?
+**A:** Thực ra tôi không có. Nếu bạn thấy tôi ở trên mạng xã hội hay đâu đó thì ĐÓ LÀ GIẢ tôi không dùng mạng xã hội tôi chỉ up trên web thôi !!!
