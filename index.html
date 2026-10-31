@@ -2,121 +2,138 @@
 <html lang="vi" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Nam Gaming - Nền tảng chia sẻ game free</title>
   <meta name="description" content="Nam Gaming — tin tức, review, tải game hành động, nhập vai, chiến thuật hot nhất." />
+  <meta property="og:title" content="Nam Gaming" />
+  <meta property="og:description" content="Nền tảng chia sẻ game free" />
+  <meta property="og:type" content="website" />
   
-  <!-- Font chữ Chuẩn 2026 -->
+  <!-- Nhúng Font chữ Cyberpunk 2026 -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
   
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body data-page="home">
   
-  <!-- LỚP NỀN MATRIX (Z-INDEX ÂM ĐỂ KHÔNG ĐÈ GIAO DIỆN) -->
+  <!-- LỚP NỀN MATRIX (Đã fix cứng z-index -1 để không bao giờ đè giao diện) -->
   <canvas id="matrix-canvas"></canvas>
 
   <!-- NÚT CHUYỂN SÁNG/TỐI -->
   <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">🌙</button>
 
-  <!-- HEADER (Do main.js render) -->
+  <!-- HEADER -->
   <header class="site-header" id="site-header"></header>
 
-  <!-- MAIN CONTENT -->
-  <main>
-    <section class="hero" id="hero"></section>
-    <section class="filters-bar" id="filters-bar"></section>
+  <!-- NỘI DUNG CHÍNH -->
+  <main class="site-main">
+    <!-- Hero Banner -->
+    <section class="hero-section" id="hero"></section>
     
-    <div class="layout">
-      <div class="main-col">
+    <!-- Thanh bộ lọc -->
+    <section class="filters-section" id="filters-bar"></section>
+    
+    <!-- Lưới bài viết & Sidebar -->
+    <div class="layout-wrapper">
+      <div class="main-column">
         <div class="posts-grid" id="posts-grid"></div>
         <div class="load-more-wrap" id="load-more-wrap"></div>
       </div>
-      <aside class="sidebar" id="sidebar"></aside>
+      <aside class="sidebar-column" id="sidebar"></aside>
     </div>
   </main>
 
-  <!-- FOOTER (Do main.js render) -->
+  <!-- FOOTER -->
   <footer class="site-footer" id="site-footer"></footer>
 
   <!-- SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
   
+  <!-- SCRIPT XỬ LÝ NỀN TẢNG (MATRIX, THEME, FLAGCOUNTER) -->
   <script>
-    // ==========================================
-    // 1. HIỆU ỨNG MƯA MATRIX (SIÊU NHẸ, KHÔNG LỖI)
-    // ==========================================
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
-    let drops = [];
-    const fontSize = 16;
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      const columns = Math.floor(canvas.width / fontSize);
-      drops = [];
-      for (let x = 0; x < columns; x++) drops[x] = 1;
-    }
-
-    function drawMatrix() {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      // Vệt mờ đuôi (Tail)
-      ctx.fillStyle = isDark ? 'rgba(5, 11, 20, 0.1)' : 'rgba(240, 244, 248, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    document.addEventListener("DOMContentLoaded", () => {
+      // ==========================================
+      // 1. HIỆU ỨNG MƯA MATRIX (SIÊU NHẸ, KHÔNG LỖI)
+      // ==========================================
+      const canvas = document.getElementById('matrix-canvas');
+      const ctx = canvas.getContext('2d');
       
-      // Màu chữ
-      ctx.fillStyle = isDark ? '#00f0ff' : '#0284c7';
-      ctx.font = fontSize + 'px monospace';
+      let drops = [];
+      const fontSize = 16;
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+      let columns = 0;
 
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters.charAt(Math.floor(Math.random() * letters.length));
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
+      function resizeCanvas() {
+        // Ép canvas vừa khít màn hình
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = [];
+        for (let x = 0; x < columns; x++) drops[x] = 1;
       }
-    }
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-    setInterval(drawMatrix, 50);
+      function drawMatrix() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        
+        // Vệt mờ đuôi (Tail)
+        ctx.fillStyle = isDark ? 'rgba(5, 11, 20, 0.1)' : 'rgba(240, 244, 248, 0.1)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Màu chữ
+        ctx.fillStyle = isDark ? '#00f0ff' : '#0284c7';
+        ctx.font = fontSize + 'px monospace';
 
-    // ==========================================
-    // 2. LOGIC ĐỔI GIAO DIỆN SÁNG/TỐI
-    // ==========================================
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+        for (let i = 0; i < drops.length; i++) {
+          const text = letters.charAt(Math.floor(Math.random() * letters.length));
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
 
-    themeToggleBtn.addEventListener('click', () => {
-      let newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      setInterval(drawMatrix, 50);
+
+      // ==========================================
+      // 2. LOGIC ĐỔI GIAO DIỆN SÁNG/TỐI
+      // ==========================================
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const currentTheme = localStorage.getItem('theme') || 'dark';
+      
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+      themeToggleBtn.addEventListener('click', () => {
+        let newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      });
+
+      // ==========================================
+      // 3. CHÈN FLAG COUNTER VÀO FOOTER
+      // ==========================================
+      setTimeout(() => {
+        const footer = document.getElementById('site-footer');
+        if (footer) {
+          footer.insertAdjacentHTML('beforeend', `
+            <div class="footer-flagcounter">
+              <div class="footer-flagcounter__title">🌍 LƯỢT TRUY CẬP</div>
+              <a href="https://info.flagcounter.com/omR5" target="_blank" rel="noopener noreferrer">
+                <img src="https://s05.flagcounter.com/count/omR5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0" loading="lazy">
+              </a>
+            </div>
+          `);
+        }
+      }, 800);
     });
-
-    // ==========================================
-    // 3. CHÈN FLAG COUNTER VÀO FOOTER
-    // ==========================================
-    setTimeout(() => {
-      const footer = document.getElementById('site-footer');
-      if (footer) {
-        footer.insertAdjacentHTML('beforeend', `
-          <div class="footer-flagcounter">
-            <div class="footer-flagcounter__title">🌍 LƯỢT TRUY CẬP</div>
-            <a href="https://info.flagcounter.com/omR5" target="_blank">
-              <img src="https://s05.flagcounter.com/count/omR5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0" loading="lazy">
-            </a>
-          </div>
-        `);
-      }
-    }, 1000);
   </script>
 </body>
 </html>
