@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark"> <!-- Mặc định là Dark Theme -->
+<html lang="vi" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,19 +11,22 @@
   
   <link rel="icon" type="image/png" href="https://i.postimg.cc/Dw7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png" />
   
+  <!-- NÂNG CẤP FONT CHỮ GAMER -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
+  
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body data-page="home">
   
+  <!-- HIỆU ỨNG MƯA MATRIX -->
+  <canvas id="matrix-canvas"></canvas>
+
   <!-- NÚT CÔNG TẮC SÁNG/TỐI -->
   <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">🌙</button>
 
+  <!-- HEADER & NỘI DUNG -->
   <header class="site-header" id="site-header"></header>
 
   <main>
@@ -38,49 +41,79 @@
     </div>
   </main>
 
-  <footer class="site-footer" id="site-footer">
-      <!-- Flag Counter sẽ được JS chèn vào đây -->
-  </footer>
+  <footer class="site-footer" id="site-footer"></footer>
 
+  <!-- SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
   
-  <!-- SCRIPT XỬ LÝ THEME & FLAG COUNTER -->
   <script>
-    // 1. XỬ LÝ ĐỔI GIAO DIỆN SÁNG/TỐI
+    // --- 1. HIỆU ỨNG MƯA MATRIX ---
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+    for (let x = 0; x < columns; x++) drops[x] = 1;
+
+    function drawMatrix() {
+      // Màu nền mờ (tạo vệt đuôi)
+      ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' 
+        ? 'rgba(5, 11, 20, 0.1)' 
+        : 'rgba(240, 244, 248, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Màu chữ Matrix
+      ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' 
+        ? '#00f0ff' 
+        : '#0284c7';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 50);
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // --- 2. LOGIC ĐỔI SÁNG/TỐI ---
     const themeToggleBtn = document.getElementById('theme-toggle');
     const currentTheme = localStorage.getItem('theme') || 'dark';
-    
-    // Set theme ban đầu
     document.documentElement.setAttribute('data-theme', currentTheme);
     themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
 
-    // Bắt sự kiện click
     themeToggleBtn.addEventListener('click', () => {
       let theme = document.documentElement.getAttribute('data-theme');
       let newTheme = theme === 'dark' ? 'light' : 'dark';
-      
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
     });
 
-    // 2. CHÈN FLAG COUNTER VÀO FOOTER (Đợi main.js render xong footer)
+    // --- 3. CHÈN FLAG COUNTER ---
     setTimeout(() => {
       const footer = document.getElementById('site-footer');
       if (footer) {
-        const flagHTML = `
+        footer.insertAdjacentHTML('beforeend', `
           <div class="footer-flagcounter">
             <div class="footer-flagcounter__title">🌍 LƯỢT TRUY CẬP</div>
             <a href="https://info.flagcounter.com/omR5">
-              <img src="https://s05.flagcounter.com/count/omR5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" 
-                   alt="Flag Counter" border="0" loading="lazy" referrerpolicy="no-referrer">
+              <img src="https://s05.flagcounter.com/count/omR5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0" loading="lazy">
             </a>
           </div>
-        `;
-        footer.insertAdjacentHTML('beforeend', flagHTML);
+        `);
       }
-    }, 500); // Đợi 0.5s để main.js render xong footer
+    }, 800); // Tăng thời gian chờ lên 0.8s để chắc chắn main.js đã load xong
   </script>
 </body>
 </html>
