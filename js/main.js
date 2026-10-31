@@ -40,7 +40,6 @@
       ? `<img src="${escapeHtml(site.logo)}" alt="logo">`
       : "🎮";
       
-    // ĐÃ XÓA THẺ <nav class="mobile-nav"> BỊ LỖI Ở ĐÂY
     el.innerHTML = `
       <div class="header-inner">
         <a href="index.html" class="brand">
@@ -59,7 +58,6 @@
       </div>
     `;
 
-    // Xử lý bật/tắt menu trên điện thoại
     const toggle = document.getElementById("menu-toggle");
     const mainNav = document.getElementById("main-nav");
     toggle?.addEventListener("click", () => mainNav.classList.toggle("open"));
@@ -221,18 +219,15 @@
     const el = document.getElementById("sidebar");
     if (!el) return;
 
-    // Bài mới
     const recent = [...state.allPosts]
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, 5);
 
-    // Danh mục
     const catCounts = {};
     state.allPosts.forEach((p) => {
       if (p.category) catCounts[p.category] = (catCounts[p.category] || 0) + 1;
     });
 
-    // Tags
     const tagCounts = {};
     state.allPosts.forEach((p) =>
       (p.tags || []).forEach((t) => {
@@ -290,7 +285,6 @@
       </div>
     `;
 
-    // Click category → filter
     el.querySelectorAll(".cat-list li").forEach((li) => {
       li.addEventListener("click", () => {
         state.filter.category = li.dataset.cat;
@@ -302,7 +296,6 @@
       });
     });
 
-    // Click tag → set search
     el.querySelectorAll(".tag-chip").forEach((chip) => {
       chip.addEventListener("click", (e) => {
         e.preventDefault();
@@ -409,7 +402,10 @@
   // ---------- Init ----------
   async function initHome() {
     state.site = await loadSite();
-    state.allPosts = await loadPosts();
+    const posts = await loadPosts();
+    
+    // TỰ ĐỘNG SẮP XẾP BÀI MỚI NHẤT LÊN ĐẦU
+    state.allPosts = posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     renderHeader(state.site);
     renderFooter(state.site);
@@ -421,7 +417,10 @@
 
   async function initPost() {
     state.site = await loadSite();
-    state.allPosts = await loadPosts();
+    const posts = await loadPosts();
+    
+    // TỰ ĐỘNG SẮP XẾP BÀI MỚI NHẤT LÊN ĐẦU
+    state.allPosts = posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     renderHeader(state.site);
     renderFooter(state.site);
