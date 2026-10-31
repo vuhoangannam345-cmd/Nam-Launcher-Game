@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark"> <!-- Mặc định là Dark Theme -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +9,6 @@
   <meta property="og:description" content="Nền tảng chia sẻ game free" />
   <meta property="og:type" content="website" />
   
-  <!-- DÒNG ICON ĐÃ ĐƯỢC CHÈN VÀO ĐÂY -->
   <link rel="icon" type="image/png" href="https://i.postimg.cc/Dw7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png" />
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,13 +20,15 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body data-page="home">
+  
+  <!-- NÚT CÔNG TẮC SÁNG/TỐI -->
+  <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">🌙</button>
+
   <header class="site-header" id="site-header"></header>
 
   <main>
     <section class="hero" id="hero"></section>
-
     <section class="filters-bar" id="filters-bar"></section>
-
     <div class="layout">
       <div class="main-col">
         <div class="posts-grid" id="posts-grid"></div>
@@ -37,9 +38,49 @@
     </div>
   </main>
 
-  <footer class="site-footer" id="site-footer"></footer>
+  <footer class="site-footer" id="site-footer">
+      <!-- Flag Counter sẽ được JS chèn vào đây -->
+  </footer>
 
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
+  
+  <!-- SCRIPT XỬ LÝ THEME & FLAG COUNTER -->
+  <script>
+    // 1. XỬ LÝ ĐỔI GIAO DIỆN SÁNG/TỐI
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    
+    // Set theme ban đầu
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+    // Bắt sự kiện click
+    themeToggleBtn.addEventListener('click', () => {
+      let theme = document.documentElement.getAttribute('data-theme');
+      let newTheme = theme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+
+    // 2. CHÈN FLAG COUNTER VÀO FOOTER (Đợi main.js render xong footer)
+    setTimeout(() => {
+      const footer = document.getElementById('site-footer');
+      if (footer) {
+        const flagHTML = `
+          <div class="footer-flagcounter">
+            <div class="footer-flagcounter__title">🌍 LƯỢT TRUY CẬP</div>
+            <a href="https://info.flagcounter.com/omR5">
+              <img src="https://s05.flagcounter.com/count/omR5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" 
+                   alt="Flag Counter" border="0" loading="lazy" referrerpolicy="no-referrer">
+            </a>
+          </div>
+        `;
+        footer.insertAdjacentHTML('beforeend', flagHTML);
+      }
+    }, 500); // Đợi 0.5s để main.js render xong footer
+  </script>
 </body>
 </html>
