@@ -42,4 +42,4 @@
 ---
 
 ### F: Bạn có mạng xã hội không ?
-**A:** Thực ra tôi không có. Nếu bạn thấy tôi ở trên mạng xã hội hay đâu đó thì ĐÓ LÀ GIẢ tôi không dùng mạng xã hội tôi chỉ up trên web thôi !!!
+**A:** Thực ra tôi không có ( trừ tiktok ). Nếu bạn thấy tôi ở trên mạng xã hội hay đâu đó thì ĐÓ LÀ GIẢ tôi không dùng mạng xã hội tôi chỉ up trên web thôi !!!
