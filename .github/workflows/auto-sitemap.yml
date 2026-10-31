@@ -1,0 +1,52 @@
+name: Auto SEO Sitemap
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Generate sitemap.xml
+        run: |
+          node -e "
+          const fs = require('fs');
+          const posts = JSON.parse(fs.readFileSync('data/posts.json', 'utf8'));
+          let xml = '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n';
+          
+          xml += '  <url>\n    <loc>https://vuhoangannam345-cmd.github.io/Nam-Launcher-Game/index.html</loc>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>\n';
+          
+          posts.forEach(post => {
+            const slug = post.slug || post.id;
+            const date = post.createdAt ? post.createdAt.split('T')[0] : new Date().toISOString().split('T')[0];
+            xml += '  <url>\n';
+            xml += '    <loc>https://vuhoangannam345-cmd.github.io/Nam-Launcher-Game/post.html?id=' + slug + '</loc>\n';
+            xml += '    <lastmod>' + date + '</lastmod>\n';
+            xml += '    <changefreq>weekly</changefreq>\n';
+            xml += '    <priority>0.8</priority>\n';
+            xml += '  </url>\n';
+          });
+          
+          xml += '</urlset>';
+          fs.writeFileSync('sitemap.xml', xml);
+          "
+
+      - name: Commit and push
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add sitemap.xml
+          git commit -m "Auto-update sitemap.xml [skip ci]" || echo "No changes"
+          git push
+
+      - name: Ping Google
+        run: |
+          curl "https://www.google.com/ping?sitemap=https://vuhoangannam345-cmd.github.io/Nam-Launcher-Game/sitemap.xml"
