@@ -22,13 +22,15 @@ jobs:
           const posts = JSON.parse(fs.readFileSync('data/posts.json', 'utf8'));
           let xml = '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n';
           
-          xml += '  <url>\n    <loc>https://vuhoangannam345-cmd.github.io/Nam-Launcher-Game/index.html</loc>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>\n';
+          // Đã đổi sang tên miền mới
+          xml += '  <url>\n    <loc>https://namgmvn.pages.dev/</loc>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>\n';
           
           posts.forEach(post => {
             const slug = post.slug || post.id;
             const date = post.createdAt ? post.createdAt.split('T')[0] : new Date().toISOString().split('T')[0];
             xml += '  <url>\n';
-            xml += '    <loc>https://vuhoangannam345-cmd.github.io/Nam-Launcher-Game/post.html?id=' + slug + '</loc>\n';
+            // Đã đổi sang tên miền mới
+            xml += '    <loc>https://namgmvn.pages.dev/post.html?id=' + slug + '</loc>\n';
             xml += '    <lastmod>' + date + '</lastmod>\n';
             xml += '    <changefreq>weekly</changefreq>\n';
             xml += '    <priority>0.8</priority>\n';
@@ -49,4 +51,5 @@ jobs:
 
       - name: Ping Google
         run: |
-          curl "https://www.google.com/ping?sitemap=https://vuhoangannam345-cmd.github.io/Nam-Launcher-Game/sitemap.xml"
+          # Ping cho tên miền mới
+          curl "https://www.google.com/ping?sitemap=https://namgmvn.pages.dev/sitemap.xml"
