@@ -5,51 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Nam Gaming - Nền tảng chia sẻ game free</title>
   
-  <!-- Nhúng Font chữ Cyberpunk -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
   
-  <!-- ĐƯỜNG DẪN CSS QUAN TRỌNG -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body data-page="home">
   
-  <!-- NỀN MATRIX -->
   <canvas id="matrix-canvas"></canvas>
-
-  <!-- NÚT SÁNG/TỐI -->
   <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">🌙</button>
 
-  <!-- HEADER -->
+  <!-- Header rỗng, main.js sẽ tự render vào đây -->
   <header class="site-header" id="site-header"></header>
 
-  <!-- MAIN CONTENT -->
   <main class="site-main">
     <section class="hero-section" id="hero"></section>
     <section class="filters-section" id="filters-bar"></section>
     
     <div class="layout-wrapper">
       <div class="main-column">
+        <!-- Grid rỗng, main.js sẽ nhét bài viết vào đây -->
         <div class="posts-grid" id="posts-grid"></div>
         <div class="load-more-wrap" id="load-more-wrap"></div>
       </div>
+      <!-- Sidebar rỗng -->
       <aside class="sidebar-column" id="sidebar"></aside>
     </div>
   </main>
 
-  <!-- FOOTER -->
   <footer class="site-footer" id="site-footer"></footer>
 
-  <!-- SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
   
   <script>
-    // ==========================================
-    // 1. HIỆU ỨNG MƯA MATRIX (TỰ ĐỘNG CO GIÃN)
-    // ==========================================
     document.addEventListener("DOMContentLoaded", () => {
+      // 1. Mưa Matrix
       const canvas = document.getElementById('matrix-canvas');
       const ctx = canvas.getContext('2d');
       let drops = [];
@@ -70,7 +62,6 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = isDark ? '#00f0ff' : '#0284c7';
         ctx.font = fontSize + 'px monospace';
-
         for (let i = 0; i < drops.length; i++) {
           const text = letters.charAt(Math.floor(Math.random() * letters.length));
           ctx.fillText(text, i * fontSize, drops[i] * fontSize);
@@ -78,17 +69,13 @@
           drops[i]++;
         }
       }
-
       window.addEventListener('resize', resizeCanvas);
       resizeCanvas();
       setInterval(drawMatrix, 50);
 
-      // ==========================================
-      // 2. LOGIC ĐỔI SÁNG/TỐI
-      // ==========================================
+      // 2. Đổi màu Sáng/Tối
       const themeToggleBtn = document.getElementById('theme-toggle');
       const currentTheme = localStorage.getItem('theme') || 'dark';
-      
       document.documentElement.setAttribute('data-theme', currentTheme);
       themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
 
@@ -99,9 +86,7 @@
         themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
       });
 
-      // ==========================================
-      // 3. FLAG COUNTER
-      // ==========================================
+      // 3. Flag Counter
       setTimeout(() => {
         const footer = document.getElementById('site-footer');
         if (footer) {
