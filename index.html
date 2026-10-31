@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Nam Gaming - Nền tảng chia sẻ game free</title>
   
+  <!-- Nhúng Font chữ Cyberpunk -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -13,35 +14,43 @@
 </head>
 <body data-page="home">
   
+  <!-- LỚP NỀN MATRIX (Nằm dưới cùng, không đè giao diện) -->
   <canvas id="matrix-canvas"></canvas>
-  <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">🌙</button>
 
-  <!-- Header rỗng, main.js sẽ tự render vào đây -->
+  <!-- HEADER (main.js sẽ render nội dung vào đây) -->
   <header class="site-header" id="site-header"></header>
 
+  <!-- NỘI DUNG CHÍNH -->
   <main class="site-main">
-    <section class="hero-section" id="hero"></section>
-    <section class="filters-section" id="filters-bar"></section>
+    <!-- Hero Banner -->
+    <section id="hero" class="hero-section"></section>
     
+    <!-- Thanh bộ lọc Thể loại -->
+    <section id="filters-bar" class="filters-section"></section>
+    
+    <!-- Layout 2 cột (Bài viết + Sidebar) -->
     <div class="layout-wrapper">
       <div class="main-column">
-        <!-- Grid rỗng, main.js sẽ nhét bài viết vào đây -->
+        <!-- Lưới bài viết (main.js sẽ đổ dữ liệu vào đây) -->
         <div class="posts-grid" id="posts-grid"></div>
         <div class="load-more-wrap" id="load-more-wrap"></div>
       </div>
-      <!-- Sidebar rỗng -->
-      <aside class="sidebar-column" id="sidebar"></aside>
+      <!-- Sidebar -->
+      <aside id="sidebar" class="sidebar-column"></aside>
     </div>
   </main>
 
+  <!-- FOOTER -->
   <footer class="site-footer" id="site-footer"></footer>
 
+  <!-- SCRIPTS CỦA BẠN -->
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
   
+  <!-- SCRIPT XỬ LÝ NỀN TẢNG (MATRIX & FLAGCOUNTER) -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. Mưa Matrix
+      // 1. HIỆU ỨNG MƯA MATRIX
       const canvas = document.getElementById('matrix-canvas');
       const ctx = canvas.getContext('2d');
       let drops = [];
@@ -57,10 +66,9 @@
       }
 
       function drawMatrix() {
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        ctx.fillStyle = isDark ? 'rgba(5, 11, 20, 0.1)' : 'rgba(240, 244, 248, 0.1)';
+        ctx.fillStyle = 'rgba(5, 11, 20, 0.1)'; // Nền tối mờ
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = isDark ? '#00f0ff' : '#0284c7';
+        ctx.fillStyle = '#00f0ff'; // Màu xanh Neon
         ctx.font = fontSize + 'px monospace';
         for (let i = 0; i < drops.length; i++) {
           const text = letters.charAt(Math.floor(Math.random() * letters.length));
@@ -73,20 +81,7 @@
       resizeCanvas();
       setInterval(drawMatrix, 50);
 
-      // 2. Đổi màu Sáng/Tối
-      const themeToggleBtn = document.getElementById('theme-toggle');
-      const currentTheme = localStorage.getItem('theme') || 'dark';
-      document.documentElement.setAttribute('data-theme', currentTheme);
-      themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
-
-      themeToggleBtn.addEventListener('click', () => {
-        let newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
-      });
-
-      // 3. Flag Counter
+      // 2. CHÈN FLAG COUNTER VÀO FOOTER (Đợi main.js render xong)
       setTimeout(() => {
         const footer = document.getElementById('site-footer');
         if (footer) {
