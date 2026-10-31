@@ -33,7 +33,7 @@
   },
   {
     "id": "p_mvuj0y67sv0m1j",
-    "title": "Red Dead Redemption 2",
+    "title": "(PC) Red Dead Redemption 2",
     "slug": "red-dead-redemption-2",
     "excerpt": "Red Dead Redemption 2 Launcher",
     "content": "<h2>Giới thiệu về Red Dead Redemption 2</h2>\n<p><b>Red Dead Redemption 2</b> là kiệt tác game thế giới mở cao bồi do Rockstar Games phát triển. Lấy bối cảnh năm 1899 ở miền Tây nước Mỹ hoang dã, bạn sẽ vào vai Arthur Morgan, một thành viên kỳ cựu của băng cướp Dutch van der Linde, phải chạy trốn trước sự truy đuổi của lực lượng pháp luật và các thợ săn tiền thưởng.</p>\n\n<blockquote>\"Một tựa game có chiều sâu cốt truyện đỉnh cao, đồ họa tuyệt mỹ và thế giới sống động bậc nhất lịch sử ngành game.\"</blockquote>\n\n<h2>Điểm nổi bật của bản 7Launcher</h2>\n<ul>\n    <li><b>Cài đặt thông minh:</b> Tích hợp sẵn mọi tệp cần thiết giúp quá trình thiết lập diễn ra nhanh chóng, không lo lỗi thiếu file.</li>\n    <li><b>Cập nhật tiện lợi:</b> Trợ giúp quản lý tệp game và bản vá dễ dàng trực tiếp từ giao diện khởi chạy.</li>\n    <li><b>Tối ưu hiệu năng:</b> Giúp game vận hành ổn định và mượt mà nhất trên hệ thống máy tính của bạn.</li>\n</ul>\n\n<h2>Cấu hình yêu cầu (PC)</h2>\n\n<h3>Cấu hình tối thiểu (Minimum)</h3>\n<ul>\n    <li><b>Hệ điều hành:</b> Windows 10 64-bit</li>\n    <li><b>Bộ xử lý (CPU):</b> Intel Core i5-2500K hoặc AMD FX-6300</li>\n    <li><b>Bộ nhớ (RAM):</b> 8 GB</li>\n    <li><b>Card đồ họa (GPU):</b> Nvidia GeForce GTX 770 2GB hoặc AMD Radeon R9 280 3GB</li>\n    <li><b>Dung lượng trống:</b> 150 GB</li>\n</ul>\n\n<h3>Cấu hình khuyến nghị (Recommended)</h3>\n<ul>\n    <li><b>Hệ điều hành:</b> Windows 10/11 64-bit</li>\n    <li><b>Bộ xử lý (CPU):</b> Intel Core i7-4770K hoặc AMD Ryzen 5 1500X</li>\n    <li><b>Bộ nhớ (RAM):</b> 12 GB</li>\n    <li><b>Card đồ họa (GPU):</b> Nvidia GeForce GTX 1060 6GB hoặc AMD Radeon RX 480 4GB</li>\n    <li><b>Dung lượng trống:</b> 150 GB (Khuyên dùng ổ SSD)</li>\n</ul>\n\n<h2>Credit / Nguồn</h2>\n<p>Bài viết và gói cài đặt game được tích hợp, phát hành thông qua hệ thống phân phối của <b>7Launcher</b>. Mọi bản quyền trò chơi thuộc về nhà phát triển gốc Rockstar Games.</p>",
@@ -43,7 +43,7 @@
     "downloadUrl": "https://7launcher.com/?lang=en&download=&kcccount=https://7launcher.com/dl/7l_red-dead-redemption-2_installer.exe",
     "featured": false,
     "createdAt": "2026-10-30",
-    "updatedAt": "2026-10-30"
+    "updatedAt": "2026-10-31"
   },
   {
     "id": "p_mvujfbbkxx69pm",
