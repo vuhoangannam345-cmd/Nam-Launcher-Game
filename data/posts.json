@@ -468,5 +468,25 @@
     "featured": true,
     "createdAt": "2026-10-31",
     "updatedAt": "2026-10-31"
+  },
+  {
+    "id": "p_mvw2k466nvnpqw",
+    "title": "(PC) Grand Theft Auto IV",
+    "slug": "pc-grand-theft-auto-iv",
+    "excerpt": "Khám phá câu chuyện đầy cảm xúc và đen tối về giấc mơ Mỹ của Niko Bellic tại thành phố Liberty tự do, hoa lệ nhưng đầy rẫy hiểm nguy.",
+    "content": "<h2>Tổng quan về Grand Theft Auto IV</h2>\n<p><strong>Grand Theft Auto IV</strong> là một trong những tựa game thế giới mở xuất sắc nhất mọi thời đại do Rockstar Games phát triển. Vào vai Niko Bellic, một cựu chiến binh nhập cư từ Đông Âu mang theo những vết hằn quá khứ và lời hứa về một \"Giấc mơ Mỹ\" do người họ hàng Roman vẽ ra. Tuy nhiên, thực tế phũ phàng nhanh chóng đẩy anh vào thế giới ngầm đầy tội phạm và bạo lực tại Liberty City.</p>\n\n<h2>Đặc điểm nổi bật của game</h2>\n<ul>\n  <li><strong>Vật lý và đồ họa cách mạng:</strong> Sử dụng engine Euphoria mang lại cơ chế vật lý ragdoll cực kỳ chân thực, từ chuyển động của nhân vật, cách xe cọ xát cho đến tương tác với môi trường.</li>\n  <li><strong>Thành phố Liberty City sống động:</strong> Một phiên bản thu nhỏ chân thực của New York với nhịp sống hối hả, mật độ giao thông dày đặc và các NPC có hành vi độc lập.</li>\n  <li><strong>Cốt truyện sâu sắc, đen tối:</strong> Khác với các bản trước, GTA IV mang màu sắc hiện thực, u tối hơn với những lựa chọn đạo đức khó khăn và dàn nhân vật có chiều sâu nội tâm.</li>\n</ul>\n\n<h2>Cấu hình yêu cầu (PC)</h2>\n\n<h3>1. Cấu hình tối thiểu (Minimum)</h3>\n<ul>\n  <li><strong>Hệ điều hành:</strong> Windows 7 / 8 / 10 / 11 (64-bit)</li>\n  <li><strong>Bộ vi xử lý (CPU):</strong> Intel Core 2 Duo 1.8 GHz hoặc AMD Athlon X2 64 2.4 GHz</li>\n  <li><strong>Bộ nhớ (RAM):</strong> 2 GB RAM</li>\n  <li><strong>Card đồ họa (GPU):</strong> NVIDIA GeForce 7900 (256MB) hoặc ATI Radeon X1900 (256MB)</li>\n  <li><strong>DirectX:</strong> Phiên bản 9.0c</li>\n  <li><strong>Dung lượng ổ cứng:</strong> 22 GB dung lượng trống</li>\n</ul>\n\n<h3>2. Cấu hình đề nghị (Recommended)</h3>\n<ul>\n  <li><strong>Hệ điều hành:</strong> Windows 10 / 11 (64-bit)</li>\n  <li><strong>Bộ vi xử lý (CPU):</strong> Intel Core 2 Quad 2.4 GHz hoặc AMD Phenom X3 2.1 GHz</li>\n  <li><strong>Bộ nhớ (RAM):</strong> 4 GB RAM trở lên</li>\n  <li><strong>Card đồ họa (GPU):</strong> NVIDIA GeForce 8600 (512MB) hoặc ATI Radeon HD 3870 (512MB)</li>\n  <li><strong>DirectX:</strong> Phiên bản 9.0c</li>\n  <li><strong>Dung lượng ổ cứng:</strong> 22 GB dung lượng trống</li>\n</ul>",
+    "thumbnail": "http://s01.riotpixels.net/data/24/26/2426b737-2939-49c0-bc16-795a41f3b148.jpg.240p.jpg",
+    "category": "Hành động",
+    "tags": [
+      "action",
+      "open-world",
+      "gta",
+      "rockstar",
+      "gta-iv"
+    ],
+    "downloadUrl": "https://paste.fitgirl-repacks.site/?417cc18c6c4f1b40#7QANEs6kYoD97WTtfov7qPZi3LpN473hEGpzvy1iQqeV",
+    "featured": false,
+    "createdAt": "2026-10-31",
+    "updatedAt": "2026-10-31"
   }
 ]
