@@ -6,6 +6,7 @@ Chào mừng bạn đến với **Nam Gaming**! Đây là một website blog gam
 Website **không cần server backend**, chạy hoàn toàn trên môi trường tĩnh (GitHub Pages hoặc Cloudflare Pages). Trang Quản trị (Admin) cho phép bạn thêm/sửa/xóa bài viết trực tiếp thông qua **GitHub REST API** mà không cần cài đặt cơ sở dữ liệu.
 
 ---
+<img width="927" height="506" alt="image" src="https://github.com/user-attachments/assets/b876c1d1-2281-453c-8f3b-d325ea7e5b52" />
 
 ## ✨ Tính năng nổi bật
 
@@ -18,6 +19,8 @@ Website **không cần server backend**, chạy hoàn toàn trên môi trường
 - 📱 **Responsive 100%**: Tự động co giãn hoàn hảo từ PC, Tablet đến Mobile.
 - 🚀 **SEO Tự Động**: Tự động cập nhật Sitemap và Ping Google thông qua GitHub Actions.
 - 🌍 **Flag Counter**: Thống kê lượt truy cập từ các quốc gia.
+<img width="1920" height="995" alt="image" src="https://github.com/user-attachments/assets/fa85550e-426c-493f-a34a-80de66155872" />
+<img width="200" height="29" alt="image" src="https://github.com/user-attachments/assets/9ae4fbf2-4642-41df-8ca5-a05d3de5f298" />
 
 ---
 
