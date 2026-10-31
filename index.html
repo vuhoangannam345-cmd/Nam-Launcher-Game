@@ -1,102 +1,86 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark">
+<html lang="vi" data-theme="dark"> <!-- Mặc định là Dark Theme -->
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nam Gaming - Nền tảng chia sẻ game free</title>
+  <meta name="description" content="Nam Gaming — tin tức, review, tải game hành động, nhập vai, chiến thuật hot nhất." />
+  <meta property="og:title" content="Nam Gaming" />
+  <meta property="og:description" content="Nền tảng chia sẻ game free" />
+  <meta property="og:type" content="website" />
   
-  <!-- Nhúng Font chữ Cyberpunk -->
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/Dw7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png" />
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body data-page="home">
   
-  <!-- NỀN MATRIX -->
-  <canvas id="matrix-canvas"></canvas>
+  <!-- NÚT CÔNG TẮC SÁNG/TỐI -->
+  <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">🌙</button>
 
-  <!-- HEADER (main.js sẽ nhét menu vào đây) -->
   <header class="site-header" id="site-header"></header>
 
-  <!-- NỘI DUNG CHÍNH -->
-  <main class="site-main">
-    
-    <!-- PHẦN NỔI BẬT (main.js sẽ nhét nội dung vào đây) -->
-    <section id="hero" class="hero-container"></section>
-    
-    <!-- BỘ LỌC THỂ LOẠI -->
-    <section id="filters-bar" class="filters-container"></section>
-    
-    <!-- LAYOUT 2 CỘT -->
-    <div class="layout-wrapper">
-      <div class="main-column">
-        <!-- LƯỚI BÀI VIẾT -->
+  <main>
+    <section class="hero" id="hero"></section>
+    <section class="filters-bar" id="filters-bar"></section>
+    <div class="layout">
+      <div class="main-col">
         <div class="posts-grid" id="posts-grid"></div>
-        <div id="load-more-wrap"></div>
+        <div class="load-more-wrap" id="load-more-wrap"></div>
       </div>
-      <!-- SIDEBAR -->
-      <aside id="sidebar" class="sidebar-column"></aside>
+      <aside class="sidebar" id="sidebar"></aside>
     </div>
-
   </main>
 
-  <!-- FOOTER -->
-  <footer class="site-footer" id="site-footer"></footer>
+  <footer class="site-footer" id="site-footer">
+      <!-- Flag Counter sẽ được JS chèn vào đây -->
+  </footer>
 
-  <!-- SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
   
+  <!-- SCRIPT XỬ LÝ THEME & FLAG COUNTER -->
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // 1. MƯA MATRIX
-      const canvas = document.getElementById('matrix-canvas');
-      const ctx = canvas.getContext('2d');
-      let drops = [];
-      const fontSize = 16;
-      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+    // 1. XỬ LÝ ĐỔI GIAO DIỆN SÁNG/TỐI
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    
+    // Set theme ban đầu
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
 
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const columns = Math.floor(canvas.width / fontSize);
-        drops = [];
-        for (let x = 0; x < columns; x++) drops[x] = 1;
-      }
-
-      function drawMatrix() {
-        ctx.fillStyle = 'rgba(5, 11, 20, 0.1)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#00f0ff';
-        ctx.font = fontSize + 'px monospace';
-        for (let i = 0; i < drops.length; i++) {
-          const text = letters.charAt(Math.floor(Math.random() * letters.length));
-          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-          drops[i]++;
-        }
-      }
-      window.addEventListener('resize', resizeCanvas);
-      resizeCanvas();
-      setInterval(drawMatrix, 50);
-
-      // 2. FLAG COUNTER
-      setTimeout(() => {
-        const footer = document.getElementById('site-footer');
-        if (footer) {
-          footer.insertAdjacentHTML('beforeend', `
-            <div class="footer-flagcounter">
-              <div class="footer-flagcounter__title">🌍 LƯỢT TRUY CẬP</div>
-              <a href="https://info.flagcounter.com/omR5" target="_blank">
-                <img src="https://s05.flagcounter.com/count/omR5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0" loading="lazy">
-              </a>
-            </div>
-          `);
-        }
-      }, 1000);
+    // Bắt sự kiện click
+    themeToggleBtn.addEventListener('click', () => {
+      let theme = document.documentElement.getAttribute('data-theme');
+      let newTheme = theme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
     });
+
+    // 2. CHÈN FLAG COUNTER VÀO FOOTER (Đợi main.js render xong footer)
+    setTimeout(() => {
+      const footer = document.getElementById('site-footer');
+      if (footer) {
+        const flagHTML = `
+          <div class="footer-flagcounter">
+            <div class="footer-flagcounter__title">🌍 LƯỢT TRUY CẬP</div>
+            <a href="https://info.flagcounter.com/omR5">
+              <img src="https://s05.flagcounter.com/count/omR5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" 
+                   alt="Flag Counter" border="0" loading="lazy" referrerpolicy="no-referrer">
+            </a>
+          </div>
+        `;
+        footer.insertAdjacentHTML('beforeend', flagHTML);
+      }
+    }, 500); // Đợi 0.5s để main.js render xong footer
   </script>
 </body>
-</html>
+</html>q
