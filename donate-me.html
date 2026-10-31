@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ủng Hộ Nam Gaming</title>
   
+  <!-- Nhúng Font chữ Cyberpunk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
 
   <style>
+    /* ================= BIẾN HỆ THỐNG ================= */
     :root {
       --bg: #050b14;
       --surface: rgba(13, 21, 38, 0.85);
@@ -18,11 +20,12 @@
       --accent: #ff0055; 
       --text: #e2e8f0;
       --text-dim: #8b9eb7;
-      --border: rgba(0, 240, 255, 0.2);
-      --glow: 0 0 15px rgba(0, 240, 255, 0.4);
+      --border: rgba(0, 240, 255, 0.25);
+      --glow: 0 0 20px rgba(0, 240, 255, 0.4);
       --radius-lg: 16px;
     }
 
+    /* ================= RESET & BASE ================= */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
     body {
@@ -34,24 +37,30 @@
       flex-direction: column;
       overflow-x: hidden;
       position: relative;
+      background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
     }
 
+    /* Lớp nền Matrix */
     #matrix-canvas {
       position: fixed; inset: 0; width: 100vw; height: 100vh;
       z-index: -1; opacity: 0.15; pointer-events: none;
     }
 
+    /* ================= HEADER ================= */
     .header {
       text-align: center;
-      padding: 3rem 1rem 1rem;
+      padding: 4rem 1rem 2rem;
     }
     .header h1 {
       font-family: "Orbitron", sans-serif;
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(2rem, 5vw, 3.5rem);
       color: var(--primary);
       text-transform: uppercase;
       letter-spacing: 4px;
-      text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+      text-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
       margin-bottom: 1rem;
     }
     .header p {
@@ -59,18 +68,21 @@
       font-size: 1.1rem;
       max-width: 600px;
       margin: 0 auto;
+      line-height: 1.6;
     }
 
+    /* ================= LAYOUT ================= */
     .container {
       max-width: 1000px;
-      margin: 2rem auto 4rem;
+      margin: 2rem auto 5rem;
       padding: 0 24px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      gap: 2.5rem;
       flex: 1;
     }
 
+    /* ================= CARD KÍNH MỜ ================= */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -80,15 +92,17 @@
       -webkit-backdrop-filter: blur(16px);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
     }
 
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0, 240, 255, 0.15);
+      border-color: var(--primary);
+      box-shadow: 0 15px 50px rgba(0, 240, 255, 0.15);
     }
 
+    /* Thanh viền phát sáng phía trên thẻ */
     .card::before {
       content: '';
       position: absolute;
@@ -99,10 +113,10 @@
 
     .card-title {
       font-family: "Orbitron", sans-serif;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       color: var(--primary);
       margin-bottom: 1rem;
-      display: flex; align-items: center; gap: 10px;
+      display: flex; align-items: center; gap: 12px;
     }
 
     .card-desc {
@@ -112,32 +126,52 @@
       line-height: 1.6;
     }
 
+    /* ================= NÚT BẤM CYBERPUNK ================= */
     .btn {
       display: flex; align-items: center; justify-content: center;
-      width: 100%; padding: 1rem;
+      width: 100%; padding: 1.1rem;
       background: linear-gradient(135deg, var(--primary-2), var(--primary));
       color: #fff; font-family: "Chakra Petch", sans-serif;
       font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
       text-decoration: none; border: none; border-radius: 8px;
-      cursor: pointer; box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+      cursor: pointer; box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
       transition: all 0.3s;
-      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+      clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
     }
-    .btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 0 25px rgba(0, 240, 255, 0.8); filter: brightness(1.2); }
-    .btn-pink { background: linear-gradient(135deg, var(--accent), #ff5500); box-shadow: 0 0 15px rgba(255, 0, 85, 0.5); }
-    .btn-pink:hover { box-shadow: 0 0 25px rgba(255, 0, 85, 0.8); }
+    .btn:hover { 
+      transform: translateY(-3px) scale(1.02); 
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.8); 
+      filter: brightness(1.2); 
+    }
+    
+    .btn-pink { 
+      background: linear-gradient(135deg, var(--accent), #ff5500); 
+      box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); 
+    }
+    .btn-pink:hover { 
+      box-shadow: 0 0 30px rgba(255, 0, 85, 0.8); 
+    }
 
+    /* ================= FORM NHẬP LIỆU ================= */
     .form-group { margin-bottom: 1.2rem; }
-    .form-group label { display: block; font-weight: 600; color: var(--text-dim); margin-bottom: 0.4rem; font-size: 0.9rem; }
+    .form-group label { 
+      display: block; font-weight: 600; color: var(--text-dim); 
+      margin-bottom: 0.5rem; font-size: 0.9rem; 
+    }
     
     .form-control {
-      width: 100%; padding: 0.9rem;
+      width: 100%; padding: 1rem;
       background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border);
       border-radius: 8px; color: var(--text);
       font-family: "Chakra Petch", sans-serif; font-size: 1rem; outline: none; transition: 0.3s;
     }
-    .form-control:focus { border-color: var(--primary); box-shadow: var(--glow); }
+    .form-control:focus { 
+      border-color: var(--primary); 
+      box-shadow: var(--glow); 
+      background: rgba(0, 240, 255, 0.05);
+    }
     
+    /* Custom mũi tên cho thẻ select */
     select.form-control { 
       appearance: none; 
       background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300f0ff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); 
@@ -147,33 +181,164 @@
     }
     .form-control option { background: #0a1222; color: #fff; }
 
+    /* ================= MÀN HÌNH CẢM ƠN (THANK YOU SCREEN) ================= */
+    .thank-you-screen {
+      display: none; 
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 11, 20, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .thank-you-screen.show {
+      display: flex;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .thank-content {
+      background: var(--surface);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 3.5rem 2rem;
+      box-shadow: 0 0 50px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(0, 240, 255, 0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Viền phát sáng trên màn hình cảm ơn */
+    .thank-content::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      box-shadow: var(--glow);
+    }
+
+    .thank-icon {
+      font-size: 4.5rem;
+      margin-bottom: 1rem;
+      animation: bounce 2s infinite;
+      filter: drop-shadow(0 0 15px rgba(255, 0, 85, 0.6));
+    }
+
+    .thank-title {
+      font-family: "Orbitron", sans-serif;
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      text-shadow: var(--glow);
+    }
+
+    .thank-text {
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    .btn-thank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 2.5rem;
+      background: var(--primary);
+      color: var(--bg);
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 8px;
+      box-shadow: 0 0 20px var(--primary);
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    }
+    
+    .btn-thank:hover {
+      background: #fff;
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 0 30px #fff;
+    }
+
+    /* Keyframes */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* Đếm ngược */
+    #countdown {
+      color: var(--primary);
+      font-size: 1.4rem;
+      font-weight: 800;
+      text-shadow: var(--glow);
+    }
+
+    /* ================= RESPONSIVE ================= */
     @media (max-width: 768px) {
-      .container { grid-template-columns: 1fr; }
+      .container { grid-template-columns: 1fr; gap: 1.5rem; }
       .header h1 { font-size: 2rem; }
+      .header { padding: 2rem 1rem 1rem; }
+      .card { padding: 1.8rem; }
+      .thank-content { padding: 2.5rem 1.5rem; }
+      .thank-title { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Nền Matrix -->
   <canvas id="matrix-canvas"></canvas>
 
+  <!-- MÀN HÌNH CẢM ƠN (Mặc định ẩn) -->
+  <div id="thank-you-screen" class="thank-you-screen">
+    <div class="thank-content">
+      <div class="thank-icon">❤️</div>
+      <h2 class="thank-title">CẢM ƠN BẠN!</h2>
+      <p class="thank-text">
+        Cảm ơn bạn đã ủng hộ Nam Gaming.<br>
+        Hệ thống sẽ tự động quay lại trang chủ sau <strong id="countdown">5</strong> giây.
+      </p>
+      <a href="https://namgmvn.pages.dev" class="btn-thank">Bấm ngay để quay lại</a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
   <header class="header">
     <h1>Donate Nam Gaming</h1>
     <p>Sự ủng hộ của bạn là động lực để mình duy trì server và chia sẻ thêm nhiều tựa game hay!</p>
   </header>
 
+  <!-- MAIN CONTENT -->
   <main class="container">
     
+    <!-- CỘT 1: CHUYỂN KHOẢN -->
     <div class="card">
       <h2 class="card-title">🏦 Chuyển Khoản</h2>
       <p class="card-desc">
-        Bạn có thể ủng hộ mình qua ngân hàng. Mọi khoản đóng góp dù nhỏ nhất đều được trân trọng.
+        Bạn có thể ủng hộ mình qua ngân hàng. Mọi khoản đóng góp dù nhỏ nhất đều được trân trọng và ghi nhận.
       </p>
       <a href="https://byvn.net/izTt" target="_blank" class="btn">
         💸 CHUYỂN KHOẢN NGAY
       </a>
     </div>
 
+    <!-- CỘT 2: NẠP THẺ CÀO -->
     <div class="card">
       <h2 class="card-title">💳 Nạp Thẻ Cào</h2>
       <p class="card-desc">
@@ -220,8 +385,11 @@
 
   </main>
 
+  <!-- SCRIPT XỬ LÝ -->
   <script>
+    // ==========================================
     // 1. HIỆU ỨNG MƯA MATRIX
+    // ==========================================
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
     let drops = [];
@@ -252,24 +420,32 @@
     resizeCanvas();
     setInterval(drawMatrix, 50);
 
-    // 2. XỬ LÝ GỬI THẺ CÀO LÊN DISCORD
-    // ĐÃ CẬP NHẬT LINK WEBHOOK CỦA BẠN
+    // ==========================================
+    // 2. XỬ LÝ GỬI THẺ CÀO LÊN DISCORD & CHUYỂN TRANG
+    // ==========================================
+    // Link Webhook của bạn
     const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1544988695613014107/c5or1vqGvxhFVWLWkmGG6ak2HDbmHhejdhiz2t-RqkqpKc3hOCM6Jpcy7PBuuZxd1Wta";
 
-    document.getElementById('card-form').addEventListener('submit', async function(e) {
+    const form = document.getElementById('card-form');
+    const btn = document.getElementById('btn-submit');
+    const thankScreen = document.getElementById('thank-you-screen');
+    const countdownEl = document.getElementById('countdown');
+
+    form.addEventListener('submit', async function(e) {
       e.preventDefault(); 
 
-      const btn = document.getElementById('btn-submit');
       const telco = document.getElementById('card-telco').value;
       const amount = document.getElementById('card-amount').value;
       const serial = document.getElementById('card-serial').value;
       const pin = document.getElementById('card-pin').value;
 
+      // Hiệu ứng loading trên nút
       btn.textContent = "⏳ ĐANG GỬI...";
       btn.style.opacity = "0.7";
       btn.disabled = true;
 
       try {
+        // Cấu trúc tin nhắn gửi lên Discord
         const payload = {
           username: "Nam Gaming Donate Bot",
           embeds: [{
@@ -281,6 +457,7 @@
               { name: "Mã thẻ (Serial)", value: "||" + serial + "||", inline: false }, 
               { name: "Mã PIN", value: "||" + pin + "||", inline: false }
             ],
+            footer: { text: "Hệ thống donate Nam Gaming" },
             timestamp: new Date().toISOString()
           }]
         };
@@ -292,8 +469,8 @@
         });
 
         if (response.ok) {
-          alert("✅ Gửi thẻ thành công! Vui lòng đợi Admin duyệt.");
-          document.getElementById('card-form').reset();
+          // Gửi thành công -> Hiện màn hình cảm ơn và bắt đầu đếm ngược
+          showThankYouScreen();
         } else {
           alert("❌ Gửi thất bại. Vui lòng kiểm tra lại kết nối mạng.");
         }
@@ -301,11 +478,31 @@
         console.error(error);
         alert("❌ Lỗi kết nối mạng!");
       } finally {
+        // Phục hồi trạng thái nút
         btn.textContent = "🚀 GỬI THẺ";
         btn.style.opacity = "1";
         btn.disabled = false;
       }
     });
+
+    // Hàm hiển thị màn hình cảm ơn và đếm ngược 5s
+    function showThankYouScreen() {
+      thankScreen.classList.add('show');
+      
+      let timeLeft = 5;
+      countdownEl.textContent = timeLeft;
+
+      const timer = setInterval(() => {
+        timeLeft--;
+        countdownEl.textContent = timeLeft;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          // Chuyển hướng về trang chủ
+          window.location.href = "https://namgmvn.pages.dev"; 
+        }
+      }, 1000);
+    }
   </script>
 </body>
 </html>
