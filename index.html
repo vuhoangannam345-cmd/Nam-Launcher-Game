@@ -5,13 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nam Gaming - Nền tảng chia sẻ game free</title>
   <meta name="description" content="Nam Gaming — tin tức, review, tải game hành động, nhập vai, chiến thuật hot nhất." />
-  <meta property="og:title" content="Nam Gaming" />
-  <meta property="og:description" content="Nền tảng chia sẻ game free" />
-  <meta property="og:type" content="website" />
   
-  <link rel="icon" type="image/png" href="https://i.postimg.cc/Dw7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png" />
-  
-  <!-- NÂNG CẤP FONT CHỮ GAMER -->
+  <!-- Font chữ Chuẩn 2026 -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -20,18 +15,20 @@
 </head>
 <body data-page="home">
   
-  <!-- HIỆU ỨNG MƯA MATRIX -->
+  <!-- LỚP NỀN MATRIX (Z-INDEX ÂM ĐỂ KHÔNG ĐÈ GIAO DIỆN) -->
   <canvas id="matrix-canvas"></canvas>
 
-  <!-- NÚT CÔNG TẮC SÁNG/TỐI -->
+  <!-- NÚT CHUYỂN SÁNG/TỐI -->
   <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">🌙</button>
 
-  <!-- HEADER & NỘI DUNG -->
+  <!-- HEADER (Do main.js render) -->
   <header class="site-header" id="site-header"></header>
 
+  <!-- MAIN CONTENT -->
   <main>
     <section class="hero" id="hero"></section>
     <section class="filters-bar" id="filters-bar"></section>
+    
     <div class="layout">
       <div class="main-col">
         <div class="posts-grid" id="posts-grid"></div>
@@ -41,6 +38,7 @@
     </div>
   </main>
 
+  <!-- FOOTER (Do main.js render) -->
   <footer class="site-footer" id="site-footer"></footer>
 
   <!-- SCRIPTS -->
@@ -48,29 +46,31 @@
   <script src="js/main.js"></script>
   
   <script>
-    // --- 1. HIỆU ỨNG MƯA MATRIX ---
+    // ==========================================
+    // 1. HIỆU ỨNG MƯA MATRIX (SIÊU NHẸ, KHÔNG LỖI)
+    // ==========================================
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+    let drops = [];
     const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = [];
-    for (let x = 0; x < columns; x++) drops[x] = 1;
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const columns = Math.floor(canvas.width / fontSize);
+      drops = [];
+      for (let x = 0; x < columns; x++) drops[x] = 1;
+    }
 
     function drawMatrix() {
-      // Màu nền mờ (tạo vệt đuôi)
-      ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' 
-        ? 'rgba(5, 11, 20, 0.1)' 
-        : 'rgba(240, 244, 248, 0.1)';
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      // Vệt mờ đuôi (Tail)
+      ctx.fillStyle = isDark ? 'rgba(5, 11, 20, 0.1)' : 'rgba(240, 244, 248, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Màu chữ Matrix
-      ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' 
-        ? '#00f0ff' 
-        : '#0284c7';
+      
+      // Màu chữ
+      ctx.fillStyle = isDark ? '#00f0ff' : '#0284c7';
       ctx.font = fontSize + 'px monospace';
 
       for (let i = 0; i < drops.length; i++) {
@@ -80,40 +80,43 @@
         drops[i]++;
       }
     }
-    setInterval(drawMatrix, 50);
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
 
-    // --- 2. LOGIC ĐỔI SÁNG/TỐI ---
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    setInterval(drawMatrix, 50);
+
+    // ==========================================
+    // 2. LOGIC ĐỔI GIAO DIỆN SÁNG/TỐI
+    // ==========================================
     const themeToggleBtn = document.getElementById('theme-toggle');
     const currentTheme = localStorage.getItem('theme') || 'dark';
+    
     document.documentElement.setAttribute('data-theme', currentTheme);
     themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
 
     themeToggleBtn.addEventListener('click', () => {
-      let theme = document.documentElement.getAttribute('data-theme');
-      let newTheme = theme === 'dark' ? 'light' : 'dark';
+      let newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
     });
 
-    // --- 3. CHÈN FLAG COUNTER ---
+    // ==========================================
+    // 3. CHÈN FLAG COUNTER VÀO FOOTER
+    // ==========================================
     setTimeout(() => {
       const footer = document.getElementById('site-footer');
       if (footer) {
         footer.insertAdjacentHTML('beforeend', `
           <div class="footer-flagcounter">
             <div class="footer-flagcounter__title">🌍 LƯỢT TRUY CẬP</div>
-            <a href="https://info.flagcounter.com/omR5">
+            <a href="https://info.flagcounter.com/omR5" target="_blank">
               <img src="https://s05.flagcounter.com/count/omR5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0" loading="lazy">
             </a>
           </div>
         `);
       }
-    }, 800); // Tăng thời gian chờ lên 0.8s để chắc chắn main.js đã load xong
+    }, 1000);
   </script>
 </body>
 </html>
