@@ -39,31 +39,30 @@
     const logoHtml = site.logo
       ? `<img src="${escapeHtml(site.logo)}" alt="logo">`
       : "🎮";
+      
+    // ĐÃ XÓA THẺ <nav class="mobile-nav"> BỊ LỖI Ở ĐÂY
     el.innerHTML = `
       <div class="header-inner">
         <a href="index.html" class="brand">
           <span class="brand-logo">${logoHtml}</span>
           <span class="brand-name">${escapeHtml(site.name || "GameHub")}</span>
         </a>
-        <nav class="header-nav">
+        <nav class="header-nav" id="main-nav">
           <a href="index.html">Trang chủ</a>
           <a href="index.html#categories">Thể loại</a>
+          <a href="admin.html">Quản trị</a>
         </nav>
         <div class="search-box">
           <input type="search" id="search-input" placeholder="Tìm kiếm game, bài viết, tag..." />
         </div>
         <button class="menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
       </div>
-      <nav class="mobile-nav" id="mobile-nav">
-        <a href="index.html">Trang chủ</a>
-        <a href="index.html#categories">Thể loại</a>
-        <a href="admin.html">Quản trị</a>
-      </nav>
     `;
 
+    // Xử lý bật/tắt menu trên điện thoại
     const toggle = document.getElementById("menu-toggle");
-    const mobileNav = document.getElementById("mobile-nav");
-    toggle?.addEventListener("click", () => mobileNav.classList.toggle("open"));
+    const mainNav = document.getElementById("main-nav");
+    toggle?.addEventListener("click", () => mainNav.classList.toggle("open"));
 
     const search = document.getElementById("search-input");
     if (search) {
