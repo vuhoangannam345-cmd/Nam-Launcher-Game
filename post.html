@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Đang tải… — Nam Gaming</title>
-  <meta name="description" content="Chi tiết bài viết trên nam Gaming" />
+  <meta name="description" content="Chi tiết bài viết trên Nam Gaming" />
   <meta property="og:title" id="og-title" content="Nam Gaming" />
   <meta property="og:description" id="og-desc" content="" />
   <meta property="og:image" id="og-image" content="" />
   <meta property="og:type" content="article" />
+  
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/Dw7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png" />
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -18,6 +21,10 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body data-page="post">
+  
+  <!-- NÚT CÔNG TẮC SÁNG/TỐI -->
+  <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">🌙</button>
+
   <header class="site-header" id="site-header"></header>
 
   <main>
@@ -35,5 +42,64 @@
 
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
+
+  <!-- SCRIPT XỬ LÝ THEME -->
+  <script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+    themeToggleBtn.addEventListener('click', () => {
+      let theme = document.documentElement.getAttribute('data-theme');
+      let newTheme = theme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+  </script>
+
+  <!-- ======================================================== -->
+  <!-- MÃ BẢO VỆ NỘI DUNG (CHỐNG CHUỘT PHẢI, F12, COPY) -->
+  <!-- ======================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Chặn chuột phải (Menu ngữ cảnh)
+      document.addEventListener('contextmenu', event => event.preventDefault());
+
+      // 2. Chặn các phím tắt phổ biến (F12, Ctrl+Shift+I, Ctrl+U, Ctrl+C, Ctrl+S)
+      document.addEventListener('keydown', function(e) {
+        // Chặn F12
+        if (e.key === 'F12' || e.keyCode === 123) {
+          e.preventDefault();
+          return false;
+        }
+        // Chặn Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (Mở DevTools)
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+          e.preventDefault();
+          return false;
+        }
+        // Chặn Ctrl+U (Xem mã nguồn)
+        if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.keyCode === 85)) {
+          e.preventDefault();
+          return false;
+        }
+        // Chặn Ctrl+C (Copy) và Ctrl+S (Lưu)
+        if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.keyCode === 67 || e.keyCode === 83)) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      // 3. Chặn kéo thả ảnh (Drag & Drop)
+      document.addEventListener('dragstart', function(e) {
+        if (e.target.nodeName.toUpperCase() === "IMG") {
+          e.preventDefault();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
