@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>Đang tải... - Nam Gaming</title>
+  <title>Chi tiết Game - Nam Gaming</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,38 +13,31 @@
 </head>
 <body data-page="post">
   
-  <!-- LỚP NỀN MATRIX -->
   <canvas id="matrix-canvas"></canvas>
-
-  <!-- HEADER -->
   <header class="site-header" id="site-header"></header>
 
-  <!-- NỘI DUNG CHÍNH -->
   <main class="site-main">
-    <!-- Khung đọc bài viết (main.js sẽ đổ dữ liệu vào) -->
+    <!-- NỘI DUNG BÀI VIẾT -->
     <article id="post-detail" class="post-detail-wrapper"></article>
 
     <div class="layout-wrapper">
       <div class="main-column">
-        <!-- Bài viết liên quan -->
+        <!-- BÀI VIẾT LIÊN QUAN -->
         <section id="related-posts" class="related-section"></section>
       </div>
-      <!-- Sidebar -->
+      <!-- SIDEBAR -->
       <aside id="sidebar" class="sidebar-column"></aside>
     </div>
   </main>
 
-  <!-- FOOTER -->
   <footer class="site-footer" id="site-footer"></footer>
 
-  <!-- SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
   
-  <!-- SCRIPT XỬ LÝ NỀN TẢNG (MATRIX & FLAGCOUNTER) -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. HIỆU ỨNG MƯA MATRIX
+      // MƯA MATRIX
       const canvas = document.getElementById('matrix-canvas');
       const ctx = canvas.getContext('2d');
       let drops = [];
@@ -75,7 +68,7 @@
       resizeCanvas();
       setInterval(drawMatrix, 50);
 
-      // 2. CHÈN FLAG COUNTER VÀO FOOTER
+      // FLAG COUNTER
       setTimeout(() => {
         const footer = document.getElementById('site-footer');
         if (footer) {
