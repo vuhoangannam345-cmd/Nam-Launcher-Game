@@ -14,43 +14,44 @@
 </head>
 <body data-page="home">
   
-  <!-- LỚP NỀN MATRIX (Nằm dưới cùng, không đè giao diện) -->
+  <!-- NỀN MATRIX -->
   <canvas id="matrix-canvas"></canvas>
 
-  <!-- HEADER (main.js sẽ render nội dung vào đây) -->
+  <!-- HEADER (main.js sẽ nhét menu vào đây) -->
   <header class="site-header" id="site-header"></header>
 
   <!-- NỘI DUNG CHÍNH -->
   <main class="site-main">
-    <!-- Hero Banner -->
-    <section id="hero" class="hero-section"></section>
     
-    <!-- Thanh bộ lọc Thể loại -->
-    <section id="filters-bar" class="filters-section"></section>
+    <!-- PHẦN NỔI BẬT (main.js sẽ nhét nội dung vào đây) -->
+    <section id="hero" class="hero-container"></section>
     
-    <!-- Layout 2 cột (Bài viết + Sidebar) -->
+    <!-- BỘ LỌC THỂ LOẠI -->
+    <section id="filters-bar" class="filters-container"></section>
+    
+    <!-- LAYOUT 2 CỘT -->
     <div class="layout-wrapper">
       <div class="main-column">
-        <!-- Lưới bài viết (main.js sẽ đổ dữ liệu vào đây) -->
+        <!-- LƯỚI BÀI VIẾT -->
         <div class="posts-grid" id="posts-grid"></div>
-        <div class="load-more-wrap" id="load-more-wrap"></div>
+        <div id="load-more-wrap"></div>
       </div>
-      <!-- Sidebar -->
+      <!-- SIDEBAR -->
       <aside id="sidebar" class="sidebar-column"></aside>
     </div>
+
   </main>
 
   <!-- FOOTER -->
   <footer class="site-footer" id="site-footer"></footer>
 
-  <!-- SCRIPTS CỦA BẠN -->
+  <!-- SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
   
-  <!-- SCRIPT XỬ LÝ NỀN TẢNG (MATRIX & FLAGCOUNTER) -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. HIỆU ỨNG MƯA MATRIX
+      // 1. MƯA MATRIX
       const canvas = document.getElementById('matrix-canvas');
       const ctx = canvas.getContext('2d');
       let drops = [];
@@ -66,9 +67,9 @@
       }
 
       function drawMatrix() {
-        ctx.fillStyle = 'rgba(5, 11, 20, 0.1)'; // Nền tối mờ
+        ctx.fillStyle = 'rgba(5, 11, 20, 0.1)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#00f0ff'; // Màu xanh Neon
+        ctx.fillStyle = '#00f0ff';
         ctx.font = fontSize + 'px monospace';
         for (let i = 0; i < drops.length; i++) {
           const text = letters.charAt(Math.floor(Math.random() * letters.length));
@@ -81,7 +82,7 @@
       resizeCanvas();
       setInterval(drawMatrix, 50);
 
-      // 2. CHÈN FLAG COUNTER VÀO FOOTER (Đợi main.js render xong)
+      // 2. FLAG COUNTER
       setTimeout(() => {
         const footer = document.getElementById('site-footer');
         if (footer) {
