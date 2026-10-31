@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin.html
+Allow: /
+
+Sitemap: https://vuhoangannam345-cmd.github.io/Nam-Launcher-Game/sitemap.xml
