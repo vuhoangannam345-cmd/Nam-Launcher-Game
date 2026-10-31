@@ -1,4 +1,6 @@
 # 🎮 Nam Gaming — Nền tảng chia sẻ Game miễn phí
+<img width="1254" height="1254" alt="2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8" src="https://github.com/user-attachments/assets/4c057eef-0b0b-4a37-bfa2-15230e189653" />
+
 Bản quyền thuộc NamGaming tức PhantomNam ! ©2026 (30/10/2026)
 
 Chào mừng bạn đến với **Nam Gaming**! Đây là một website blog game tĩnh (Static Site) được thiết kế với phong cách **Cyberpunk 2026** (Neon, Kính mờ, Hiệu ứng Mưa Matrix). 
