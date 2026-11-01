@@ -530,5 +530,26 @@
     "featured": false,
     "createdAt": "2026-11-01",
     "updatedAt": "2026-11-01"
+  },
+  {
+    "id": "p_mvxzsmzcf1r3km",
+    "title": "(ĐT) EA Sports FC Mobile 27",
+    "slug": "dt-ea-sports-fc-mobile-27",
+    "excerpt": "Trải nghiệm tựa game bóng đá đỉnh cao EA Sports FC Mobile với đồ họa chân thực, dàn cầu thủ bản quyền khủng và các chế độ thi đấu cuốn hút.",
+    "content": "<h2>Giới thiệu EA Sports FC Mobile</h2>\n<p><strong>EA Sports FC Mobile</strong> tiếp tục khẳng định vị thế là tựa game bóng đá di động hàng đầu với bản cập nhật mới nhất. Mang đến trải nghiệm sân cỏ chân thực, nhịp độ trận đấu sống động cùng hệ thống bản quyền cầu thủ, câu lạc bộ và giải đấu chính thức cực kỳ đồ sộ.</p>\n\n<h3>Tính năng nổi bật</h3>\n<ul>\n    <li>Đồ họa sắc nét, chuyển động cầu thủ mượt mà cùng hiệu ứng sân vận động chân thực.</li>\n    <li>Hệ thống cầu thủ bản quyền đầy đủ từ các giải đấu lớn nhỏ trên toàn thế giới.</li>\n    <li>Chế độ Ultimate Team cho phép tự do xây dựng đội hình trong mơ, săn cầu thủ và leo rank kịch tính.</li>\n    <li>Cơ chế điều khiển tối ưu hóa cho màn hình cảm ứng, dễ dàng làm quen nhưng vẫn đòi hỏi kỹ năng cao.</li>\n</ul>\n\n<h3>Cấu hình yêu cầu</h3>\n<ul>\n    <li><strong>Hệ điều hành:</strong> Android 7.0 trở lên hoặc iOS 12.0 trở lên.</li>\n    <li><strong>Bộ nhớ RAM:</strong> Tối thiểu 2 GB RAM (Khuyến nghị 3 GB trở lên để chơi mượt mà).</li>\n    <li><strong>Dung lượng trống:</strong> Khoảng 2 GB đến 4 GB bộ nhớ lưu trữ.</li>\n    <li><strong>Kết nối:</strong> Cần kết nối Internet ổn định để trải nghiệm các trận đấu PvP trực tuyến.</li>\n</ul>\n\n<p>Anh em game thủ đam mê bóng đá tốc độ cao và đồ họa đẹp mắt thì quất ngay tựa game này về chiến thôi nào!</p>",
+    "thumbnail": "https://static-images.aptoide.com/_next/image?url=https%3A%2F%2Fcdn.aptoide.com%2Fimgs%2Fd%2Fc%2F1%2Fdc1bb95671d1998bdddfc9ff23312a50_fgraphic.png&w=3840&q=60",
+    "category": "Hành động",
+    "tags": [
+      "sports",
+      "football",
+      "ea-sports",
+      "fc-mobile",
+      "fifa",
+      "mobile"
+    ],
+    "downloadUrl": "https://d.apkpure.com/b/XAPK/com.ea.gp.fifamobile?version=latest",
+    "featured": false,
+    "createdAt": "2026-11-01",
+    "updatedAt": "2026-11-01"
   }
 ]
