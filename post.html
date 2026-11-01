@@ -19,7 +19,7 @@
   <!-- LINK ĐẾN CSS CHÍNH -->
   <link rel="stylesheet" href="css/style.css" />
   
-  <!-- CSS BÌNH LUẬN CYBERPUNK -->
+  <!-- CSS DÀNH RIÊNG CHO KHUNG BÌNH LUẬN CYBERPUNK -->
   <style>
     body { background-color: #050914 !important; color: #e2e8f0 !important; font-family: "Rajdhani", sans-serif; margin: 0; }
     
@@ -75,6 +75,8 @@
       box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
     }
     .cyber-btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(0, 240, 255, 0.8); }
+    .cyber-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    
     .cyber-comment-item {
       background: rgba(0, 0, 0, 0.2); padding: 1.2rem; margin-bottom: 1.2rem;
       border-radius: 8px; border-left: 3px solid #00f0ff; transition: 0.2s;
@@ -82,6 +84,7 @@
     .cyber-comment-item:hover { background: rgba(0, 0, 0, 0.3); }
     .cyber-comment-item strong { color: #00f0ff; font-size: 1.05rem; font-family: 'Orbitron', sans-serif; }
     .cyber-comment-item p { color: #e2e8f0; margin: 8px 0; font-size: 1rem; line-height: 1.5; }
+    
     .cyber-reply-btn { background: none; border: none; color: #8b9eb7; cursor: pointer; font-size: 0.85rem; text-decoration: underline; transition: 0.2s; padding: 0; font-family: 'Rajdhani', sans-serif; font-weight: 600; }
     .cyber-reply-btn:hover { color: #ff0055; }
     .cyber-reply-box { margin-left: 2rem; margin-top: 10px; padding: 12px 15px; background: rgba(255, 255, 255, 0.03); border-left: 2px solid #ff0055; border-radius: 0 6px 6px 0; }
@@ -95,13 +98,14 @@
   <header class="site-header" id="site-header"></header>
 
   <main>
-    <!-- PHẦN CHI TIẾT BÀI VIẾT -->
+    <!-- PHẦN CHI TIẾT BÀI VIẾT (main.js render) -->
     <article class="post-detail" id="post-detail"></article>
 
     <!-- KHUNG BÌNH LUẬN CYBERPUNK 2026 -->
     <div class="cyber-comment-section">
       <h3 class="cyber-comment-title">💬 Khu Vực Bình Luận</h3>
       
+      <!-- Form gửi bình luận -->
       <div style="margin-bottom: 2.5rem;">
         <input type="text" id="c-name" class="cyber-input" placeholder="Nhập tên hiển thị của bạn...">
         <textarea id="c-content" class="cyber-textarea" rows="3" placeholder="Để lại bình luận hoặc đánh giá về game..."></textarea>
@@ -111,6 +115,7 @@
         </div>
       </div>
 
+      <!-- Nơi hiển thị danh sách bình luận -->
       <div id="comments-list">
         <p style="color: #8b9eb7; font-style: italic;">[ Đang tải dữ liệu bình luận... ]</p>
       </div>
@@ -149,14 +154,14 @@
     }
   </script>
 
-  <!-- SCRIPT XỬ LÝ BÌNH LUẬN -->
+  <!-- SCRIPT XỬ LÝ BÌNH LUẬN QUA CLOUDFLARE WORKER -->
   <script>
-    // ĐÃ CẬP NHẬT LINK WEBHOOK DISCORD MỚI CỦA BẠN
-    const DISCORD_COMMENT_WEBHOOK = "https://discord.com/api/webhooks/1566486664438743060/iGFFyT0m5lgzlZiKCOCHbb_Zidlp4RE9Qn4P15A8A796n4xelCrqPUjM6jusMBQgcQYD";
+    // Đường link Cloudflare Worker của bạn (Lấy từ ảnh bạn gửi)
+    const WORKER_URL = "https://nam-bot1.vuhoangannam345.workers.dev"; 
     
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentPostId = urlParams.get('id') || "unknown-post";
+    const currentPostId = new URLSearchParams(window.location.search).get('id') || "unknown-post";
 
+    // 1. Hàm tải bình luận
     async function loadComments() {
       try {
         const res = await fetch("data/comments.json?v=" + Date.now());
@@ -171,6 +176,7 @@
           return;
         }
 
+        // Tách bình luận gốc và phản hồi
         const rootComments = postComments.filter(c => !c.parentId).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         
         list.innerHTML = rootComments.map(cmt => {
@@ -189,6 +195,7 @@
               <p>${cmt.content}</p>
               <button class="cyber-reply-btn" onclick="toggleReply('${cmt.id}')">↩ Trả lời</button>
               
+              <!-- Form ẩn để trả lời -->
               <div id="reply-area-${cmt.id}" style="display:none; margin-top: 15px;">
                 <input type="text" id="reply-name-${cmt.id}" class="cyber-input" placeholder="Tên của bạn..." style="padding: 8px; font-size: 0.9rem;">
                 <textarea id="reply-content-${cmt.id}" class="cyber-textarea" placeholder="Viết câu trả lời..." rows="2" style="padding: 8px; font-size: 0.9rem;"></textarea>
@@ -201,45 +208,40 @@
         }).join("");
       } catch (e) {
         console.error(e);
-        document.getElementById("comments-list").innerHTML = "<p style='color: #ff0055;'>Lỗi kết nối dữ liệu bình luận (Vui lòng tạo file data/comments.json)</p>";
+        document.getElementById("comments-list").innerHTML = "<p style='color: #ff0055;'>Lỗi kết nối dữ liệu bình luận.</p>";
       }
     }
 
-    async function sendToDiscord(name, content, parentId = null) {
+    // 2. Hàm gửi bình luận lên Cloudflare Worker
+    async function sendCommentToServer(name, content, parentId = null) {
       const status = document.getElementById("comment-status");
       status.textContent = "⏳ Đang gửi...";
 
-      const payload = {
-        username: "Nam Gaming Comment Bot",
-        embeds: [{
-          title: parentId ? "↩️ CÓ TRẢ LỜI MỚI" : "💬 CÓ BÌNH LUẬN MỚI",
-          color: parentId ? 16711680 : 3447003, 
-          fields: [
-            { name: "Bài viết ID", value: currentPostId, inline: true },
-            { name: "Người gửi", value: name, inline: true },
-            { name: "Nội dung", value: content, inline: false }
-          ],
-          footer: { text: "Copy ID & nội dung để duyệt vào comments.json" }
-        }]
-      };
-
       try {
-        const res = await fetch(DISCORD_COMMENT_WEBHOOK, {
+        const res = await fetch(WORKER_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({ postId: currentPostId, name: name, content: content, parentId: parentId })
         });
+        
         if (res.ok) {
-          status.textContent = "✅ Đã gửi! Vui lòng đợi Admin duyệt.";
-          setTimeout(() => status.textContent = "", 5000);
+          status.textContent = "✅ Đã đăng bình luận!";
+          setTimeout(() => status.textContent = "", 3000);
+          // Tải lại danh sách bình luận sau 1 giây để thấy kết quả
+          setTimeout(() => loadComments(), 1000); 
           return true;
+        } else {
+          status.textContent = "❌ Gửi thất bại.";
+          return false;
         }
-      } catch (e) { console.error(e); }
-      
-      status.textContent = "❌ Gửi thất bại.";
-      return false;
+      } catch (e) {
+        console.error(e);
+        status.textContent = "❌ Lỗi mạng.";
+        return false;
+      }
     }
 
+    // Sự kiện click gửi bình luận gốc
     document.getElementById("btn-send-comment").addEventListener("click", async () => {
       const btn = document.getElementById("btn-send-comment");
       const name = document.getElementById("c-name").value.trim();
@@ -250,7 +252,7 @@
       btn.disabled = true;
       btn.textContent = "ĐANG GỬI...";
       
-      const success = await sendToDiscord(name, content);
+      const success = await sendCommentToServer(name, content);
       
       btn.disabled = false;
       btn.textContent = "Gửi Bình Luận";
@@ -258,6 +260,7 @@
       if (success) document.getElementById("c-content").value = "";
     });
 
+    // Các hàm xử lý trả lời (Reply)
     window.toggleReply = function(id) {
       const area = document.getElementById(`reply-area-${id}`);
       area.style.display = area.style.display === "none" ? "block" : "none";
@@ -268,7 +271,7 @@
       const content = document.getElementById(`reply-content-${parentId}`).value.trim();
       if (!name || !content) return alert("Vui lòng nhập đủ thông tin!");
 
-      const success = await sendToDiscord(name, content, parentId);
+      const success = await sendCommentToServer(name, content, parentId);
       if (success) {
         document.getElementById(`reply-area-${parentId}`).style.display = "none";
         document.getElementById(`reply-name-${parentId}`).value = "";
@@ -276,10 +279,11 @@
       }
     }
 
+    // Khởi chạy load bình luận khi vừa vào trang
     loadComments();
   </script>
 
-  <!-- MÃ BẢO VỆ NỘI DUNG -->
+  <!-- MÃ BẢO VỆ NỘI DUNG (CHỐNG CHUỘT PHẢI, F12, COPY) -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       document.addEventListener('contextmenu', event => event.preventDefault());
