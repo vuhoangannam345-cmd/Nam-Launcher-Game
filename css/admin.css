@@ -1,19 +1,17 @@
 /* ============================================================
-   NAM GAMING 2026 - CYBERPUNK ADMIN PANEL (FINAL ULTIMATE)
-   Đồng bộ 100% với style.css
+   admin.css — CYBERPUNK ADMIN PANEL (Đồng bộ với style.css)
    ============================================================ */
 
-/* --- 1. BIẾN HỆ THỐNG --- */
+/* --- 1. BIẾN HỆ THỐNG (Lấy từ style.css) --- */
 :root {
   --bg-base: #050b14;
-  --bg-panel: rgba(13, 21, 38, 0.7); /* Kính mờ */
+  --bg-panel: rgba(13, 21, 38, 0.7); 
   --bg-input: rgba(0, 0, 0, 0.4);
-  --primary: #00f0ff;
+  --primary: #00f0ff; 
   --primary-2: #0055ff;
-  --primary-glow: rgba(0, 240, 255, 0.4);
   --accent: #ff0055;
   --text-main: #e2e8f0;
-  --text-muted: #8b9eb7;
+  --text-dim: #8b9eb7;
   --border: rgba(0, 240, 255, 0.2);
   --border-focus: rgba(0, 240, 255, 0.8);
   --glow: 0 0 15px rgba(0, 240, 255, 0.4);
@@ -22,12 +20,9 @@
   --radius: 8px;
 }
 
-/* --- 2. RESET & ÉP NỀN TỐI --- */
-* { box-sizing: border-box; }
-
+/* --- 2. RESET CƠ BẢN CHO ADMIN --- */
 body[data-page="admin"] {
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
   font-family: var(--font-body);
   background-color: var(--bg-base) !important;
   color: var(--text-main);
@@ -39,38 +34,39 @@ body[data-page="admin"] {
   background-size: 40px 40px;
 }
 
-/* Tùy chỉnh thanh cuộn */
+* { box-sizing: border-box; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-base); }
 ::-webkit-scrollbar-thumb { background: #1a2a44; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-/* --- 3. LOGIN SCREEN --- */
+/* --- 3. MÀN HÌNH ĐĂNG NHẬP --- */
 .login-screen {
   position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(circle at center, #0a1222 0%, #050914 100%); z-index: 9999;
+  background: radial-gradient(circle at center, rgba(10, 18, 34, 0.9) 0%, rgba(5, 9, 20, 1) 100%); 
+  z-index: 9999;
 }
 .login-box {
   background: var(--bg-panel); border: 1px solid var(--border);
   padding: 3rem; border-radius: 12px; width: 100%; max-width: 400px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), inset 0 0 20px var(--primary-glow);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 240, 255, 0.1);
   text-align: center; backdrop-filter: blur(16px);
 }
 .login-box h1 { font-family: var(--font-display); color: var(--primary); font-size: 1.8rem; margin-bottom: 0.5rem; text-shadow: var(--glow); }
 .login-box input {
   width: 100%; padding: 1rem; background: var(--bg-input); border: 1px solid #333;
   border-radius: 6px; color: var(--primary); font-size: 1.1rem; text-align: center;
-  margin: 1.5rem 0; outline: none; transition: 0.3s;
+  margin: 1.5rem 0; outline: none; transition: 0.3s; font-family: var(--font-body);
 }
 .login-box input:focus { border-color: var(--primary); box-shadow: var(--glow); }
-.login-error { color: var(--accent); font-size: 0.9rem; min-height: 20px; font-weight: 600; }
+.login-error { color: var(--accent); font-size: 0.9rem; min-height: 20px; font-weight: 600; margin-top: 10px; }
 
-/* --- 4. BỐ CỤC DASHBOARD --- */
-.dashboard {
-  display: flex !important;
-  height: 100vh;
-  width: 100vw;
-}
+/* --- 4. DASHBOARD LAYOUT --- */
+.dashboard { display: flex !important; height: 100vh; width: 100vw; }
 
 /* --- 5. SIDEBAR (MENU TRÁI) --- */
 .dash-sidebar {
@@ -85,7 +81,7 @@ body[data-page="admin"] {
 }
 .dash-nav { padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
 .dash-tab {
-  background: transparent; border: none; color: var(--text-muted);
+  background: transparent; border: none; color: var(--text-dim);
   padding: 1rem; text-align: left; font-size: 1rem; font-weight: 600;
   border-radius: 6px; cursor: pointer; transition: 0.2s;
   font-family: var(--font-body); display: flex; align-items: center; gap: 10px;
@@ -98,9 +94,7 @@ body[data-page="admin"] {
 .dash-footer { padding: 1.5rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
 
 /* --- 6. KHU VỰC NỘI DUNG CHÍNH --- */
-.dash-main {
-  flex: 1 !important; padding: 2rem; overflow-y: auto; background: var(--bg-base);
-}
+.dash-main { flex: 1 !important; padding: 2rem; overflow-y: auto; background: var(--bg-base); }
 .tab-panel { display: none; animation: fadeIn 0.3s ease; }
 .tab-panel.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -123,25 +117,25 @@ body[data-page="admin"] {
   background: rgba(0, 240, 255, 0.05); padding: 1rem;
   color: var(--primary); font-size: 0.85rem; text-transform: uppercase;
   border-bottom: 1px solid var(--border); white-space: nowrap;
+  font-family: var(--font-display);
 }
 .posts-table td {
   padding: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   vertical-align: middle; font-size: 0.95rem;
 }
-.posts-table tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
-
-/* Ép ảnh trong bảng nhỏ lại */
+.posts-table tbody tr:hover { background: rgba(0, 240, 255, 0.03); }
 .posts-table td img {
   width: 60px !important; height: 40px !important;
   object-fit: cover !important; border-radius: 4px;
-  border: 1px solid #333; display: block; margin: 0 auto;
+  border: 1px solid var(--border); display: block;
 }
 
-/* Đặc biệt: Cột ID bình luận và Bài viết */
+/* Cột ID bình luận */
 .posts-table code {
   color: var(--primary); background: rgba(0, 240, 255, 0.1);
   padding: 2px 6px; border-radius: 4px; font-family: monospace;
 }
+/* Cột Thuộc bài viết (Badge) */
 .posts-table .badge {
   background: rgba(255, 0, 85, 0.1); color: var(--accent);
   border: 1px solid var(--accent); padding: 2px 8px;
@@ -154,7 +148,7 @@ body[data-page="admin"] {
   border: 1px solid var(--border); max-width: 900px; backdrop-filter: blur(10px);
 }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
-.admin-form label { display: block; margin-bottom: 1.5rem; font-weight: 600; color: var(--text-muted); font-size: 0.95rem; }
+.admin-form label { display: block; margin-bottom: 1.5rem; font-weight: 600; color: var(--text-dim); font-size: 0.95rem; }
 .admin-form input, .admin-form textarea, .admin-form select {
   width: 100%; margin-top: 0.5rem; padding: 0.8rem 1rem;
   background: var(--bg-input); border: 1px solid #333; border-radius: 6px;
@@ -163,17 +157,19 @@ body[data-page="admin"] {
 .admin-form input:focus, .admin-form textarea:focus, .admin-form select:focus {
   border-color: var(--primary); box-shadow: var(--glow); background: rgba(0, 240, 255, 0.05);
 }
+
+/* Toolbar soạn thảo */
 .content-toolbar {
   display: flex; gap: 5px; background: #111a2a; padding: 8px; border: 1px solid #333;
   border-bottom: none; border-radius: 6px 6px 0 0; margin-top: 0.5rem;
 }
 .content-toolbar button {
-  background: #1a2538; border: 1px solid #2a3a50; color: var(--text-muted);
+  background: #1a2538; border: 1px solid #2a3a50; color: var(--text-dim);
   padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s;
 }
 .content-toolbar button:hover { background: var(--primary); color: #000; }
 .content-toolbar + textarea { border-radius: 0 0 6px 6px; margin-top: 0; font-family: monospace; }
-.thumb-preview img { max-width: 200px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 1.5rem; }
+
 .checkbox-label { display: flex !important; align-items: center; gap: 10px; cursor: pointer; }
 .checkbox-label input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer; }
 
@@ -182,28 +178,28 @@ body[data-page="admin"] {
   display: flex; gap: 1rem;
 }
 
-/* --- 9. NÚT BẤM --- */
+/* --- 9. NÚT BẤM (Đồng bộ với style.css) --- */
 .btn {
-  padding: 0.7rem 1.5rem; border-radius: 6px; font-family: var(--font-body);
-  font-weight: 700; font-size: 1rem; text-transform: uppercase; cursor: pointer;
+  padding: 0.7rem 1.5rem; border-radius: 4px; font-family: var(--font-body);
+  font-weight: 700; font-size: 0.9rem; text-transform: uppercase; cursor: pointer;
   transition: 0.3s; border: 1px solid transparent; display: inline-flex; align-items: center; justify-content: center;
   clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
 }
 .btn-primary { background: linear-gradient(135deg, var(--primary-2), var(--primary)); color: #fff; box-shadow: 0 0 15px var(--primary); }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 25px var(--primary); filter: brightness(1.2); }
-.btn-ghost { background: transparent; color: var(--text-muted); border-color: #333; }
+.btn-ghost { background: transparent; color: var(--text-dim); border-color: #333; }
 .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
 .btn-danger { background: rgba(255, 0, 85, 0.1); color: var(--accent); border-color: rgba(255, 0, 85, 0.3); }
 .btn-danger:hover { background: var(--accent); color: #fff; box-shadow: 0 0 15px var(--accent); }
 .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
 
-/* --- 10. TOAST --- */
+/* --- 10. TOAST THÔNG BÁO --- */
 .toast {
   position: fixed; bottom: 30px; right: 30px; background: var(--bg-panel);
   border-left: 4px solid var(--primary); color: #fff; padding: 1rem 2rem;
   border-radius: 4px; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
   transform: translateX(150%); transition: transform 0.3s ease; z-index: 10000;
-  font-weight: 600; backdrop-filter: blur(10px);
+  font-weight: 600;
 }
 .toast.show { transform: translateX(0); }
 .toast.error { border-left-color: var(--accent); }
