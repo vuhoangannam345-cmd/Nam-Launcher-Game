@@ -1,21 +1,25 @@
 /* ============================================================
-   NAM GAMING 2026 - CYBERPUNK ADMIN PANEL (FIXED & ULTIMATE)
+   NAM GAMING 2026 - CYBERPUNK ADMIN PANEL (FINAL ULTIMATE)
+   Đồng bộ 100% với style.css
    ============================================================ */
 
 /* --- 1. BIẾN HỆ THỐNG --- */
 :root {
-  --bg-base: #050914;
-  --bg-panel: #0a1222;
-  --bg-input: rgba(0, 0, 0, 0.3);
+  --bg-base: #050b14;
+  --bg-panel: rgba(13, 21, 38, 0.7); /* Kính mờ */
+  --bg-input: rgba(0, 0, 0, 0.4);
   --primary: #00f0ff;
-  --primary-hover: #00c4d4;
-  --primary-glow: rgba(0, 240, 255, 0.3);
-  --danger: #ff0055;
+  --primary-2: #0055ff;
+  --primary-glow: rgba(0, 240, 255, 0.4);
+  --accent: #ff0055;
   --text-main: #e2e8f0;
   --text-muted: #8b9eb7;
-  --border-color: rgba(0, 240, 255, 0.2);
+  --border: rgba(0, 240, 255, 0.2);
+  --border-focus: rgba(0, 240, 255, 0.8);
+  --glow: 0 0 15px rgba(0, 240, 255, 0.4);
   --font-display: 'Orbitron', sans-serif;
   --font-body: 'Rajdhani', sans-serif;
+  --radius: 8px;
 }
 
 /* --- 2. RESET & ÉP NỀN TỐI --- */
@@ -28,7 +32,11 @@ body[data-page="admin"] {
   background-color: var(--bg-base) !important;
   color: var(--text-main);
   height: 100vh;
-  overflow: hidden; /* Không cho cuộn toàn trang */
+  overflow: hidden;
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
 /* Tùy chỉnh thanh cuộn */
@@ -43,21 +51,21 @@ body[data-page="admin"] {
   background: radial-gradient(circle at center, #0a1222 0%, #050914 100%); z-index: 9999;
 }
 .login-box {
-  background: var(--bg-panel); border: 1px solid var(--border-color);
+  background: var(--bg-panel); border: 1px solid var(--border);
   padding: 3rem; border-radius: 12px; width: 100%; max-width: 400px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), inset 0 0 20px var(--primary-glow);
-  text-align: center;
+  text-align: center; backdrop-filter: blur(16px);
 }
-.login-box h1 { font-family: var(--font-display); color: var(--primary); font-size: 1.8rem; margin-bottom: 0.5rem; }
+.login-box h1 { font-family: var(--font-display); color: var(--primary); font-size: 1.8rem; margin-bottom: 0.5rem; text-shadow: var(--glow); }
 .login-box input {
   width: 100%; padding: 1rem; background: var(--bg-input); border: 1px solid #333;
   border-radius: 6px; color: var(--primary); font-size: 1.1rem; text-align: center;
   margin: 1.5rem 0; outline: none; transition: 0.3s;
 }
-.login-box input:focus { border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
-.login-error { color: var(--danger); font-size: 0.9rem; min-height: 20px; font-weight: 600; }
+.login-box input:focus { border-color: var(--primary); box-shadow: var(--glow); }
+.login-error { color: var(--accent); font-size: 0.9rem; min-height: 20px; font-weight: 600; }
 
-/* --- 4. BỐ CỤC DASHBOARD (FLEXBOX CHUẨN) --- */
+/* --- 4. BỐ CỤC DASHBOARD --- */
 .dashboard {
   display: flex !important;
   height: 100vh;
@@ -67,60 +75,54 @@ body[data-page="admin"] {
 /* --- 5. SIDEBAR (MENU TRÁI) --- */
 .dash-sidebar {
   width: 260px !important; flex-shrink: 0;
-  background: rgba(10, 18, 34, 0.95); border-right: 1px solid var(--border-color);
-  display: flex; flex-direction: column;
+  background: rgba(10, 18, 34, 0.95); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; backdrop-filter: blur(10px);
 }
 .dash-brand {
   padding: 1.5rem; display: flex; align-items: center; gap: 10px;
-  border-bottom: 1px solid var(--border-color); font-family: var(--font-display);
-  font-size: 1.1rem; color: #fff; text-shadow: 0 0 8px var(--primary-glow);
+  border-bottom: 1px solid var(--border); font-family: var(--font-display);
+  font-size: 1.1rem; color: #fff; text-shadow: var(--glow);
 }
 .dash-nav { padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
 .dash-tab {
   background: transparent; border: none; color: var(--text-muted);
   padding: 1rem; text-align: left; font-size: 1rem; font-weight: 600;
   border-radius: 6px; cursor: pointer; transition: 0.2s;
+  font-family: var(--font-body); display: flex; align-items: center; gap: 10px;
 }
-.dash-tab:hover { background: rgba(0, 240, 255, 0.05); color: var(--text-main); }
+.dash-tab:hover { background: rgba(0, 240, 255, 0.05); color: var(--primary); }
 .dash-tab.active {
   background: rgba(0, 240, 255, 0.1); color: var(--primary);
-  border-left: 3px solid var(--primary);
+  border-left: 3px solid var(--primary); box-shadow: inset 20px 0 20px -20px var(--primary);
 }
-.dash-footer { padding: 1.5rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px; }
+.dash-footer { padding: 1.5rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
 
-/* --- 6. KHU VỰC NỘI DUNG CHÍNH (MAIN) --- */
+/* --- 6. KHU VỰC NỘI DUNG CHÍNH --- */
 .dash-main {
-  flex: 1 !important; /* Chiếm toàn bộ phần còn lại */
-  padding: 2rem; overflow-y: auto; /* Chỉ cuộn phần này */
-  background: var(--bg-base);
+  flex: 1 !important; padding: 2rem; overflow-y: auto; background: var(--bg-base);
 }
-.tab-panel { display: none; }
+.tab-panel { display: none; animation: fadeIn 0.3s ease; }
 .tab-panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 .panel-header {
   display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border-color);
+  margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border);
 }
-.panel-header h2 { font-family: var(--font-display); color: var(--primary); margin: 0; font-size: 1.5rem; }
+.panel-header h2 { font-family: var(--font-display); color: var(--primary); margin: 0; font-size: 1.5rem; text-shadow: var(--glow); }
+.panel-actions { display: flex; gap: 10px; }
 
-/* --- 7. BẢNG BÀI VIẾT (SỬA LỖI DORAEMON VÀ KHOẢNG TRỐNG) --- */
+/* --- 7. BẢNG DỮ LIỆU --- */
 .table-wrap {
-  width: 100% !important;
-  background: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow-x: auto; /* Nếu bảng dài, sẽ cuộn ngang */
+  width: 100% !important; background: var(--bg-panel);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  overflow-x: auto; backdrop-filter: blur(10px);
 }
-.posts-table {
-  width: 100% !important;
-  border-collapse: collapse;
-  table-layout: auto; /* Để các cột tự co giãn */
-  text-align: left;
-}
+.posts-table { width: 100% !important; border-collapse: collapse; text-align: left; }
 .posts-table th {
   background: rgba(0, 240, 255, 0.05); padding: 1rem;
   color: var(--primary); font-size: 0.85rem; text-transform: uppercase;
-  border-bottom: 1px solid var(--border-color); white-space: nowrap;
+  border-bottom: 1px solid var(--border); white-space: nowrap;
 }
 .posts-table td {
   padding: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -128,21 +130,28 @@ body[data-page="admin"] {
 }
 .posts-table tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
 
-/* ÉP ẢNH TRONG BẢNG NHỎ LẠI (CHỐNG LỖI DORAEMON) */
+/* Ép ảnh trong bảng nhỏ lại */
 .posts-table td img {
-  width: 60px !important;
-  height: 40px !important;
-  object-fit: cover !important;
-  border-radius: 4px;
-  border: 1px solid #333;
-  display: block;
-  margin: 0 auto; /* Căn giữa ảnh */
+  width: 60px !important; height: 40px !important;
+  object-fit: cover !important; border-radius: 4px;
+  border: 1px solid #333; display: block; margin: 0 auto;
+}
+
+/* Đặc biệt: Cột ID bình luận và Bài viết */
+.posts-table code {
+  color: var(--primary); background: rgba(0, 240, 255, 0.1);
+  padding: 2px 6px; border-radius: 4px; font-family: monospace;
+}
+.posts-table .badge {
+  background: rgba(255, 0, 85, 0.1); color: var(--accent);
+  border: 1px solid var(--accent); padding: 2px 8px;
+  border-radius: 4px; font-size: 0.85rem; font-weight: 600;
 }
 
 /* --- 8. FORM NHẬP LIỆU --- */
 .admin-form {
-  background: var(--bg-panel); padding: 2rem; border-radius: 8px;
-  border: 1px solid var(--border-color); max-width: 900px;
+  background: var(--bg-panel); padding: 2rem; border-radius: var(--radius);
+  border: 1px solid var(--border); max-width: 900px; backdrop-filter: blur(10px);
 }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 .admin-form label { display: block; margin-bottom: 1.5rem; font-weight: 600; color: var(--text-muted); font-size: 0.95rem; }
@@ -152,7 +161,7 @@ body[data-page="admin"] {
   color: #fff; font-family: var(--font-body); font-size: 1rem; outline: none; transition: 0.3s;
 }
 .admin-form input:focus, .admin-form textarea:focus, .admin-form select:focus {
-  border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); background: rgba(0, 240, 255, 0.05);
+  border-color: var(--primary); box-shadow: var(--glow); background: rgba(0, 240, 255, 0.05);
 }
 .content-toolbar {
   display: flex; gap: 5px; background: #111a2a; padding: 8px; border: 1px solid #333;
@@ -160,16 +169,16 @@ body[data-page="admin"] {
 }
 .content-toolbar button {
   background: #1a2538; border: 1px solid #2a3a50; color: var(--text-muted);
-  padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold;
+  padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s;
 }
 .content-toolbar button:hover { background: var(--primary); color: #000; }
 .content-toolbar + textarea { border-radius: 0 0 6px 6px; margin-top: 0; font-family: monospace; }
-.thumb-preview img { max-width: 200px; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 1.5rem; }
+.thumb-preview img { max-width: 200px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 1.5rem; }
 .checkbox-label { display: flex !important; align-items: center; gap: 10px; cursor: pointer; }
 .checkbox-label input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer; }
 
 .form-actions {
-  margin-top: 2rem; padding-top: 1.5rem; border-top: 1px dashed var(--border-color);
+  margin-top: 2rem; padding-top: 1.5rem; border-top: 1px dashed var(--border);
   display: flex; gap: 1rem;
 }
 
@@ -178,13 +187,15 @@ body[data-page="admin"] {
   padding: 0.7rem 1.5rem; border-radius: 6px; font-family: var(--font-body);
   font-weight: 700; font-size: 1rem; text-transform: uppercase; cursor: pointer;
   transition: 0.3s; border: 1px solid transparent; display: inline-flex; align-items: center; justify-content: center;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
 }
-.btn-primary { background: var(--primary); color: #000; box-shadow: 0 0 10px var(--primary-glow); }
-.btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+.btn-primary { background: linear-gradient(135deg, var(--primary-2), var(--primary)); color: #fff; box-shadow: 0 0 15px var(--primary); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 25px var(--primary); filter: brightness(1.2); }
 .btn-ghost { background: transparent; color: var(--text-muted); border-color: #333; }
 .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
-.btn-danger { background: rgba(255, 0, 85, 0.1); color: var(--danger); border-color: rgba(255, 0, 85, 0.3); }
-.btn-danger:hover { background: var(--danger); color: #fff; }
+.btn-danger { background: rgba(255, 0, 85, 0.1); color: var(--accent); border-color: rgba(255, 0, 85, 0.3); }
+.btn-danger:hover { background: var(--accent); color: #fff; box-shadow: 0 0 15px var(--accent); }
+.btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
 
 /* --- 10. TOAST --- */
 .toast {
@@ -192,15 +203,17 @@ body[data-page="admin"] {
   border-left: 4px solid var(--primary); color: #fff; padding: 1rem 2rem;
   border-radius: 4px; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
   transform: translateX(150%); transition: transform 0.3s ease; z-index: 10000;
+  font-weight: 600; backdrop-filter: blur(10px);
 }
 .toast.show { transform: translateX(0); }
+.toast.error { border-left-color: var(--accent); }
 
 /* --- 11. RESPONSIVE --- */
 @media (max-width: 992px) {
-  .dashboard { flex-direction: column; overflow-y: auto; height: auto; }
-  .dash-sidebar { width: 100% !important; border-right: none; border-bottom: 1px solid var(--border-color); }
-  .dash-nav { flex-direction: row; flex-wrap: wrap; }
-  .dash-footer { flex-direction: row; }
+  .dashboard { flex-direction: column; overflow-y: auto; height: auto; min-height: 100vh; }
+  .dash-sidebar { width: 100% !important; border-right: none; border-bottom: 1px solid var(--border); }
+  .dash-nav { flex-direction: row; flex-wrap: wrap; padding: 1rem; }
+  .dash-footer { flex-direction: row; justify-content: space-between; }
   .dash-main { padding: 1rem; overflow-y: visible; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
 }
