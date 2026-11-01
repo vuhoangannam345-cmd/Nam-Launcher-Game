@@ -16,14 +16,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
   
-  <!-- LINK ĐẾN CSS CHÍNH (Đảm bảo file này tồn tại trong thư mục css/) -->
+  <!-- LINK ĐẾN CSS CHÍNH -->
   <link rel="stylesheet" href="css/style.css" />
   
-  <!-- CSS CHỐNG CHÁY (Nếu file style.css bị lỗi, web vẫn có nền tối) -->
+  <!-- CSS BÌNH LUẬN CYBERPUNK -->
   <style>
     body { background-color: #050914 !important; color: #e2e8f0 !important; font-family: "Rajdhani", sans-serif; margin: 0; }
     
-    /* CSS CHO KHUNG BÌNH LUẬN CYBERPUNK */
     .cyber-comment-section {
       max-width: 900px;
       margin: 3rem auto;
@@ -152,7 +151,8 @@
 
   <!-- SCRIPT XỬ LÝ BÌNH LUẬN -->
   <script>
-    const DISCORD_COMMENT_WEBHOOK = "https://discord.com/api/webhooks/1544988695613014107/c5or1vqGvxhFVWLWkmGG6ak2HDbmHhejdhiz2t-RqkqpKc3hOCM6Jpcy7PBuuZxd1Wta";
+    // ĐÃ CẬP NHẬT LINK WEBHOOK DISCORD MỚI CỦA BẠN
+    const DISCORD_COMMENT_WEBHOOK = "https://discord.com/api/webhooks/1566486664438743060/iGFFyT0m5lgzlZiKCOCHbb_Zidlp4RE9Qn4P15A8A796n4xelCrqPUjM6jusMBQgcQYD";
     
     const urlParams = new URLSearchParams(window.location.search);
     const currentPostId = urlParams.get('id') || "unknown-post";
