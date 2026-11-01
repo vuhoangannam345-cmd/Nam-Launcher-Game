@@ -1,9 +1,11 @@
 // ============================================================
-// admin.js — Dashboard CRUD (Bản Final)
+// admin.js — Dashboard CRUD (Bản Final có Quản lý Bình luận)
 // ============================================================
 (() => {
   const state = {
-    posts: [], postsSha: null, site: null, siteSha: null,
+    posts: [], postsSha: null, 
+    site: null, siteSha: null,
+    comments: [], commentsSha: null, // THÊM BIẾN BÌNH LUẬN
     categories: ["Hành động", "Nhập vai", "Chiến thuật"], editingId: null
   };
 
@@ -19,8 +21,12 @@
   function switchTab(name) {
     document.querySelectorAll(".dash-tab").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
     document.querySelectorAll(".tab-panel").forEach((p) => p.classList.toggle("active", p.dataset.panel === name));
+    if (name === "comments") renderCommentsTable(); // Load khi sang tab bình luận
   }
 
+  // ==========================================
+  // 1. QUẢN LÝ BÀI VIẾT
+  // ==========================================
   async function loadPosts() {
     const file = await GH.getFile("data/posts.json");
     state.postsSha = file ? file.sha : null;
@@ -29,28 +35,14 @@
 
   async function savePosts(message) {
     await GH.putFile("data/posts.json", JSON.stringify(state.posts, null, 2), state.postsSha, message);
-    await loadPosts(); // Đồng bộ sha
-  }
-
-  async function loadSite() {
-    const file = await GH.getFile("data/site.json");
-    state.siteSha = file ? file.sha : null;
-    try { state.site = file ? JSON.parse(file.content) : { ...SITE_INFO }; } catch { state.site = { ...SITE_INFO }; }
-  }
-
-  async function saveSite(site) {
-    // Lấy sha mới nhất từ GitHub (nếu có). Nếu chưa có file, sha = null -> GitHub sẽ tự tạo file mới.
-    const freshFile = await GH.getFile("data/site.json");
-    state.siteSha = freshFile ? freshFile.sha : null;
-    
-    await GH.putFile("data/site.json", JSON.stringify(site, null, 2), state.siteSha, "Update site settings");
-    await loadSite();
+    await loadPosts();
   }
 
   function renderPostsTable() {
     const tbody = document.getElementById("posts-tbody");
+    if (!tbody) return;
     if (state.posts.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">Chưa có bài viết nào. Nhấn "+ Thêm bài mới".</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">Chưa có bài viết nào.</td></tr>`;
       return;
     }
     tbody.innerHTML = state.posts.map((p, i) => `
@@ -79,8 +71,113 @@
     }));
   }
 
+  // ==========================================
+  // 2. QUẢN LÝ BÌNH LUẬN (MỚI)
+  // ==========================================
+  async function loadComments() {
+    const file = await GH.getFile("data/comments.json");
+    state.commentsSha = file ? file.sha : null;
+    try { state.comments = file ? JSON.parse(file.content) : []; if (!Array.isArray(state.comments)) state.comments = []; } catch { state.comments = []; }
+  }
+
+  async function saveComments(message) {
+    await GH.putFile("data/comments.json", JSON.stringify(state.comments, null, 2), state.commentsSha, message);
+    await loadComments();
+  }
+
+  function renderCommentsTable() {
+    const tbody = document.getElementById("comments-tbody");
+    if (!tbody) return;
+
+    if (state.comments.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:2rem;">Không có bình luận nào.</td></tr>`;
+      return;
+    }
+
+    // Sắp xếp bình luận mới nhất lên đầu
+    const sorted = [...state.comments].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    tbody.innerHTML = sorted.map(c => `
+      <tr>
+        <td><code style="color:#00f0ff; font-size:12px;">${c.id}</code></td>
+        <td><span class="badge">${escapeHtml(c.postId)}</span></td>
+        <td>${escapeHtml(c.name)}</td>
+        <td>${escapeHtml(c.content)}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" data-del-cmt="${c.id}">Xóa</button>
+        </td>
+      </tr>
+    `).join("");
+
+    // Gắn sự kiện xóa
+    tbody.querySelectorAll("[data-del-cmt]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Bạn có chắc muốn xóa bình luận này?")) return;
+        const id = btn.dataset.delCmt;
+        state.comments = state.comments.filter(c => c.id !== id);
+        try {
+          await saveComments(`Delete comment ${id}`);
+          renderCommentsTable();
+          toast("Đã xóa bình luận!");
+        } catch (e) { toast("Lỗi xóa: " + e.message, "error"); }
+      });
+    });
+  }
+
+  // Xử lý thêm bình luận thủ công
+  document.getElementById("btn-toggle-add-comment")?.addEventListener("click", () => {
+    const wrap = document.getElementById("add-comment-wrap");
+    wrap.style.display = wrap.style.display === "none" ? "block" : "none";
+  });
+  
+  document.getElementById("btn-cancel-add-comment")?.addEventListener("click", () => {
+    document.getElementById("add-comment-wrap").style.display = "none";
+    document.getElementById("add-comment-form").reset();
+  });
+
+  document.getElementById("add-comment-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.disabled = true; btn.textContent = "Đang lưu...";
+
+    try {
+      const newCmt = {
+        id: "cmt_" + Date.now(),
+        postId: document.getElementById("ac-postid").value.trim(),
+        name: document.getElementById("ac-name").value.trim(),
+        content: document.getElementById("ac-content").value.trim(),
+        parentId: null,
+        createdAt: new Date().toISOString()
+      };
+
+      state.comments.push(newCmt);
+      await saveComments("Add manual comment");
+      
+      document.getElementById("add-comment-form").reset();
+      document.getElementById("add-comment-wrap").style.display = "none";
+      renderCommentsTable();
+      toast("Đã thêm bình luận!");
+    } catch (err) {
+      toast("Lỗi: " + err.message, "error");
+    } finally {
+      btn.disabled = false; btn.textContent = "Lưu bình luận";
+    }
+  });
+
+  document.getElementById("btn-reload-comments")?.addEventListener("click", async () => {
+    try {
+      await loadComments();
+      renderCommentsTable();
+      toast("Đã tải lại bình luận!");
+    } catch (e) { toast("Lỗi: " + e.message, "error"); }
+  });
+
+  // ==========================================
+  // 3. SOẠN BÀI & CÀI ĐẶT (Giữ nguyên)
+  // ==========================================
   function populateCategorySelect() {
     const sel = document.getElementById("f-category");
+    if (!sel) return;
     const cats = [...new Set([...state.categories, ...state.posts.map((p) => p.category).filter(Boolean)])];
     sel.innerHTML = cats.map((c) => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
   }
@@ -164,6 +261,19 @@
     finally { btn.disabled = false; btn.textContent = "💾 Lưu bài"; }
   });
 
+  async function loadSite() {
+    const file = await GH.getFile("data/site.json");
+    state.siteSha = file ? file.sha : null;
+    try { state.site = file ? JSON.parse(file.content) : { ...SITE_INFO }; } catch { state.site = { ...SITE_INFO }; }
+  }
+
+  async function saveSite(site) {
+    const freshFile = await GH.getFile("data/site.json");
+    state.siteSha = freshFile ? freshFile.sha : null;
+    await GH.putFile("data/site.json", JSON.stringify(site, null, 2), state.siteSha, "Update site settings");
+    await loadSite();
+  }
+
   function fillSiteForm() {
     const s = state.site || SITE_INFO;
     document.getElementById("s-name").value = s.name || "";
@@ -185,6 +295,9 @@
     } catch (err) { toast("Lỗi: " + err.message, "error"); }
   });
 
+  // ==========================================
+  // 4. CẤU HÌNH GITHUB & KHỞI TẠO
+  // ==========================================
   function fillGhForm() {
     const c = GH.getConfig();
     document.getElementById("g-user").value = c.user || "";
@@ -216,8 +329,12 @@
   async function loadAllData() {
     if (!GH.getConfig().user) { switchTab("github"); return; }
     try {
-      await loadSite(); await loadPosts();
-      renderPostsTable(); populateCategorySelect(); fillSiteForm();
+      await loadSite(); 
+      await loadPosts();
+      await loadComments(); // Tải bình luận
+      renderPostsTable(); 
+      populateCategorySelect(); 
+      fillSiteForm();
     } catch (err) { toast("Lỗi tải dữ liệu: " + err.message, "error"); }
   }
 
