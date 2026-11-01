@@ -1,11 +1,11 @@
 // ============================================================
-// admin.js — Dashboard CRUD (Bản Final có Quản lý Bình luận)
+// admin.js — Dashboard CRUD (Bản Final - Tích hợp Bình luận)
 // ============================================================
 (() => {
   const state = {
     posts: [], postsSha: null, 
     site: null, siteSha: null,
-    comments: [], commentsSha: null, // THÊM BIẾN BÌNH LUẬN
+    comments: [], commentsSha: null, // Thêm biến quản lý bình luận
     categories: ["Hành động", "Nhập vai", "Chiến thuật"], editingId: null
   };
 
@@ -21,7 +21,9 @@
   function switchTab(name) {
     document.querySelectorAll(".dash-tab").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
     document.querySelectorAll(".tab-panel").forEach((p) => p.classList.toggle("active", p.dataset.panel === name));
-    if (name === "comments") renderCommentsTable(); // Load khi sang tab bình luận
+    
+    // Tự động load lại bảng bình luận khi chuyển sang tab
+    if (name === "comments") renderCommentsTable();
   }
 
   // ==========================================
@@ -77,12 +79,15 @@
   async function loadComments() {
     const file = await GH.getFile("data/comments.json");
     state.commentsSha = file ? file.sha : null;
-    try { state.comments = file ? JSON.parse(file.content) : []; if (!Array.isArray(state.comments)) state.comments = []; } catch { state.comments = []; }
+    try { 
+      state.comments = file ? JSON.parse(file.content) : []; 
+      if (!Array.isArray(state.comments)) state.comments = []; 
+    } catch { state.comments = []; }
   }
 
   async function saveComments(message) {
     await GH.putFile("data/comments.json", JSON.stringify(state.comments, null, 2), state.commentsSha, message);
-    await loadComments();
+    await loadComments(); // Đồng bộ sha
   }
 
   function renderCommentsTable() {
@@ -99,7 +104,7 @@
 
     tbody.innerHTML = sorted.map(c => `
       <tr>
-        <td><code style="color:#00f0ff; font-size:12px;">${c.id}</code></td>
+        <td><code>${c.id}</code></td>
         <td><span class="badge">${escapeHtml(c.postId)}</span></td>
         <td>${escapeHtml(c.name)}</td>
         <td>${escapeHtml(c.content)}</td>
@@ -109,7 +114,7 @@
       </tr>
     `).join("");
 
-    // Gắn sự kiện xóa
+    // Gắn sự kiện xóa bình luận
     tbody.querySelectorAll("[data-del-cmt]").forEach(btn => {
       btn.addEventListener("click", async () => {
         if (!confirm("Bạn có chắc muốn xóa bình luận này?")) return;
@@ -124,7 +129,7 @@
     });
   }
 
-  // Xử lý thêm bình luận thủ công
+  // Xử lý form Thêm bình luận thủ công
   document.getElementById("btn-toggle-add-comment")?.addEventListener("click", () => {
     const wrap = document.getElementById("add-comment-wrap");
     wrap.style.display = wrap.style.display === "none" ? "block" : "none";
@@ -172,8 +177,9 @@
     } catch (e) { toast("Lỗi: " + e.message, "error"); }
   });
 
+
   // ==========================================
-  // 3. SOẠN BÀI & CÀI ĐẶT (Giữ nguyên)
+  // 3. SOẠN BÀI & CÀI ĐẶT SITE
   // ==========================================
   function populateCategorySelect() {
     const sel = document.getElementById("f-category");
