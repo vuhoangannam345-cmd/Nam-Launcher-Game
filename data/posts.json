@@ -509,5 +509,26 @@
     "featured": false,
     "createdAt": "2026-10-31",
     "updatedAt": "2026-10-31"
+  },
+  {
+    "id": "p_mvxznm09jaj2ht",
+    "title": "(ĐT) eFootball™",
+    "slug": "dt-efootball",
+    "excerpt": "Tựa game bóng đá eFootball™ đỉnh cao trên di động với đồ họa đẹp và gameplay mượt mà.",
+    "content": "<h2>Giới thiệu eFootball™ Mobile</h2>\n<p><strong>eFootball™</strong> (trước đây là series <em>PES - Pro Evolution Soccer</em>) là tựa game bóng đá đỉnh cao do Konami phát triển trên nền tảng di động. Phiên bản mới nhất mang đến trải nghiệm đồ họa chân thực, hệ thống điều khiển mượt mà và cơ chế chuyền bóng, sút bóng cực kỳ sống động.</p>\n\n<h3>Tính năng nổi bật</h3>\n<ul>\n    <li>Đồ họa Unreal Engine đỉnh cao, tái hiện chi tiết từng vận động viên và sân vận động lớn trên thế giới.</li>\n    <li>Chế độ Dream Team cho phép bạn tự do xây dựng và quản lý đội bóng trong mơ của riêng mình.</li>\n    <li>Cập nhật liên tục các mùa giải, cầu thủ phong độ cao và các sự kiện matchday hấp dẫn hàng tuần.</li>\n    <li>Hỗ trợ đấu mạng (PvP) trực tuyến mượt mà với cộng đồng game thủ toàn cầu.</li>\n</ul>\n\n<h3>Cấu hình yêu cầu</h3>\n<ul>\n    <li><strong>Hệ điều hành:</strong> Android 7.0 trở lên hoặc iOS 13.0 trở lên.</li>\n    <li><strong>Bộ nhớ RAM:</strong> Tối thiểu 2 GB RAM (Khuyến nghị từ 3 GB - 4 GB trở lên để chơi mượt ở đồ họa cao).</li>\n    <li><strong>Dung lượng trống:</strong> Khoảng 3 GB đến 4 GB bộ nhớ lưu trữ (tùy thuộc vào gói dữ liệu tải trong game).</li>\n    <li><strong>Kết nối:</strong> Yêu cầu kết nối Internet ổn định (Wi-Fi hoặc 4G) khi tham gia thi đấu trực tuyến.</li>\n</ul>\n\n<p>Bác nào đam mê bóng đá và muốn thử tài chiến thuật quản lý đội hình thì không thể bỏ qua tựa game này nhé!</p>",
+    "thumbnail": "https://i.ytimg.com/vi/FHp9Wj9P5IQ/maxresdefault.jpg",
+    "category": "Nhập vai",
+    "tags": [
+      "sports",
+      "football",
+      "konami",
+      "efootball",
+      "pes",
+      "mobile"
+    ],
+    "downloadUrl": "https://d.apkpure.com/b/XAPK/jp.konami.pesam?version=latest",
+    "featured": false,
+    "createdAt": "2026-11-01",
+    "updatedAt": "2026-11-01"
   }
 ]
