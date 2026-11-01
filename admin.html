@@ -6,7 +6,6 @@
   <title>Trang quản trị - Nam Gaming</title>
   <meta name="robots" content="noindex, nofollow" />
   
-  <!-- DÒNG ICON ĐÃ ĐƯỢC CHÈN VÀO ĐÂY -->
   <link rel="icon" type="image/png" href="https://i.postimg.cc/Dw7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -48,6 +47,7 @@
       <nav class="dash-nav">
         <button class="dash-tab active" data-tab="posts">📝 Bài viết</button>
         <button class="dash-tab" data-tab="compose">✍️ Soạn bài</button>
+        <button class="dash-tab" data-tab="comments">💬 Bình luận</button> <!-- TAB MỚI -->
         <button class="dash-tab" data-tab="site">⚙️ Cài đặt site</button>
         <button class="dash-tab" data-tab="github">🔗 Cấu hình GitHub</button>
       </nav>
@@ -164,6 +164,53 @@
           </div>
         </form>
       </section>
+
+      <!-- ========================================== -->
+      <!-- TAB MỚI: QUẢN LÝ BÌNH LUẬN                 -->
+      <!-- ========================================== -->
+      <section class="tab-panel" data-panel="comments">
+        <div class="panel-header">
+          <h2>Quản lý Bình luận</h2>
+          <div class="panel-actions">
+            <button class="btn btn-ghost" id="btn-reload-comments">↻ Tải lại</button>
+            <!-- Nút để mở form thêm bình luận thủ công (khi duyệt từ Discord) -->
+            <button class="btn btn-primary" id="btn-toggle-add-comment">+ Thêm thủ công</button>
+          </div>
+        </div>
+        
+        <!-- Form thêm bình luận thủ công (Ẩn mặc định) -->
+        <div id="add-comment-wrap" style="display:none; background: var(--bg-panel); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem;">
+          <h3 style="color: var(--primary); margin-bottom: 1rem; font-family: 'Orbitron';">Thêm bình luận mới</h3>
+          <form id="add-comment-form" style="display: flex; flex-direction: column; gap: 10px;">
+            <input type="text" id="ac-postid" placeholder="ID Bài viết (VD: call-of-duty)" required style="padding: 10px; background: #111; border: 1px solid #333; color: white; border-radius: 4px;">
+            <input type="text" id="ac-name" placeholder="Tên người gửi" required style="padding: 10px; background: #111; border: 1px solid #333; color: white; border-radius: 4px;">
+            <textarea id="ac-content" placeholder="Nội dung bình luận" required rows="3" style="padding: 10px; background: #111; border: 1px solid #333; color: white; border-radius: 4px;"></textarea>
+            <div style="display: flex; gap: 10px;">
+              <button type="submit" class="btn btn-primary">Lưu bình luận</button>
+              <button type="button" class="btn btn-ghost" id="btn-cancel-add-comment">Hủy</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="table-wrap">
+          <table class="posts-table">
+            <thead>
+              <tr>
+                <th>ID Bình luận</th>
+                <th>Thuộc Bài viết</th>
+                <th>Người gửi</th>
+                <th>Nội dung</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="comments-tbody">
+              <!-- Dữ liệu sẽ được JS đổ vào đây -->
+              <tr><td colspan="5" style="text-align: center;">Bấm "Tải lại" để xem bình luận</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <!-- ========================================== -->
 
       <!-- TAB: SITE -->
       <section class="tab-panel" data-panel="site">
