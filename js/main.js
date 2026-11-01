@@ -86,7 +86,8 @@
           <h4>Liên kết</h4>
           <p><a href="index.html">Trang chủ</a></p>
           <p><a href="admin.html">Nam Panel</a></p>
-          <p><a href="https://namgmvn.pages.dev/donate-me">Donate</a></p>        
+          <p><a href="https://byvn.net/G5Y8">AboutMe!</a></p> 
+          <p><a href="https://namgmvn.pages.dev/donate-me">Donate</a></p>
         </div>
         <div>
           <h4>Tuyên bố miễn trừ trách nhiệm</h4>
