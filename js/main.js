@@ -400,6 +400,92 @@
     el.innerHTML = `<div class="empty">${escapeHtml(msg)}<br><br><a class="btn btn-primary" href="index.html">← Về trang chủ</a></div>`;
   }
 
+  // ---------- Chat AI Logic ----------
+  let chatHistory = [];
+  let WORKER_AI_URL = "https://nam-ai-bot.abc.workers.dev"; // Link mặc định
+
+  async function initAIChat() {
+    const chatToggle = document.getElementById('ai-chat-toggle');
+    const chatWindow = document.getElementById('ai-chat-window');
+    const chatClose = document.getElementById('ai-chat-close');
+    const chatInput = document.getElementById('ai-chat-input');
+    const chatSend = document.getElementById('ai-chat-send');
+    const chatMessages = document.getElementById('ai-chat-messages');
+
+    if (!chatToggle) return; // Nếu trang không có Chat AI thì bỏ qua
+
+    // Tải cấu hình từ file huanluyen.json
+    try {
+      const res = await fetch("data/huanluyen.json?v=" + Date.now());
+      if (res.ok) {
+        const config = await res.json();
+        if (config.worker_url) WORKER_AI_URL = config.worker_url;
+        const sys = config.system_prompt || "Bạn là trợ lý ảo của Nam Gaming.";
+        const kb = config.knowledge_base ? `\n\nDữ liệu của bạn:\n${config.knowledge_base}` : "";
+        chatHistory.push({ role: "system", content: sys + kb });
+      } else {
+        chatHistory.push({ role: "system", content: "Bạn là trợ lý ảo của Nam Gaming - web chia sẻ game miễn phí. Hãy trả lời ngắn gọn, thân thiện, xưng 'mình', gọi người dùng là 'bạn'." });
+      }
+    } catch (e) {
+      chatHistory.push({ role: "system", content: "Bạn là trợ lý ảo của Nam Gaming - web chia sẻ game miễn phí. Hãy trả lời ngắn gọn, thân thiện, xưng 'mình', gọi người dùng là 'bạn'." });
+    }
+
+    // Xử lý sự kiện đóng mở
+    chatToggle.addEventListener('click', () => chatWindow.classList.add('open'));
+    chatClose.addEventListener('click', () => chatWindow.classList.remove('open'));
+
+    // Hàm thêm tin nhắn
+    function addMessage(text, sender) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `ai-message ${sender}`;
+      msgDiv.textContent = text;
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Hàm gửi tin nhắn
+    async function sendToAI() {
+      const userText = chatInput.value.trim();
+      if (!userText) return;
+
+      addMessage(userText, 'user');
+      chatInput.value = '';
+      chatHistory.push({ role: "user", content: userText });
+
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'ai-message ai';
+      loadingDiv.textContent = '...';
+      chatMessages.appendChild(loadingDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      try {
+        const response = await fetch(WORKER_AI_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: chatHistory })
+        });
+
+        const data = await response.json();
+        chatMessages.removeChild(loadingDiv);
+
+        if (data.choices && data.choices.length > 0) {
+          const aiReply = data.choices[0].message.content;
+          addMessage(aiReply, 'ai');
+          chatHistory.push({ role: "assistant", content: aiReply });
+        } else {
+          addMessage("Xin lỗi, mình đang gặp lỗi. Thử lại sau nhé!", 'ai');
+        }
+      } catch (error) {
+        console.error(error);
+        chatMessages.removeChild(loadingDiv);
+        addMessage("Lỗi kết nối máy chủ AI.", 'ai');
+      }
+    }
+
+    chatSend.addEventListener('click', sendToAI);
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendToAI(); });
+  }
+
   // ---------- Init ----------
   async function initHome() {
     state.site = await loadSite();
@@ -414,6 +500,7 @@
     renderFilters();
     applyFilters();
     renderSidebar();
+    initAIChat(); // Khởi chạy AI Chat
   }
 
   async function initPost() {
@@ -442,6 +529,7 @@
     renderRelated(post);
     renderSidebar();
     updateSEO(post, state.site);
+    initAIChat(); // Khởi chạy AI Chat
   }
 
   document.addEventListener("DOMContentLoaded", () => {
