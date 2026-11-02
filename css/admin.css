@@ -1,8 +1,8 @@
 /* ============================================================
-   admin.css — CYBERPUNK ADMIN PANEL (Đồng bộ với style.css)
+   admin.css — CYBERPUNK ADMIN PANEL (Tích hợp Phòng Huấn Luyện AI)
    ============================================================ */
 
-/* --- 1. BIẾN HỆ THỐNG (Lấy từ style.css) --- */
+/* --- 1. BIẾN HỆ THỐNG --- */
 :root {
   --bg-base: #050b14;
   --bg-panel: rgba(13, 21, 38, 0.7); 
@@ -13,14 +13,13 @@
   --text-main: #e2e8f0;
   --text-dim: #8b9eb7;
   --border: rgba(0, 240, 255, 0.2);
-  --border-focus: rgba(0, 240, 255, 0.8);
   --glow: 0 0 15px rgba(0, 240, 255, 0.4);
   --font-display: 'Orbitron', sans-serif;
   --font-body: 'Rajdhani', sans-serif;
   --radius: 8px;
 }
 
-/* --- 2. RESET CƠ BẢN CHO ADMIN --- */
+/* --- 2. RESET CƠ BẢN --- */
 body[data-page="admin"] {
   margin: 0; padding: 0;
   font-family: var(--font-body);
@@ -33,22 +32,19 @@ body[data-page="admin"] {
     linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
-
 * { box-sizing: border-box; }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-base); }
 ::-webkit-scrollbar-thumb { background: #1a2a44; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-/* --- 3. MÀN HÌNH ĐĂNG NHẬP --- */
+/* --- 3. LOGIN SCREEN --- */
 .login-screen {
   position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(circle at center, rgba(10, 18, 34, 0.9) 0%, rgba(5, 9, 20, 1) 100%); 
-  z-index: 9999;
+  background: radial-gradient(circle at center, rgba(10, 18, 34, 0.9) 0%, rgba(5, 9, 20, 1) 100%); z-index: 9999;
 }
 .login-box {
   background: var(--bg-panel); border: 1px solid var(--border);
@@ -68,7 +64,7 @@ a { color: inherit; text-decoration: none; }
 /* --- 4. DASHBOARD LAYOUT --- */
 .dashboard { display: flex !important; height: 100vh; width: 100vw; }
 
-/* --- 5. SIDEBAR (MENU TRÁI) --- */
+/* --- 5. SIDEBAR --- */
 .dash-sidebar {
   width: 260px !important; flex-shrink: 0;
   background: rgba(10, 18, 34, 0.95); border-right: 1px solid var(--border);
@@ -116,37 +112,17 @@ a { color: inherit; text-decoration: none; }
 .posts-table th {
   background: rgba(0, 240, 255, 0.05); padding: 1rem;
   color: var(--primary); font-size: 0.85rem; text-transform: uppercase;
-  border-bottom: 1px solid var(--border); white-space: nowrap;
-  font-family: var(--font-display);
+  border-bottom: 1px solid var(--border); white-space: nowrap; font-family: var(--font-display);
 }
-.posts-table td {
-  padding: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  vertical-align: middle; font-size: 0.95rem;
-}
+.posts-table td { padding: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); vertical-align: middle; font-size: 0.95rem; }
 .posts-table tbody tr:hover { background: rgba(0, 240, 255, 0.03); }
-.posts-table td img {
-  width: 60px !important; height: 40px !important;
-  object-fit: cover !important; border-radius: 4px;
-  border: 1px solid var(--border); display: block;
-}
+.posts-table td img { width: 60px !important; height: 40px !important; object-fit: cover !important; border-radius: 4px; border: 1px solid var(--border); display: block; }
 
-/* Cột ID bình luận */
-.posts-table code {
-  color: var(--primary); background: rgba(0, 240, 255, 0.1);
-  padding: 2px 6px; border-radius: 4px; font-family: monospace;
-}
-/* Cột Thuộc bài viết (Badge) */
-.posts-table .badge {
-  background: rgba(255, 0, 85, 0.1); color: var(--accent);
-  border: 1px solid var(--accent); padding: 2px 8px;
-  border-radius: 4px; font-size: 0.85rem; font-weight: 600;
-}
+.posts-table code { color: var(--primary); background: rgba(0, 240, 255, 0.1); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+.posts-table .badge { background: rgba(255, 0, 85, 0.1); color: var(--accent); border: 1px solid var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: 600; }
 
 /* --- 8. FORM NHẬP LIỆU --- */
-.admin-form {
-  background: var(--bg-panel); padding: 2rem; border-radius: var(--radius);
-  border: 1px solid var(--border); max-width: 900px; backdrop-filter: blur(10px);
-}
+.admin-form { background: var(--bg-panel); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border); max-width: 900px; backdrop-filter: blur(10px); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 .admin-form label { display: block; margin-bottom: 1.5rem; font-weight: 600; color: var(--text-dim); font-size: 0.95rem; }
 .admin-form input, .admin-form textarea, .admin-form select {
@@ -154,31 +130,18 @@ a { color: inherit; text-decoration: none; }
   background: var(--bg-input); border: 1px solid #333; border-radius: 6px;
   color: #fff; font-family: var(--font-body); font-size: 1rem; outline: none; transition: 0.3s;
 }
-.admin-form input:focus, .admin-form textarea:focus, .admin-form select:focus {
-  border-color: var(--primary); box-shadow: var(--glow); background: rgba(0, 240, 255, 0.05);
-}
+.admin-form input:focus, .admin-form textarea:focus, .admin-form select:focus { border-color: var(--primary); box-shadow: var(--glow); background: rgba(0, 240, 255, 0.05); }
 
-/* Toolbar soạn thảo */
-.content-toolbar {
-  display: flex; gap: 5px; background: #111a2a; padding: 8px; border: 1px solid #333;
-  border-bottom: none; border-radius: 6px 6px 0 0; margin-top: 0.5rem;
-}
-.content-toolbar button {
-  background: #1a2538; border: 1px solid #2a3a50; color: var(--text-dim);
-  padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s;
-}
+.content-toolbar { display: flex; gap: 5px; background: #111a2a; padding: 8px; border: 1px solid #333; border-bottom: none; border-radius: 6px 6px 0 0; margin-top: 0.5rem; }
+.content-toolbar button { background: #1a2538; border: 1px solid #2a3a50; color: var(--text-dim); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s; }
 .content-toolbar button:hover { background: var(--primary); color: #000; }
 .content-toolbar + textarea { border-radius: 0 0 6px 6px; margin-top: 0; font-family: monospace; }
 
 .checkbox-label { display: flex !important; align-items: center; gap: 10px; cursor: pointer; }
 .checkbox-label input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer; }
+.form-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px dashed var(--border); display: flex; gap: 1rem; }
 
-.form-actions {
-  margin-top: 2rem; padding-top: 1.5rem; border-top: 1px dashed var(--border);
-  display: flex; gap: 1rem;
-}
-
-/* --- 9. NÚT BẤM (Đồng bộ với style.css) --- */
+/* --- 9. NÚT BẤM --- */
 .btn {
   padding: 0.7rem 1.5rem; border-radius: 4px; font-family: var(--font-body);
   font-weight: 700; font-size: 0.9rem; text-transform: uppercase; cursor: pointer;
@@ -193,16 +156,123 @@ a { color: inherit; text-decoration: none; }
 .btn-danger:hover { background: var(--accent); color: #fff; box-shadow: 0 0 15px var(--accent); }
 .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
 
-/* --- 10. TOAST THÔNG BÁO --- */
+/* --- 10. TOAST --- */
 .toast {
   position: fixed; bottom: 30px; right: 30px; background: var(--bg-panel);
   border-left: 4px solid var(--primary); color: #fff; padding: 1rem 2rem;
   border-radius: 4px; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-  transform: translateX(150%); transition: transform 0.3s ease; z-index: 10000;
-  font-weight: 600;
+  transform: translateX(150%); transition: transform 0.3s ease; z-index: 10000; font-weight: 600;
 }
 .toast.show { transform: translateX(0); }
 .toast.error { border-left-color: var(--accent); }
+
+/* ============================================================
+   PHÒNG HUẤN LUYỆN AI (Dành riêng cho Tab AI)
+   ============================================================ */
+.ai-trainer-layout {
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - 200px);
+  flex-wrap: wrap;
+}
+
+/* Cột cấu hình */
+.ai-trainer-config {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  margin: 0 !important;
+  max-width: none !important;
+}
+
+/* Cột Test Chat */
+.ai-trainer-chat {
+  flex: 1;
+  min-width: 300px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-panel);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.ai-trainer-chat-header {
+  padding: 15px;
+  border-bottom: 1px solid var(--border);
+  color: var(--primary);
+  font-weight: 700;
+  font-family: var(--font-display);
+  background: rgba(0, 0, 0, 0.2);
+  text-shadow: var(--glow);
+}
+
+.ai-test-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+}
+.ai-test-messages::-webkit-scrollbar { width: 6px; }
+.ai-test-messages::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+/* Bong bóng chat Test */
+.ai-message-test {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  animation: fadeInTest 0.3s ease;
+}
+@keyframes fadeInTest { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.ai-message-test.ai {
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--text-main);
+  border-left: 2px solid var(--primary);
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+}
+.ai-message-test.user {
+  background: rgba(255, 0, 85, 0.15);
+  color: var(--text-main);
+  border-right: 2px solid var(--accent);
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+.ai-test-input-wrap {
+  display: flex;
+  padding: 10px;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.2);
+}
+.ai-test-input-wrap input {
+  flex: 1;
+  padding: 10px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: #fff;
+  border-radius: 4px;
+  outline: none;
+  font-family: var(--font-body);
+  transition: 0.3s;
+}
+.ai-test-input-wrap input:focus {
+  border-color: var(--primary);
+  box-shadow: var(--glow);
+}
 
 /* --- 11. RESPONSIVE --- */
 @media (max-width: 992px) {
@@ -212,4 +282,17 @@ a { color: inherit; text-decoration: none; }
   .dash-footer { flex-direction: row; justify-content: space-between; }
   .dash-main { padding: 1rem; overflow-y: visible; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
+  
+  /* Responsive AI Trainer */
+  .ai-trainer-layout {
+    height: auto;
+    flex-direction: column;
+  }
+  .ai-trainer-config, .ai-trainer-chat {
+    width: 100%;
+    height: 500px; /* Cho chat test chiều cao cố định trên mobile */
+  }
+  .ai-trainer-config {
+    height: auto;
+  }
 }
