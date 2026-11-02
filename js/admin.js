@@ -1,11 +1,12 @@
 // ============================================================
-// admin.js — Dashboard CRUD (Bản Final - Tích hợp Bình luận)
+// admin.js — Dashboard CRUD (Bản Final - Tích hợp Bình luận & AI)
 // ============================================================
 (() => {
   const state = {
     posts: [], postsSha: null, 
     site: null, siteSha: null,
-    comments: [], commentsSha: null, // Thêm biến quản lý bình luận
+    comments: [], commentsSha: null, 
+    huanluyen: null, huanluyenSha: null, // Thêm biến quản lý AI
     categories: ["Hành động", "Nhập vai", "Chiến thuật"], editingId: null
   };
 
@@ -22,8 +23,9 @@
     document.querySelectorAll(".dash-tab").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
     document.querySelectorAll(".tab-panel").forEach((p) => p.classList.toggle("active", p.dataset.panel === name));
     
-    // Tự động load lại bảng bình luận khi chuyển sang tab
+    // Tự động load lại dữ liệu khi chuyển tab
     if (name === "comments") renderCommentsTable();
+    if (name === "ai-trainer") fillAiForm(); 
   }
 
   // ==========================================
@@ -74,7 +76,7 @@
   }
 
   // ==========================================
-  // 2. QUẢN LÝ BÌNH LUẬN (MỚI)
+  // 2. QUẢN LÝ BÌNH LUẬN
   // ==========================================
   async function loadComments() {
     const file = await GH.getFile("data/comments.json");
@@ -87,7 +89,7 @@
 
   async function saveComments(message) {
     await GH.putFile("data/comments.json", JSON.stringify(state.comments, null, 2), state.commentsSha, message);
-    await loadComments(); // Đồng bộ sha
+    await loadComments(); 
   }
 
   function renderCommentsTable() {
@@ -99,7 +101,6 @@
       return;
     }
 
-    // Sắp xếp bình luận mới nhất lên đầu
     const sorted = [...state.comments].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     tbody.innerHTML = sorted.map(c => `
@@ -114,7 +115,6 @@
       </tr>
     `).join("");
 
-    // Gắn sự kiện xóa bình luận
     tbody.querySelectorAll("[data-del-cmt]").forEach(btn => {
       btn.addEventListener("click", async () => {
         if (!confirm("Bạn có chắc muốn xóa bình luận này?")) return;
@@ -129,12 +129,11 @@
     });
   }
 
-  // Xử lý form Thêm bình luận thủ công
+  // Form Thêm bình luận
   document.getElementById("btn-toggle-add-comment")?.addEventListener("click", () => {
     const wrap = document.getElementById("add-comment-wrap");
     wrap.style.display = wrap.style.display === "none" ? "block" : "none";
   });
-  
   document.getElementById("btn-cancel-add-comment")?.addEventListener("click", () => {
     document.getElementById("add-comment-wrap").style.display = "none";
     document.getElementById("add-comment-form").reset();
@@ -144,7 +143,6 @@
     e.preventDefault();
     const btn = e.target.querySelector('button[type="submit"]');
     btn.disabled = true; btn.textContent = "Đang lưu...";
-
     try {
       const newCmt = {
         id: "cmt_" + Date.now(),
@@ -154,10 +152,8 @@
         parentId: null,
         createdAt: new Date().toISOString()
       };
-
       state.comments.push(newCmt);
       await saveComments("Add manual comment");
-      
       document.getElementById("add-comment-form").reset();
       document.getElementById("add-comment-wrap").style.display = "none";
       renderCommentsTable();
@@ -170,16 +166,120 @@
   });
 
   document.getElementById("btn-reload-comments")?.addEventListener("click", async () => {
-    try {
-      await loadComments();
-      renderCommentsTable();
-      toast("Đã tải lại bình luận!");
-    } catch (e) { toast("Lỗi: " + e.message, "error"); }
+    try { await loadComments(); renderCommentsTable(); toast("Đã tải lại bình luận!"); } catch (e) { toast("Lỗi: " + e.message, "error"); }
   });
+
+  // ==========================================
+  // 3. QUẢN LÝ HUẤN LUYỆN AI
+  // ==========================================
+  async function loadAiConfig() {
+    const file = await GH.getFile("data/huanluyen.json");
+    state.huanluyenSha = file ? file.sha : null;
+    try { 
+      state.huanluyen = file ? JSON.parse(file.content) : { 
+        worker_url: "https://nam-ai-bot.abc.workers.dev", 
+        system_prompt: "Bạn là trợ lý ảo của Nam Gaming. Hãy trả lời ngắn gọn, thân thiện.",
+        knowledge_base: ""
+      }; 
+    } catch { 
+      state.huanluyen = { worker_url: "", system_prompt: "", knowledge_base: "" }; 
+    }
+    fillAiForm();
+  }
+
+  function fillAiForm() {
+    if (!state.huanluyen) return;
+    const elWorker = document.getElementById("ai-worker-url");
+    if (elWorker) {
+      elWorker.value = state.huanluyen.worker_url || "";
+      document.getElementById("ai-system-prompt").value = state.huanluyen.system_prompt || "";
+      document.getElementById("ai-knowledge").value = state.huanluyen.knowledge_base || "";
+    }
+  }
+
+  async function saveAiConfig() {
+    state.huanluyen.worker_url = document.getElementById("ai-worker-url").value.trim();
+    state.huanluyen.system_prompt = document.getElementById("ai-system-prompt").value.trim();
+    state.huanluyen.knowledge_base = document.getElementById("ai-knowledge").value.trim();
+    
+    await GH.putFile("data/huanluyen.json", JSON.stringify(state.huanluyen, null, 2), state.huanluyenSha, "Update AI config");
+    await loadAiConfig();
+    toast("Đã lưu cấu hình AI thành công!");
+  }
+
+  // Test Chat AI
+  let testChatHistory = [];
+  const testMsgBox = document.getElementById("ai-test-messages");
+
+  async function sendTestChat() {
+    const input = document.getElementById("ai-test-input");
+    const text = input.value.trim();
+    if (!text) return;
+    
+    if (!testMsgBox) return;
+    
+    // 1. Hiển thị tin nhắn user
+    testMsgBox.innerHTML += `<div style="background: rgba(255,0,85,0.2); padding: 8px 12px; border-radius: 8px; align-self: flex-end; max-width: 80%; font-size: 0.95rem;">${escapeHtml(text)}</div>`;
+    input.value = '';
+    testMsgBox.scrollTop = testMsgBox.scrollHeight;
+    
+    // 2. Hiển thị loading
+    const loadingId = "load_" + Date.now();
+    testMsgBox.innerHTML += `<div id="${loadingId}" style="background: rgba(0,240,255,0.1); padding: 8px 12px; border-radius: 8px; align-self: flex-start; color: #aaa; font-size: 0.95rem;">...</div>`;
+    testMsgBox.scrollTop = testMsgBox.scrollHeight;
+
+    // 3. Chuẩn bị System Prompt
+    const sysPrompt = document.getElementById("ai-system-prompt").value;
+    const kb = document.getElementById("ai-knowledge").value;
+    const fullSys = `${sysPrompt}\n\nDữ liệu của bạn:\n${kb}`;
+    
+    if (testChatHistory.length === 0) {
+      testChatHistory.push({ role: "system", content: fullSys });
+    } else {
+      testChatHistory[0].content = fullSys;
+    }
+    testChatHistory.push({ role: "user", content: text });
+
+    const workerUrl = document.getElementById("ai-worker-url").value;
+    if (!workerUrl) {
+      document.getElementById(loadingId).remove();
+      alert("Vui lòng nhập Cloudflare Worker URL ở trên!");
+      return;
+    }
+
+    try {
+      const res = await fetch(workerUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: testChatHistory })
+      });
+      const data = await res.json();
+      
+      document.getElementById(loadingId).remove();
+      
+      if (data.choices && data.choices.length > 0) {
+        const reply = data.choices[0].message.content;
+        // Format xuống dòng cho dễ đọc
+        const formattedReply = reply.replace(/\n/g, '<br>');
+        testMsgBox.innerHTML += `<div style="background: rgba(0,240,255,0.1); padding: 8px 12px; border-radius: 8px; align-self: flex-start; max-width: 80%; font-size: 0.95rem;">${formattedReply}</div>`;
+        testChatHistory.push({ role: "assistant", content: reply });
+      } else {
+        testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem;">Lỗi: Không có phản hồi hợp lệ.</div>`;
+      }
+    } catch (e) {
+      document.getElementById(loadingId).remove();
+      testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem;">Lỗi kết nối đến Worker AI.</div>`;
+    }
+    testMsgBox.scrollTop = testMsgBox.scrollHeight;
+  }
+
+  document.getElementById("btn-save-ai-config")?.addEventListener("click", saveAiConfig);
+  document.getElementById("ai-test-send")?.addEventListener("click", sendTestChat);
+  document.getElementById("ai-test-input")?.addEventListener("keypress", (e) => { if(e.key === "Enter") sendTestChat(); });
 
 
   // ==========================================
-  // 3. SOẠN BÀI & CÀI ĐẶT SITE
+  // 4. SOẠN BÀI & CÀI ĐẶT SITE
   // ==========================================
   function populateCategorySelect() {
     const sel = document.getElementById("f-category");
@@ -302,7 +402,7 @@
   });
 
   // ==========================================
-  // 4. CẤU HÌNH GITHUB & KHỞI TẠO
+  // 5. CẤU HÌNH GITHUB & KHỞI TẠO
   // ==========================================
   function fillGhForm() {
     const c = GH.getConfig();
@@ -337,7 +437,8 @@
     try {
       await loadSite(); 
       await loadPosts();
-      await loadComments(); // Tải bình luận
+      await loadComments();
+      await loadAiConfig(); // Tải cấu hình AI
       renderPostsTable(); 
       populateCategorySelect(); 
       fillSiteForm();
