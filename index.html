@@ -123,5 +123,122 @@
       });
     });
   </script>
+
+  <!-- ======================================================== -->
+  <!-- BONG BÓNG CHAT AI (GROQ)                                 -->
+  <!-- ======================================================== -->
+  <button id="ai-chat-toggle" class="ai-chat-toggle">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+  </button>
+
+  <div id="ai-chat-window" class="ai-chat-window">
+    <div class="ai-chat-header">
+      <div class="ai-chat-title"><span class="status-dot"></span> Nam Gaming AI</div>
+      <button id="ai-chat-close" class="ai-chat-close">&times;</button>
+    </div>
+    <div id="ai-chat-messages" class="ai-chat-messages">
+      <div class="ai-message ai">Chào bạn! Mình là trợ lý ảo của Nam Gaming. Bạn cần tìm game gì hay hỏi gì không? 😎</div>
+    </div>
+    <div class="ai-chat-input-wrap">
+      <input type="text" id="ai-chat-input" placeholder="Hỏi AI..." autocomplete="off">
+      <button id="ai-chat-send">Gửi</button>
+    </div>
+  </div>
+
+  <style>
+    /* CSS Chat AI Cyberpunk */
+    .ai-chat-toggle { position: fixed; bottom: 30px; right: 90px; width: 60px; height: 60px; background: linear-gradient(135deg, #0055ff, #00f0ff); color: #000; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 9999; box-shadow: 0 0 20px rgba(0, 240, 255, 0.6); transition: transform 0.3s; }
+    .ai-chat-toggle:hover { transform: scale(1.1) rotate(10deg); }
+    .ai-chat-toggle svg { width: 30px; height: 30px; }
+    .ai-chat-window { position: fixed; bottom: 100px; right: 90px; width: 350px; height: 500px; background: rgba(13, 21, 38, 0.95); border: 1px solid rgba(0, 240, 255, 0.4); border-radius: 16px; display: flex; flex-direction: column; backdrop-filter: blur(16px); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 240, 255, 0.1); z-index: 9999; transform: scale(0); transform-origin: bottom right; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; pointer-events: none; }
+    .ai-chat-window.open { transform: scale(1); opacity: 1; pointer-events: auto; }
+    .ai-chat-header { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid rgba(0, 240, 255, 0.2); background: rgba(0, 0, 0, 0.3); border-radius: 16px 16px 0 0; }
+    .ai-chat-title { font-family: 'Orbitron', sans-serif; color: #00f0ff; font-weight: 700; display: flex; align-items: center; gap: 8px; font-size: 1rem; }
+    .status-dot { width: 8px; height: 8px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 10px #00ff00; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    .ai-chat-close { background: none; border: none; color: #8b9eb7; font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
+    .ai-chat-close:hover { color: #ff0055; }
+    .ai-chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin; scrollbar-color: #00f0ff transparent; }
+    .ai-chat-messages::-webkit-scrollbar { width: 6px; }
+    .ai-chat-messages::-webkit-scrollbar-thumb { background: #00f0ff; border-radius: 10px; }
+    .ai-message { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; line-height: 1.4; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .ai-message.ai { background: rgba(0, 240, 255, 0.1); color: #e2e8f0; border-left: 2px solid #00f0ff; align-self: flex-start; border-bottom-left-radius: 2px; }
+    .ai-message.user { background: rgba(255, 0, 85, 0.15); color: #fff; border-right: 2px solid #ff0055; align-self: flex-end; border-bottom-right-radius: 2px; }
+    .ai-chat-input-wrap { display: flex; padding: 10px; border-top: 1px solid rgba(0, 240, 255, 0.2); background: rgba(0, 0, 0, 0.3); border-radius: 0 0 16px 16px; gap: 10px; }
+    #ai-chat-input { flex: 1; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 6px; padding: 10px; color: #fff; font-family: 'Rajdhani', sans-serif; outline: none; }
+    #ai-chat-input:focus { border-color: #00f0ff; box-shadow: 0 0 10px rgba(0, 240, 255, 0.3); }
+    #ai-chat-send { background: #00f0ff; color: #000; border: none; border-radius: 6px; padding: 0 15px; font-weight: 700; font-family: 'Rajdhani', sans-serif; cursor: pointer; transition: 0.2s; }
+    #ai-chat-send:hover { background: #fff; box-shadow: 0 0 15px #00f0ff; }
+    @media (max-width: 480px) { .ai-chat-window { width: calc(100vw - 30px); right: 15px; bottom: 90px; } .ai-chat-toggle { right: 70px; } }
+  </style>
+
+  <script>
+    // >>> DÁN LINK WORKER AI CỦA BẠN VÀO ĐÂY <<<
+    const WORKER_AI_URL = "https://nam-ai-bot.abc.workers.dev"; 
+
+    const chatToggle = document.getElementById('ai-chat-toggle');
+    const chatWindow = document.getElementById('ai-chat-window');
+    const chatClose = document.getElementById('ai-chat-close');
+    const chatInput = document.getElementById('ai-chat-input');
+    const chatSend = document.getElementById('ai-chat-send');
+    const chatMessages = document.getElementById('ai-chat-messages');
+
+    let chatHistory = [
+      { role: "system", content: "Bạn là trợ lý ảo của Nam Gaming - web chia sẻ game miễn phí. Hãy trả lời ngắn gọn, thân thiện, xưng 'mình', gọi người dùng là 'bạn'." }
+    ];
+
+    chatToggle.addEventListener('click', () => chatWindow.classList.add('open'));
+    chatClose.addEventListener('click', () => chatWindow.classList.remove('open'));
+
+    function addMessage(text, sender) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `ai-message ${sender}`;
+      msgDiv.textContent = text;
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    async function sendToAI() {
+      const userText = chatInput.value.trim();
+      if (!userText) return;
+
+      addMessage(userText, 'user');
+      chatInput.value = '';
+      chatHistory.push({ role: "user", content: userText });
+
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'ai-message ai';
+      loadingDiv.textContent = '...';
+      chatMessages.appendChild(loadingDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      try {
+        const response = await fetch(WORKER_AI_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: chatHistory })
+        });
+
+        const data = await response.json();
+        chatMessages.removeChild(loadingDiv);
+
+        if (data.choices && data.choices.length > 0) {
+          const aiReply = data.choices[0].message.content;
+          addMessage(aiReply, 'ai');
+          chatHistory.push({ role: "assistant", content: aiReply });
+        } else {
+          addMessage("Xin lỗi, mình đang gặp lỗi. Thử lại sau nhé!", 'ai');
+        }
+      } catch (error) {
+        console.error(error);
+        chatMessages.removeChild(loadingDiv);
+        addMessage("Lỗi kết nối máy chủ AI.", 'ai');
+      }
+    }
+
+    chatSend.addEventListener('click', sendToAI);
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendToAI(); });
+  </script>
 </body>
 </html>
