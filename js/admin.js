@@ -1,12 +1,12 @@
 // ============================================================
-// admin.js — Dashboard CRUD (Bản Final - Tích hợp Bình luận & AI)
+// admin.js — Dashboard CRUD (Bản Final - Fix lỗi AI Chat)
 // ============================================================
 (() => {
   const state = {
     posts: [], postsSha: null, 
     site: null, siteSha: null,
     comments: [], commentsSha: null, 
-    huanluyen: null, huanluyenSha: null, // Thêm biến quản lý AI
+    huanluyen: null, huanluyenSha: null,
     categories: ["Hành động", "Nhập vai", "Chiến thuật"], editingId: null
   };
 
@@ -23,7 +23,6 @@
     document.querySelectorAll(".dash-tab").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
     document.querySelectorAll(".tab-panel").forEach((p) => p.classList.toggle("active", p.dataset.panel === name));
     
-    // Tự động load lại dữ liệu khi chuyển tab
     if (name === "comments") renderCommentsTable();
     if (name === "ai-trainer") fillAiForm(); 
   }
@@ -177,12 +176,12 @@
     state.huanluyenSha = file ? file.sha : null;
     try { 
       state.huanluyen = file ? JSON.parse(file.content) : { 
-        worker_url: "https://nam-ai-bot.abc.workers.dev", 
+        worker_url: "https://ai.vuhoangannam345.workers.dev/", 
         system_prompt: "Bạn là trợ lý ảo của Nam Gaming. Hãy trả lời ngắn gọn, thân thiện.",
         knowledge_base: ""
       }; 
     } catch { 
-      state.huanluyen = { worker_url: "", system_prompt: "", knowledge_base: "" }; 
+      state.huanluyen = { worker_url: "https://ai.vuhoangannam345.workers.dev/", system_prompt: "", knowledge_base: "" }; 
     }
     fillAiForm();
   }
@@ -218,14 +217,14 @@
     
     if (!testMsgBox) return;
     
-    // 1. Hiển thị tin nhắn user
-    testMsgBox.innerHTML += `<div style="background: rgba(255,0,85,0.2); padding: 8px 12px; border-radius: 8px; align-self: flex-end; max-width: 80%; font-size: 0.95rem;">${escapeHtml(text)}</div>`;
+    // 1. Hiển thị tin nhắn user (Dùng class CSS)
+    testMsgBox.innerHTML += `<div class="ai-message-test user">${escapeHtml(text)}</div>`;
     input.value = '';
     testMsgBox.scrollTop = testMsgBox.scrollHeight;
     
     // 2. Hiển thị loading
     const loadingId = "load_" + Date.now();
-    testMsgBox.innerHTML += `<div id="${loadingId}" style="background: rgba(0,240,255,0.1); padding: 8px 12px; border-radius: 8px; align-self: flex-start; color: #aaa; font-size: 0.95rem;">...</div>`;
+    testMsgBox.innerHTML += `<div id="${loadingId}" class="ai-message-test ai">...</div>`;
     testMsgBox.scrollTop = testMsgBox.scrollHeight;
 
     // 3. Chuẩn bị System Prompt
@@ -253,22 +252,24 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: testChatHistory })
       });
-      const data = await res.json();
       
+      const data = await res.json();
       document.getElementById(loadingId).remove();
       
+      // KIỂM TRA KỸ CÀNG: Nếu có data.choices thì in, nếu có data.error thì in lỗi, còn lại in thông báo.
       if (data.choices && data.choices.length > 0) {
         const reply = data.choices[0].message.content;
-        // Format xuống dòng cho dễ đọc
         const formattedReply = reply.replace(/\n/g, '<br>');
-        testMsgBox.innerHTML += `<div style="background: rgba(0,240,255,0.1); padding: 8px 12px; border-radius: 8px; align-self: flex-start; max-width: 80%; font-size: 0.95rem;">${formattedReply}</div>`;
+        testMsgBox.innerHTML += `<div class="ai-message-test ai">${formattedReply}</div>`;
         testChatHistory.push({ role: "assistant", content: reply });
+      } else if (data.error) {
+        testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem; margin-top: 5px;"><strong>Lỗi hệ thống:</strong> ${data.error}</div>`;
       } else {
-        testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem;">Lỗi: Không có phản hồi hợp lệ.</div>`;
+        testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem;">Lỗi: Không có phản hồi hợp lệ (Không rõ nguyên nhân).</div>`;
       }
     } catch (e) {
-      document.getElementById(loadingId).remove();
-      testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem;">Lỗi kết nối đến Worker AI.</div>`;
+      if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+      testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem;">Lỗi kết nối đến Worker AI (Có thể do sai URL hoặc CORS).</div>`;
     }
     testMsgBox.scrollTop = testMsgBox.scrollHeight;
   }
@@ -438,7 +439,7 @@
       await loadSite(); 
       await loadPosts();
       await loadComments();
-      await loadAiConfig(); // Tải cấu hình AI
+      await loadAiConfig();
       renderPostsTable(); 
       populateCategorySelect(); 
       fillSiteForm();
