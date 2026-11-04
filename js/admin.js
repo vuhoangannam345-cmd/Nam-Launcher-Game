@@ -1,5 +1,5 @@
 // ============================================================
-// admin.js — Dashboard CRUD (Bản Final - Fix lỗi AI Chat)
+// admin.js — Dashboard CRUD (Bản Final - Tích hợp Phân quyền)
 // ============================================================
 (() => {
   const state = {
@@ -217,17 +217,14 @@
     
     if (!testMsgBox) return;
     
-    // 1. Hiển thị tin nhắn user (Dùng class CSS)
     testMsgBox.innerHTML += `<div class="ai-message-test user">${escapeHtml(text)}</div>`;
     input.value = '';
     testMsgBox.scrollTop = testMsgBox.scrollHeight;
     
-    // 2. Hiển thị loading
     const loadingId = "load_" + Date.now();
     testMsgBox.innerHTML += `<div id="${loadingId}" class="ai-message-test ai">...</div>`;
     testMsgBox.scrollTop = testMsgBox.scrollHeight;
 
-    // 3. Chuẩn bị System Prompt
     const sysPrompt = document.getElementById("ai-system-prompt").value;
     const kb = document.getElementById("ai-knowledge").value;
     const fullSys = `${sysPrompt}\n\nDữ liệu của bạn:\n${kb}`;
@@ -256,7 +253,6 @@
       const data = await res.json();
       document.getElementById(loadingId).remove();
       
-      // KIỂM TRA KỸ CÀNG: Nếu có data.choices thì in, nếu có data.error thì in lỗi, còn lại in thông báo.
       if (data.choices && data.choices.length > 0) {
         const reply = data.choices[0].message.content;
         const formattedReply = reply.replace(/\n/g, '<br>');
@@ -449,15 +445,45 @@
   function showDashboard() {
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("dashboard").style.display = "grid";
-    fillGhForm(); loadAllData();
+    
+    applyPermissions(); // <-- Gọi hàm phân quyền
+    fillGhForm(); 
+    loadAllData();
   }
 
-  document.getElementById("login-form")?.addEventListener("submit", async (e) => {
+  // Hàm phân quyền
+  function applyPermissions() {
+    const role = Auth.getRole();
+    if (role === "editor") {
+      // Ẩn các tab không có quyền
+      const hideTabs = ["ai-trainer", "site", "github"];
+      hideTabs.forEach(tabName => {
+        const tabBtn = document.querySelector(`.dash-tab[data-tab="${tabName}"]`);
+        const tabPanel = document.querySelector(`.tab-panel[data-panel="${tabName}"]`);
+        if (tabBtn) tabBtn.style.display = "none";
+        if (tabPanel) tabPanel.style.display = "none";
+      });
+      
+      // Nếu đang ở tab bị ẩn, tự động chuyển về tab Bài viết
+      const activeTab = document.querySelector(".dash-tab.active");
+      if (activeTab && hideTabs.includes(activeTab.dataset.tab)) {
+        switchTab("posts");
+      }
+    }
+  }
+
+  // Xử lý sự kiện Đăng nhập (Lấy cả Username và Password)
+  document.getElementById("login-form")?.addEventListener("submit", (e) => {
     e.preventDefault();
+    const userVal = document.getElementById("login-username").value.trim();
+    const passVal = document.getElementById("login-password").value;
+    
     try {
-      await Auth.login(document.getElementById("login-password").value);
+      Auth.login(userVal, passVal);
       showDashboard();
-    } catch (err) { document.getElementById("login-error").textContent = err.message; }
+    } catch (err) { 
+      document.getElementById("login-error").textContent = err.message; 
+    }
   });
 
   document.getElementById("btn-logout")?.addEventListener("click", () => { Auth.logout(); location.reload(); });
