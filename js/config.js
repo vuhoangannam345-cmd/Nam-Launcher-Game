@@ -2,12 +2,21 @@
 // config.js — Cấu hình toàn cục
 // ============================================================
 
-// Mật khẩu admin (Gõ trực tiếp, không dùng hash nữa để tránh lỗi)
-const ADMIN_PASSWORD_HASH = "Admin1223";
+// Cấu hình tài khoản (Dùng mật khẩu văn bản thuần - Plain text)
+const USERS = {
+  "namgaming123": {
+    password: "23092013@",
+    role: "admin" // Tài khoản 1: Full quyền
+  },
+  "pnamgm": {
+    password: "namgaming1226",
+    role: "editor" // Tài khoản 2: Chỉ quản lý bài viết & bình luận
+  }
+};
 
 const SITE_INFO = {
   name: "Nam Gaming",
-  logo: "https://i.postimg.cc/0w7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png",
+  logo: "https://i.postimg.cc/Dw7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png",
   description: "Chào mừng bạn đến với Nam Gaming — Điểm đến tin cậy của mọi game thủ.",
   primaryColor: "#7c3aed"
 };
