@@ -22,8 +22,15 @@
   <div class="login-screen" id="login-screen">
     <div class="login-box">
       <h1>Admin Login</h1>
-      <p class="muted">Nhập mật khẩu quản trị để tiếp tục</p>
+      <p class="muted">Nhập tài khoản để tiếp tục</p>
       <form id="login-form" autocomplete="off">
+        <input
+          type="text"
+          id="login-username"
+          placeholder="Tên đăng nhập"
+          required
+          style="margin-bottom: 10px;"
+        />
         <input
           type="password"
           id="login-password"
@@ -208,16 +215,13 @@
         </div>
       </section>
 
-      <!-- ========================================== -->
-      <!-- TAB MỚI: HUẤN LUYỆN AI                     -->
-      <!-- ========================================== -->
+      <!-- TAB: HUẤN LUYỆN AI -->
       <section class="tab-panel" data-panel="ai-trainer">
         <div class="panel-header">
           <h2>Phòng Huấn Luyện AI</h2>
         </div>
         
         <div style="display: flex; gap: 20px; height: calc(100vh - 200px); flex-wrap: wrap;">
-          <!-- CỘT CẤU HÌNH -->
           <div class="admin-form" style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; margin: 0; max-width: none;">
             <label>
               Cloudflare Worker URL (Link AI của bạn)
@@ -228,13 +232,12 @@
               <textarea id="ai-system-prompt" rows="5" placeholder="Bạn là trợ lý ảo của Nam Gaming"></textarea>
             </label>
             <label>
-              Dữ liệu nạp vào (Knowledge Base - Danh sách game, nội quy...)
-              <textarea id="ai-knowledge" rows="8" placeholder="Danh sách game dựa vào sitemap.xml qua link sau : "https://namgmvn.pages.dev/sitemap.xml/"></textarea>
+              Dữ liệu nạp vào (Knowledge Base)
+              <textarea id="ai-knowledge" rows="8" placeholder="Danh sách game..."></textarea>
             </label>
             <button class="btn btn-primary" id="btn-save-ai-config">💾 Lưu Cấu Hình AI</button>
           </div>
 
-          <!-- CỘT TEST CHAT -->
           <div style="flex: 1; min-width: 300px; border: 1px solid var(--border); border-radius: 8px; display: flex; flex-direction: column; background: var(--bg-panel);">
             <div style="padding: 15px; border-bottom: 1px solid var(--border); color: var(--primary); font-weight: bold; font-family: 'Orbitron';">Test Chat AI</div>
             <div id="ai-test-messages" style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
@@ -247,7 +250,6 @@
           </div>
         </div>
       </section>
-      <!-- ========================================== -->
 
       <!-- TAB: SITE -->
       <section class="tab-panel" data-panel="site">
