@@ -61,7 +61,7 @@
         <nav class="header-nav" id="main-nav">
           <a href="index.html">Trang chủ</a>
           <a href="index.html#categories">Thể loại</a>
-          <a href="tournaments.html">Giải Đấu</a> <!-- NÚT GIẢI ĐẤU MỚI -->
+          <a href="tournaments.html">Giải Đấu</a>
           <a href="admin.html">Quản trị</a>
         </nav>
         <div class="search-box">
@@ -416,7 +416,7 @@
 
   // ---------- Chat AI Logic ----------
   let chatHistory = [];
-  let WORKER_AI_URL = "https://ai.vuhoangannam345.workers.dev/"; // Link mặc định
+  let WORKER_AI_URL = "https://ai.vuhoangannam345.workers.dev/"; 
 
   async function initAIChat() {
     const chatToggle = document.getElementById('ai-chat-toggle');
@@ -514,30 +514,112 @@
     }
 
     const statusMap = {
-      upcoming: '<span class="badge" style="background: rgba(0, 240, 255, 0.1); color: #00f0ff; border: 1px solid #00f0ff; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">Sắp diễn ra</span>',
-      ongoing: '<span class="badge" style="background: rgba(0, 255, 0, 0.1); color: #00ff00; border: 1px solid #00ff00; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">Đang diễn ra</span>',
-      finished: '<span class="badge" style="background: rgba(255, 0, 85, 0.1); color: #ff0055; border: 1px solid #ff0055; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">Đã kết thúc</span>'
+      upcoming: '<span class="badge-upcoming">Sắp diễn ra</span>',
+      ongoing: '<span class="badge-ongoing">Đang diễn ra</span>',
+      finished: '<span class="badge-finished">Đã kết thúc</span>'
     };
 
-    grid.innerHTML = tournaments.map(t => `
-      <div class="post-card" style="cursor: default;">
+    grid.innerHTML = tournaments.map(t => {
+      let regUrl = t.registerUrl || "";
+      if (regUrl && !regUrl.startsWith("http")) regUrl = "https://" + regUrl;
+
+      return `
+      <div class="post-card" style="cursor: pointer;" onclick="window.location.href='tournament.html?id=${encodeURIComponent(t.id)}'">
         <div class="post-thumb">
           <img src="${escapeHtml(t.banner || 'https://i.postimg.cc/Dw7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png')}" alt="${escapeHtml(t.title)}" loading="lazy" />
           <span class="post-cat" style="background: var(--accent); color: #fff;">${escapeHtml(t.game || "Giải đấu")}</span>
         </div>
         <div class="post-body">
           <h3 class="post-title" style="color: var(--primary); margin-bottom: 0.5rem;">${escapeHtml(t.title)}</h3>
-          <div style="margin-bottom: 1rem;">${statusMap[t.status] || t.status}</div>
-          <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1rem; flex: 1;">
-            <strong>Thể thức:</strong> ${escapeHtml(t.format || "Đang cập nhật")}<br>
-            <strong>Giải thưởng:</strong> <span style="color: var(--accent); font-weight: bold;">${escapeHtml(t.prize || "Đang cập nhật")}</span><br>
-            <strong>Thời gian:</strong> ${formatDate(t.startDate)} - ${formatDate(t.endDate)}
-          </p>
-          ${t.registerUrl ? `<a href="${t.registerUrl}" target="_blank" class="btn btn-primary" style="width: 100%; text-align: center;">Đăng Ký Ngay</a>` : '<button class="btn btn-ghost" style="width: 100%;" disabled>Đã đóng đăng ký</button>'}
+          
+          <div class="tournament-info-row">
+            <span>Trạng thái:</span>
+            <div>${statusMap[t.status] || t.status}</div>
+          </div>
+          
+          <div class="tournament-info-row">
+            <span>Giải thưởng:</span>
+            <span class="tournament-prize">${escapeHtml(t.prize || "Đang cập nhật")}</span>
+          </div>
+
+          <div class="tournament-info-row" style="margin-bottom: 1.5rem;">
+            <span>Thời gian:</span>
+            <span>${formatDate(t.startDate)} - ${formatDate(t.endDate)}</span>
+          </div>
+
+          ${regUrl 
+            ? `<a href="${regUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: auto; display: block; line-height: 2;">ĐĂNG KÝ NGAY</a>` 
+            : '<button class="btn btn-ghost" style="width: 100%; margin-top: auto;" disabled>Đã đóng đăng ký</button>'}
         </div>
       </div>
-    `).join("");
+    `}).join("");
     
+    initAIChat();
+  }
+
+  // ---------- Init Chi Tiết Giải Đấu ----------
+  async function initTournamentDetail() {
+    state.site = await loadSite();
+    const tournaments = await loadTournaments();
+    renderHeader(state.site);
+    renderFooter(state.site);
+
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    const el = document.getElementById("tournament-detail");
+    
+    if (!id || !el) {
+      if(el) el.innerHTML = "<div class='empty'>Không tìm thấy giải đấu.</div>";
+      initAIChat();
+      return;
+    }
+
+    const t = tournaments.find(x => x.id === id);
+    if (!t) {
+      el.innerHTML = "<div class='empty'>Giải đấu không tồn tại hoặc đã bị xóa. <br><br><a href='tournaments.html' class='btn btn-primary'>← Về trang Giải Đấu</a></div>";
+      initAIChat();
+      return;
+    }
+
+    const statusMap = {
+      upcoming: '<span class="badge-upcoming">Sắp diễn ra</span>',
+      ongoing: '<span class="badge-ongoing">Đang diễn ra</span>',
+      finished: '<span class="badge-finished">Đã kết thúc</span>'
+    };
+
+    let regUrl = t.registerUrl || "";
+    if (regUrl && !regUrl.startsWith("http")) regUrl = "https://" + regUrl;
+
+    el.innerHTML = `
+      <div class="breadcrumb">
+        <a href="index.html">Trang chủ</a> / <a href="tournaments.html">Giải Đấu</a> / <span>${escapeHtml(t.title)}</span>
+      </div>
+      <h1 style="color: var(--primary); text-shadow: var(--glow);">${escapeHtml(t.title)}</h1>
+      
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.5rem;">
+        ${statusMap[t.status] || t.status}
+        <span class="badge" style="background: rgba(0, 240, 255, 0.1); color: #00f0ff; border: 1px solid #00f0ff;">${escapeHtml(t.game || "")}</span>
+      </div>
+
+      ${t.banner ? `<div class="post-cover"><img src="${escapeHtml(t.banner)}" alt=""></div>` : ""}
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 2rem; background: var(--surface); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border);">
+        <div><strong style="color: var(--text-dim);">Thể thức:</strong> <br>${escapeHtml(t.format || "Đang cập nhật")}</div>
+        <div><strong style="color: var(--text-dim);">Giải thưởng:</strong> <br><span class="tournament-prize">${escapeHtml(t.prize || "Đang cập nhật")}</span></div>
+        <div><strong style="color: var(--text-dim);">Bắt đầu:</strong> <br>${formatDate(t.startDate)}</div>
+        <div><strong style="color: var(--text-dim);">Kết thúc:</strong> <br>${formatDate(t.endDate)}</div>
+      </div>
+
+      ${t.content ? `<div class="post-content">${t.content}</div>` : ""}
+
+      <div style="text-align: center; margin-top: 3rem; margin-bottom: 2rem;">
+        ${regUrl 
+          ? `<a href="${regUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.2rem;">ĐĂNG KÝ THAM GIA</a>` 
+          : '<button class="btn btn-ghost" style="padding: 1rem 3rem; font-size: 1.2rem;" disabled>Đã đóng đăng ký</button>'}
+      </div>
+    `;
+    
+    document.title = `${t.title} - Giải Đấu - Nam Gaming`;
     initAIChat();
   }
 
@@ -589,6 +671,7 @@
     const page = document.body.dataset.page;
     if (page === "home") initHome();
     else if (page === "post") initPost();
-    else if (page === "tournaments") initTournaments(); // Khởi chạy trang giải đấu
+    else if (page === "tournaments") initTournaments();
+    else if (page === "tournament") initTournamentDetail();
   });
 })();
