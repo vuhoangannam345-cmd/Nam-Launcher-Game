@@ -32,6 +32,18 @@
     }
   }
 
+  async function loadTournaments() {
+    try {
+      const res = await fetch("data/tournaments.json?v=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("not found");
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
+    } catch (e) {
+      console.error("Không load được tournaments.json:", e);
+      return [];
+    }
+  }
+
   // ---------- Header ----------
   function renderHeader(site) {
     const el = document.getElementById("site-header");
@@ -49,6 +61,7 @@
         <nav class="header-nav" id="main-nav">
           <a href="index.html">Trang chủ</a>
           <a href="index.html#categories">Thể loại</a>
+          <a href="tournaments.html">Giải Đấu</a> <!-- NÚT GIẢI ĐẤU MỚI -->
           <a href="admin.html">Quản trị</a>
         </nav>
         <div class="search-box">
@@ -85,6 +98,7 @@
         <div>
           <h4>Liên kết</h4>
           <p><a href="index.html">Trang chủ</a></p>
+          <p><a href="tournaments.html">Giải Đấu</a></p>
           <p><a href="admin.html">Nam Panel</a></p>
           <p><a href="https://byvn.net/G5Y8">AboutMe!</a></p> 
           <p><a href="https://namgmvn.pages.dev/donate-me">Donate</a></p>
@@ -402,7 +416,7 @@
 
   // ---------- Chat AI Logic ----------
   let chatHistory = [];
-  let WORKER_AI_URL = "https://nam-ai-bot.abc.workers.dev"; // Link mặc định
+  let WORKER_AI_URL = "https://ai.vuhoangannam345.workers.dev/"; // Link mặc định
 
   async function initAIChat() {
     const chatToggle = document.getElementById('ai-chat-toggle');
@@ -412,9 +426,8 @@
     const chatSend = document.getElementById('ai-chat-send');
     const chatMessages = document.getElementById('ai-chat-messages');
 
-    if (!chatToggle) return; // Nếu trang không có Chat AI thì bỏ qua
+    if (!chatToggle) return;
 
-    // Tải cấu hình từ file huanluyen.json
     try {
       const res = await fetch("data/huanluyen.json?v=" + Date.now());
       if (res.ok) {
@@ -430,11 +443,9 @@
       chatHistory.push({ role: "system", content: "Bạn là trợ lý ảo của Nam Gaming - web chia sẻ game miễn phí. Hãy trả lời ngắn gọn, thân thiện, xưng 'mình', gọi người dùng là 'bạn'." });
     }
 
-    // Xử lý sự kiện đóng mở
     chatToggle.addEventListener('click', () => chatWindow.classList.add('open'));
     chatClose.addEventListener('click', () => chatWindow.classList.remove('open'));
 
-    // Hàm thêm tin nhắn
     function addMessage(text, sender) {
       const msgDiv = document.createElement('div');
       msgDiv.className = `ai-message ${sender}`;
@@ -443,7 +454,6 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Hàm gửi tin nhắn
     async function sendToAI() {
       const userText = chatInput.value.trim();
       if (!userText) return;
@@ -486,12 +496,56 @@
     chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendToAI(); });
   }
 
+  // ---------- Init Trang Giải Đấu ----------
+  async function initTournaments() {
+    state.site = await loadSite();
+    const tournaments = await loadTournaments();
+    
+    renderHeader(state.site);
+    renderFooter(state.site);
+    
+    const grid = document.getElementById("tournaments-grid");
+    if (!grid) return;
+
+    if (tournaments.length === 0) {
+      grid.innerHTML = "<div class='empty' style='grid-column:1/-1; text-align:center; padding: 3rem;'>Hiện tại chưa có giải đấu nào. Hãy quay lại sau nhé!</div>";
+      initAIChat();
+      return;
+    }
+
+    const statusMap = {
+      upcoming: '<span class="badge" style="background: rgba(0, 240, 255, 0.1); color: #00f0ff; border: 1px solid #00f0ff; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">Sắp diễn ra</span>',
+      ongoing: '<span class="badge" style="background: rgba(0, 255, 0, 0.1); color: #00ff00; border: 1px solid #00ff00; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">Đang diễn ra</span>',
+      finished: '<span class="badge" style="background: rgba(255, 0, 85, 0.1); color: #ff0055; border: 1px solid #ff0055; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">Đã kết thúc</span>'
+    };
+
+    grid.innerHTML = tournaments.map(t => `
+      <div class="post-card" style="cursor: default;">
+        <div class="post-thumb">
+          <img src="${escapeHtml(t.banner || 'https://i.postimg.cc/Dw7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png')}" alt="${escapeHtml(t.title)}" loading="lazy" />
+          <span class="post-cat" style="background: var(--accent); color: #fff;">${escapeHtml(t.game || "Giải đấu")}</span>
+        </div>
+        <div class="post-body">
+          <h3 class="post-title" style="color: var(--primary); margin-bottom: 0.5rem;">${escapeHtml(t.title)}</h3>
+          <div style="margin-bottom: 1rem;">${statusMap[t.status] || t.status}</div>
+          <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1rem; flex: 1;">
+            <strong>Thể thức:</strong> ${escapeHtml(t.format || "Đang cập nhật")}<br>
+            <strong>Giải thưởng:</strong> <span style="color: var(--accent); font-weight: bold;">${escapeHtml(t.prize || "Đang cập nhật")}</span><br>
+            <strong>Thời gian:</strong> ${formatDate(t.startDate)} - ${formatDate(t.endDate)}
+          </p>
+          ${t.registerUrl ? `<a href="${t.registerUrl}" target="_blank" class="btn btn-primary" style="width: 100%; text-align: center;">Đăng Ký Ngay</a>` : '<button class="btn btn-ghost" style="width: 100%;" disabled>Đã đóng đăng ký</button>'}
+        </div>
+      </div>
+    `).join("");
+    
+    initAIChat();
+  }
+
   // ---------- Init ----------
   async function initHome() {
     state.site = await loadSite();
     const posts = await loadPosts();
     
-    // TỰ ĐỘNG SẮP XẾP BÀI MỚI NHẤT LÊN ĐẦU
     state.allPosts = posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     renderHeader(state.site);
@@ -500,14 +554,13 @@
     renderFilters();
     applyFilters();
     renderSidebar();
-    initAIChat(); // Khởi chạy AI Chat
+    initAIChat();
   }
 
   async function initPost() {
     state.site = await loadSite();
     const posts = await loadPosts();
     
-    // TỰ ĐỘNG SẮP XẾP BÀI MỚI NHẤT LÊN ĐẦU
     state.allPosts = posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     renderHeader(state.site);
@@ -529,12 +582,13 @@
     renderRelated(post);
     renderSidebar();
     updateSEO(post, state.site);
-    initAIChat(); // Khởi chạy AI Chat
+    initAIChat();
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     const page = document.body.dataset.page;
     if (page === "home") initHome();
     else if (page === "post") initPost();
+    else if (page === "tournaments") initTournaments(); // Khởi chạy trang giải đấu
   });
 })();
