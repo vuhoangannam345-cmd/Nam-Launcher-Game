@@ -15,14 +15,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
   
-  <!-- LINK ĐẾN CSS CHÍNH -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body data-page="home">
   
-  <!-- NÚT CÔNG TẮC SÁNG/TỐI -->
   <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">🌙</button>
-
   <header class="site-header" id="site-header"></header>
 
   <main>
@@ -37,74 +34,12 @@
     </div>
   </main>
 
-  <footer class="site-footer" id="site-footer">
-      <!-- Flag Counter sẽ được JS chèn vào đây -->
-  </footer>
+  <footer class="site-footer" id="site-footer"></footer>
 
-  <script src="js/config.js"></script>
-  <script src="js/main.js"></script>
-  
-  <!-- SCRIPT XỬ LÝ THEME & FLAG COUNTER -->
-  <script>
-    // 1. XỬ LÝ ĐỔI GIAO DIỆN SÁNG/TỐI
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
-
-    themeToggleBtn.addEventListener('click', () => {
-      let theme = document.documentElement.getAttribute('data-theme');
-      let newTheme = theme === 'dark' ? 'light' : 'dark';
-      
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
-    });
-
-    // 2. CHÈN FLAG COUNTER VÀO FOOTER
-    setTimeout(() => {
-      const footer = document.getElementById('site-footer');
-      if (footer) {
-        const flagHTML = `
-          <div class="footer-flagcounter">
-            <div class="footer-flagcounter__title">🌍 LƯỢT TRUY CẬP</div>
-            <a href="https://info.flagcounter.com/omR5">
-              <img src="https://s05.flagcounter.com/count/omR5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" 
-                   alt="Flag Counter" border="0" loading="lazy" referrerpolicy="no-referrer">
-            </a>
-          </div>
-        `;
-        footer.insertAdjacentHTML('beforeend', flagHTML);
-      }
-    }, 500);
-  </script>
-
-  <!-- ======================================================== -->
-  <!-- MÃ BẢO VỆ NỘI DUNG -->
-  <!-- ======================================================== -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      document.addEventListener('contextmenu', event => event.preventDefault());
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
-        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) { e.preventDefault(); return false; }
-        if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.keyCode === 85)) { e.preventDefault(); return false; }
-        if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.keyCode === 67 || e.keyCode === 83)) { e.preventDefault(); return false; }
-      });
-      document.addEventListener('dragstart', function(e) {
-        if (e.target.nodeName.toUpperCase() === "IMG") { e.preventDefault(); }
-      });
-    });
-  </script>
-
-  <!-- ======================================================== -->
-  <!-- BONG BÓNG CHAT AI (GROQ)                                 -->
-  <!-- ======================================================== -->
+  <!-- BONG BÓNG CHAT AI (HTML) -->
   <button id="ai-chat-toggle" class="ai-chat-toggle">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
   </button>
-
   <div id="ai-chat-window" class="ai-chat-window">
     <div class="ai-chat-header">
       <div class="ai-chat-title"><span class="status-dot"></span> Nam Gaming AI</div>
@@ -147,92 +82,55 @@
     @media (max-width: 480px) { .ai-chat-window { width: calc(100vw - 30px); right: 15px; bottom: 90px; } .ai-chat-toggle { right: 70px; } }
   </style>
 
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  
   <script>
-    const chatToggle = document.getElementById('ai-chat-toggle');
-    const chatWindow = document.getElementById('ai-chat-window');
-    const chatClose = document.getElementById('ai-chat-close');
-    const chatInput = document.getElementById('ai-chat-input');
-    const chatSend = document.getElementById('ai-chat-send');
-    const chatMessages = document.getElementById('ai-chat-messages');
-
-    // Link mặc định (Sẽ bị ghi đè bởi file huanluyen.json do Admin thiết lập)
-    let WORKER_AI_URL = "https://nam-ai-bot.abc.workers.dev"; 
-    let chatHistory = [];
-
-    // Hàm tự động tải cấu hình từ Admin (Phòng huấn luyện)
-    async function initAIChat() {
-      try {
-        // ĐỌC FILE HUANLUYEN.JSON
-        const res = await fetch("data/huanluyen.json?v=" + Date.now());
-        if (res.ok) {
-          const config = await res.json();
-          
-          if (config.worker_url) WORKER_AI_URL = config.worker_url;
-          
-          const sys = config.system_prompt || "Bạn là trợ lý ảo của Nam Gaming.";
-          const kb = config.knowledge_base ? `\n\nDữ liệu của bạn:\n${config.knowledge_base}` : "";
-          
-          chatHistory.push({ role: "system", content: sys + kb });
-        } else {
-          chatHistory.push({ role: "system", content: "Bạn là trợ lý ảo của Nam Gaming - web chia sẻ game miễn phí. Hãy trả lời ngắn gọn, thân thiện, xưng 'mình', gọi người dùng là 'bạn'." });
-        }
-      } catch (e) {
-        chatHistory.push({ role: "system", content: "Bạn là trợ lý ảo của Nam Gaming - web chia sẻ game miễn phí. Hãy trả lời ngắn gọn, thân thiện, xưng 'mình', gọi người dùng là 'bạn'." });
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    if (themeToggleBtn) themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        let theme = document.documentElement.getAttribute('data-theme');
+        let newTheme = theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      });
+    }
+    
+    // Flag Counter
+    setTimeout(() => {
+      const footer = document.getElementById('site-footer');
+      if (footer) {
+        const flagHTML = `
+          <div class="footer-flagcounter">
+            <div class="footer-flagcounter__title">🌍 LƯỢT TRUY CẬP</div>
+            <a href="https://info.flagcounter.com/omR5">
+              <img src="https://s05.flagcounter.com/count/omR5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" 
+                   alt="Flag Counter" border="0" loading="lazy" referrerpolicy="no-referrer">
+            </a>
+          </div>
+        `;
+        footer.insertAdjacentHTML('beforeend', flagHTML);
       }
-    }
-    initAIChat(); 
+    }, 500);
+  </script>
 
-    chatToggle.addEventListener('click', () => chatWindow.classList.add('open'));
-    chatClose.addEventListener('click', () => chatWindow.classList.remove('open'));
-
-    function addMessage(text, sender) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = `ai-message ${sender}`;
-      msgDiv.textContent = text;
-      chatMessages.appendChild(msgDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    async function sendToAI() {
-      const userText = chatInput.value.trim();
-      if (!userText) return;
-
-      addMessage(userText, 'user');
-      chatInput.value = '';
-      chatHistory.push({ role: "user", content: userText });
-
-      const loadingDiv = document.createElement('div');
-      loadingDiv.className = 'ai-message ai';
-      loadingDiv.textContent = '...';
-      chatMessages.appendChild(loadingDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-
-      try {
-        const response = await fetch(WORKER_AI_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: chatHistory })
-        });
-
-        const data = await response.json();
-        chatMessages.removeChild(loadingDiv);
-
-        if (data.choices && data.choices.length > 0) {
-          const aiReply = data.choices[0].message.content;
-          addMessage(aiReply, 'ai');
-          chatHistory.push({ role: "assistant", content: aiReply });
-        } else {
-          addMessage("Xin lỗi, mình đang gặp lỗi. Thử lại sau nhé!", 'ai');
-        }
-      } catch (error) {
-        console.error(error);
-        chatMessages.removeChild(loadingDiv);
-        addMessage("Lỗi kết nối máy chủ AI.", 'ai');
-      }
-    }
-
-    chatSend.addEventListener('click', sendToAI);
-    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendToAI(); });
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener('contextmenu', event => event.preventDefault());
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) { e.preventDefault(); return false; }
+        if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.keyCode === 85)) { e.preventDefault(); return false; }
+        if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.keyCode === 67 || e.keyCode === 83)) { e.preventDefault(); return false; }
+      });
+      document.addEventListener('dragstart', function(e) {
+        if (e.target.nodeName.toUpperCase() === "IMG") { e.preventDefault(); }
+      });
+    });
   </script>
 </body>
 </html>
