@@ -4,12 +4,13 @@
     "name": "2K2P Server",
     "game": "Minecraft",
     "ip": "2k2plabs.ddns.net",
-    "version": "IDK",
-    "players": "IDK",
+    "version": "tất cả phiên bản Java",
+    "players": "none",
     "status": "online",
     "banner": "https://i.ibb.co/mrTtxKd5/image.png",
-    "joinUrl": "",
-    "createdAt": "2026-11-05T14:31:39.202Z"
+    "joinUrl": "none",
+    "createdAt": "2026-11-05T14:31:39.202Z",
+    "updatedAt": "2026-11-05T14:34:31.070Z"
   },
   {
     "id": "sv_1793889224124",
