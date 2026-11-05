@@ -13,5 +13,19 @@
     "content": "<div style=\"font-family: Arial, sans-serif; color: #e0e0e0; line-height: 1.6;\">\n    <h2 style=\"color: #ff4655; border-bottom: 2px solid #ff4655; padding-bottom: 5px;\">🔥 THÔNG BÁO QUAN TRỌNG: ĐÃ FULL SLOTS!</h2>\n    \n    <p style=\"background-color: rgba(255, 70, 85, 0.1); border-left: 4px solid #ff4655; padding: 10px; margin: 15px 0;\">\n        <strong>Cảm ơn anh em đã nhiệt tình hưởng ứng!</strong> Hiện tại giải đấu <strong>Giải Valorant Cup Nam GM</strong> đã chính thức <strong>đủ số lượng đội đăng ký</strong> (Full người). Cổng nhận form đăng ký đã được đóng lại để ban tổ chức tiến hành chốt danh sách và xếp nhánh đấu.\n    </p>\n\n    <h3 style=\"color: #00ffcc; margin-top: 20px;\">📋 Tóm tắt thông tin giải đấu:</h3>\n    <ul style=\"list-style-type: square; padding-left: 20px;\">\n        <li><strong>Tựa game:</strong> Valorant</li>\n        <li><strong>Thể thức thi đấu:</strong> Đấu đội 5 người (5v5)</li>\n        <li><strong>Thời gian diễn ra:</strong> Từ 10/11/2026 đến 12/11/2026</li>\n        <li><strong>Giải thưởng:</strong> 1 Skin Vandal bất kỳ dành cho đội vô địch <em>(Lưu ý: Không được chọn theo ý thích!)</em></li>\n    </ul>\n\n    <h3 style=\"color: #00ffcc; margin-top: 20px;\">⚠️ Lưu ý dành cho các đội tham gia:</h3>\n    <ol style=\"padding-left: 20px;\">\n        <li>Các đội trưởng vui lòng kiểm tra kỹ lại thông tin và Discord/nhóm liên lạc để nhận lịch thi đấu chi tiết.</li>\n        <li>Có mặt trước giờ thi đấu ít nhất 15 phút để làm thủ tục check-in phòng đấu.</li>\n        <li>Mọi hành vi gian lận (sử dụng phần mềm thứ 3, toxic, xúc phạm đối thủ) sẽ bị loại trực tiếp ngay lập tức.</li>\n    </ol>\n\n    <p style=\"text-align: center; margin-top: 25px; font-style: italic; color: #aaa;\">\n        Chúc các đội có những trận đấu mãn nhãn và bùng nổ hết mình! 🚀\n    </p>\n</div>",
     "createdAt": "2026-11-05T06:32:26.610Z",
     "updatedAt": "2026-11-05T13:45:44.309Z"
+  },
+  {
+    "id": "t_1793886388950",
+    "title": "Giải Valorant Cup Nam GM",
+    "game": "Valorant",
+    "format": "Đội 5 người",
+    "prize": "",
+    "startDate": "2026-11-11",
+    "endDate": "2026-11-13",
+    "registerUrl": "https://docs.google.com/document/d/1-iogo07LgkGR7gKIQFfvUQzdYT_cuQFActvpdQgnbpk/edit?usp=sharing",
+    "status": "upcoming",
+    "banner": "https://hoanghamobile.com/tin-tuc/wp-content/uploads/2024/01/valorant.jpg",
+    "content": "",
+    "createdAt": "2026-11-05T13:46:28.950Z"
   }
 ]
