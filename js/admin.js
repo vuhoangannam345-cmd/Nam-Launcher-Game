@@ -1,12 +1,13 @@
 // ============================================================
-// admin.js — Dashboard CRUD (Bản Final - Tích hợp Giải Đấu & Phân quyền)
+// admin.js — Dashboard CRUD (Bản Final - Tích hợp Giải Đấu & Máy Chủ)
 // ============================================================
 (() => {
   const state = {
     posts: [], postsSha: null, 
     site: null, siteSha: null,
     comments: [], commentsSha: null, 
-    tournaments: [], tournamentsSha: null, // Thêm biến quản lý giải đấu
+    tournaments: [], tournamentsSha: null,
+    servers: [], serversSha: null, // Thêm biến quản lý máy chủ
     huanluyen: null, huanluyenSha: null,
     categories: ["Hành động", "Nhập vai", "Chiến thuật"], editingId: null
   };
@@ -25,7 +26,8 @@
     document.querySelectorAll(".tab-panel").forEach((p) => p.classList.toggle("active", p.dataset.panel === name));
     
     if (name === "comments") renderCommentsTable();
-    if (name === "tournaments") renderTournamentsTable(); // Gọi render khi vào tab giải đấu
+    if (name === "tournaments") renderTournamentsTable(); 
+    if (name === "servers") renderServersTable(); // Render máy chủ
     if (name === "ai-trainer") fillAiForm(); 
   }
 
@@ -110,9 +112,7 @@
         <td><span class="badge">${escapeHtml(c.postId)}</span></td>
         <td>${escapeHtml(c.name)}</td>
         <td>${escapeHtml(c.content)}</td>
-        <td>
-          <button class="btn btn-danger btn-sm" data-del-cmt="${c.id}">Xóa</button>
-        </td>
+        <td><button class="btn btn-danger btn-sm" data-del-cmt="${c.id}">Xóa</button></td>
       </tr>
     `).join("");
 
@@ -130,7 +130,6 @@
     });
   }
 
-  // Form Thêm bình luận
   document.getElementById("btn-toggle-add-comment")?.addEventListener("click", () => {
     const wrap = document.getElementById("add-comment-wrap");
     wrap.style.display = wrap.style.display === "none" ? "block" : "none";
@@ -197,9 +196,9 @@
     }
 
     const statusMap = {
-      upcoming: '<span class="badge" style="background: rgba(0, 240, 255, 0.1); color: #00f0ff; border-color: #00f0ff;">Sắp tới</span>',
-      ongoing: '<span class="badge" style="background: rgba(0, 255, 0, 0.1); color: #00ff00; border-color: #00ff00;">Đang diễn ra</span>',
-      finished: '<span class="badge" style="background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: #ff0055;">Đã kết thúc</span>'
+      upcoming: '<span class="badge-upcoming">Sắp tới</span>',
+      ongoing: '<span class="badge-ongoing">Đang diễn ra</span>',
+      finished: '<span class="badge-finished">Đã kết thúc</span>'
     };
 
     tbody.innerHTML = state.tournaments.map((t, i) => `
@@ -229,7 +228,6 @@
     }));
   }
 
-  // Mở form tạo mới
   document.getElementById("btn-new-tournament")?.addEventListener("click", () => {
     document.getElementById("tournament-form-wrap").style.display = "block";
     document.getElementById("tournament-form").reset();
@@ -238,17 +236,14 @@
     document.getElementById("btn-save-tournament").textContent = "💾 Lưu Giải Đấu";
   });
 
-  // Đóng form
   document.getElementById("btn-cancel-tournament")?.addEventListener("click", () => {
     document.getElementById("tournament-form-wrap").style.display = "none";
   });
 
-  // Tải lại danh sách
   document.getElementById("btn-reload-tournaments")?.addEventListener("click", async () => {
     try { await loadTournaments(); renderTournamentsTable(); toast("Đã tải lại!"); } catch (e) { toast("Lỗi: " + e.message, "error"); }
   });
 
-  // Điền thông tin vào form khi sửa
   function fillTournamentForm(t) {
     document.getElementById("tournament-form-wrap").style.display = "block";
     document.getElementById("t-id").value = t.id;
@@ -266,7 +261,6 @@
     document.getElementById("btn-save-tournament").textContent = "💾 Cập Nhật";
   }
 
-  // Lưu giải đấu
   document.getElementById("tournament-form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const btn = document.getElementById("btn-save-tournament");
@@ -310,7 +304,137 @@
   });
 
   // ==========================================
-  // 4. QUẢN LÝ HUẤN LUYỆN AI
+  // 4. QUẢN LÝ MÁY CHỦ GAME (SERVERS)
+  // ==========================================
+  async function loadServers() {
+    const file = await GH.getFile("data/servers.json");
+    state.serversSha = file ? file.sha : null;
+    try { 
+      state.servers = file ? JSON.parse(file.content) : []; 
+      if (!Array.isArray(state.servers)) state.servers = []; 
+    } catch { state.servers = []; }
+  }
+
+  async function saveServers(message) {
+    await GH.putFile("data/servers.json", JSON.stringify(state.servers, null, 2), state.serversSha, message);
+    await loadServers();
+  }
+
+  function renderServersTable() {
+    const tbody = document.getElementById("servers-tbody");
+    if (!tbody) return;
+
+    if (state.servers.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">Chưa có server nào.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = state.servers.map((s, i) => {
+      const statusBadge = s.status === "online" 
+        ? '<span class="badge-ongoing">Online</span>' 
+        : '<span class="badge-finished">Offline</span>';
+
+      return `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${s.banner ? `<img src="${escapeHtml(s.banner)}" alt="" style="width: 80px; height: 40px; object-fit: cover; border-radius: 4px;">` : "—"}</td>
+        <td class="title-cell">${escapeHtml(s.name)}</td>
+        <td><span class="badge">${escapeHtml(s.game || "")}</span></td>
+        <td style="font-family: monospace;">${escapeHtml(s.ip || "")}</td>
+        <td>${statusBadge}</td>
+        <td class="actions-cell">
+          <button class="btn btn-ghost btn-sm" data-edit-sv="${escapeHtml(s.id)}">Sửa</button>
+          <button class="btn btn-danger btn-sm" data-del-sv="${escapeHtml(s.id)}">Xóa</button>
+        </td>
+      </tr>`;
+    }).join("");
+
+    tbody.querySelectorAll("[data-edit-sv]").forEach((b) => b.addEventListener("click", () => {
+      const s = state.servers.find((x) => x.id === b.dataset.editSv);
+      if (s) fillServerForm(s);
+    }));
+    
+    tbody.querySelectorAll("[data-del-sv]").forEach((b) => b.addEventListener("click", async () => {
+      if (!confirm("Bạn có chắc muốn xóa server này?")) return;
+      state.servers = state.servers.filter((x) => x.id !== b.dataset.delSv);
+      try { await saveServers(`Delete server`); renderServersTable(); toast("Đã xóa server!", "success"); }
+      catch (e) { toast("Lỗi xóa: " + e.message, "error"); }
+    }));
+  }
+
+  document.getElementById("btn-new-server")?.addEventListener("click", () => {
+    document.getElementById("server-form-wrap").style.display = "block";
+    document.getElementById("server-form").reset();
+    document.getElementById("sv-id").value = "";
+    document.getElementById("server-form-title").textContent = "Thêm Máy Chủ Mới";
+    document.getElementById("btn-save-server").textContent = "💾 Lưu Server";
+  });
+
+  document.getElementById("btn-cancel-server")?.addEventListener("click", () => {
+    document.getElementById("server-form-wrap").style.display = "none";
+  });
+
+  document.getElementById("btn-reload-servers")?.addEventListener("click", async () => {
+    try { await loadServers(); renderServersTable(); toast("Đã tải lại!"); } catch (e) { toast("Lỗi: " + e.message, "error"); }
+  });
+
+  function fillServerForm(s) {
+    document.getElementById("server-form-wrap").style.display = "block";
+    document.getElementById("sv-id").value = s.id;
+    document.getElementById("sv-name").value = s.name || "";
+    document.getElementById("sv-game").value = s.game || "";
+    document.getElementById("sv-ip").value = s.ip || "";
+    document.getElementById("sv-version").value = s.version || "";
+    document.getElementById("sv-players").value = s.players || "";
+    document.getElementById("sv-status").value = s.status || "online";
+    document.getElementById("sv-banner").value = s.banner || "";
+    document.getElementById("sv-join").value = s.joinUrl || "";
+    document.getElementById("server-form-title").textContent = "Sửa Máy Chủ";
+    document.getElementById("btn-save-server").textContent = "💾 Cập Nhật";
+  }
+
+  document.getElementById("server-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById("btn-save-server");
+    const oldTxt = btn.textContent;
+    btn.disabled = true; btn.textContent = "⏳ Đang lưu...";
+    
+    try {
+      const id = document.getElementById("sv-id").value;
+      const data = {
+        name: document.getElementById("sv-name").value.trim(),
+        game: document.getElementById("sv-game").value.trim(),
+        ip: document.getElementById("sv-ip").value.trim(),
+        version: document.getElementById("sv-version").value.trim(),
+        players: document.getElementById("sv-players").value.trim(),
+        status: document.getElementById("sv-status").value,
+        banner: document.getElementById("sv-banner").value.trim(),
+        joinUrl: document.getElementById("sv-join").value.trim()
+      };
+
+      if (!data.name || !data.game || !data.ip) throw new Error("Nhập thiếu Tên, Game hoặc IP.");
+
+      if (id) {
+        const idx = state.servers.findIndex((x) => x.id === id);
+        state.servers[idx] = { ...state.servers[idx], ...data, updatedAt: new Date().toISOString() };
+        await saveServers(`Update server: ${data.name}`);
+      } else {
+        state.servers.push({ id: "sv_" + Date.now(), ...data, createdAt: new Date().toISOString() });
+        await saveServers(`Add server: ${data.name}`);
+      }
+
+      document.getElementById("server-form-wrap").style.display = "none";
+      renderServersTable();
+      toast("Đã lưu server thành công!");
+    } catch (err) {
+      toast("Lỗi: " + err.message, "error");
+    } finally {
+      btn.disabled = false; btn.textContent = oldTxt;
+    }
+  });
+
+  // ==========================================
+  // 5. QUẢN LÝ HUẤN LUYỆN AI
   // ==========================================
   async function loadAiConfig() {
     const file = await GH.getFile("data/huanluyen.json");
@@ -347,7 +471,6 @@
     toast("Đã lưu cấu hình AI thành công!");
   }
 
-  // Test Chat AI
   let testChatHistory = [];
   const testMsgBox = document.getElementById("ai-test-messages");
 
@@ -402,11 +525,11 @@
       } else if (data.error) {
         testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem; margin-top: 5px;"><strong>Lỗi hệ thống:</strong> ${data.error}</div>`;
       } else {
-        testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem;">Lỗi: Không có phản hồi hợp lệ (Không rõ nguyên nhân).</div>`;
+        testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem;">Lỗi: Không có phản hồi hợp lệ.</div>`;
       }
     } catch (e) {
       if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
-      testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem;">Lỗi kết nối đến Worker AI (Có thể do sai URL hoặc CORS).</div>`;
+      testMsgBox.innerHTML += `<div style="color: #ff0055; font-size: 0.9rem;">Lỗi kết nối đến Worker AI.</div>`;
     }
     testMsgBox.scrollTop = testMsgBox.scrollHeight;
   }
@@ -416,7 +539,7 @@
   document.getElementById("ai-test-input")?.addEventListener("keypress", (e) => { if(e.key === "Enter") sendTestChat(); });
 
   // ==========================================
-  // 5. SOẠN BÀI & CÀI ĐẶT SITE
+  // 6. SOẠN BÀI & CÀI ĐẶT SITE
   // ==========================================
   function populateCategorySelect() {
     const sel = document.getElementById("f-category");
@@ -539,7 +662,7 @@
   });
 
   // ==========================================
-  // 6. CẤU HÌNH GITHUB & KHỞI TẠO
+  // 7. CẤU HÌNH GITHUB & KHỞI TẠO
   // ==========================================
   function fillGhForm() {
     const c = GH.getConfig();
@@ -575,7 +698,8 @@
       await loadSite(); 
       await loadPosts();
       await loadComments();
-      await loadTournaments(); // Tải giải đấu
+      await loadTournaments(); 
+      await loadServers(); // Tải danh sách server
       await loadAiConfig();
       renderPostsTable(); 
       populateCategorySelect(); 
@@ -587,16 +711,15 @@
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("dashboard").style.display = "grid";
     
-    applyPermissions(); // Gọi hàm phân quyền
+    applyPermissions(); 
     fillGhForm(); 
     loadAllData();
   }
 
-  // Hàm phân quyền
   function applyPermissions() {
     const role = Auth.getRole();
     if (role === "editor") {
-      // Ẩn các tab không có quyền (Editor VẪN THẤY tab tournaments)
+      // Ẩn các tab không có quyền (Editor vẫn thấy Giải đấu & Máy chủ)
       const hideTabs = ["ai-trainer", "site", "github"];
       hideTabs.forEach(tabName => {
         const tabBtn = document.querySelector(`.dash-tab[data-tab="${tabName}"]`);
@@ -605,7 +728,6 @@
         if (tabPanel) tabPanel.style.display = "none";
       });
       
-      // Nếu đang ở tab bị ẩn, tự động chuyển về tab Bài viết
       const activeTab = document.querySelector(".dash-tab.active");
       if (activeTab && hideTabs.includes(activeTab.dataset.tab)) {
         switchTab("posts");
@@ -613,7 +735,6 @@
     }
   }
 
-  // Xử lý sự kiện Đăng nhập (Lấy cả Username và Password)
   document.getElementById("login-form")?.addEventListener("submit", (e) => {
     e.preventDefault();
     const userVal = document.getElementById("login-username").value.trim();
