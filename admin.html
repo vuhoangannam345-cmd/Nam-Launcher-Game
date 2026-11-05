@@ -24,20 +24,8 @@
       <h1>Admin Login</h1>
       <p class="muted">Nhập tài khoản để tiếp tục</p>
       <form id="login-form" autocomplete="off">
-        <input
-          type="text"
-          id="login-username"
-          placeholder="Tên đăng nhập"
-          required
-          style="margin-bottom: 10px;"
-        />
-        <input
-          type="password"
-          id="login-password"
-          placeholder="Mật khẩu"
-          autocomplete="current-password"
-          required
-        />
+        <input type="text" id="login-username" placeholder="Tên đăng nhập" required style="margin-bottom: 10px;" />
+        <input type="password" id="login-password" placeholder="Mật khẩu" autocomplete="current-password" required />
         <button type="submit" class="btn btn-primary">Đăng nhập</button>
       </form>
       <div class="login-error" id="login-error"></div>
@@ -55,9 +43,9 @@
         <button class="dash-tab active" data-tab="posts">Các Bài viết</button>
         <button class="dash-tab" data-tab="compose">Soạn bài</button>
         <button class="dash-tab" data-tab="comments">Các Bình luận</button>
-        <!-- TAB GIẢI ĐẤU MỚI -->
         <button class="dash-tab" data-tab="tournaments">🏆 Giải Đấu</button>
-        <!-- TAB HUẤN LUYỆN AI -->
+        <!-- TAB MÁY CHỦ GAME MỚI -->
+        <button class="dash-tab" data-tab="servers">🖥️ Máy Chủ Game</button>
         <button class="dash-tab" data-tab="ai-trainer">Khu Tự Trị AI (GROQ)</button>
         <button class="dash-tab" data-tab="site">Cài đặt website</button>
         <button class="dash-tab" data-tab="github">Cấu hình GitHub PAT</button>
@@ -105,20 +93,11 @@
           <input type="hidden" id="f-id" />
 
           <div class="form-row">
-            <label>
-              Tiêu đề *
-              <input id="f-title" required />
-            </label>
-            <label>
-              Slug *
-              <input id="f-slug" required />
-            </label>
+            <label>Tiêu đề *<input id="f-title" required /></label>
+            <label>Slug *<input id="f-slug" required /></label>
           </div>
 
-          <label>
-            Mô tả ngắn
-            <textarea id="f-excerpt" rows="2"></textarea>
-          </label>
+          <label>Mô tả ngắn<textarea id="f-excerpt" rows="2"></textarea></label>
 
           <label>
             Nội dung HTML
@@ -137,32 +116,17 @@
           </label>
 
           <div class="form-row">
-            <label>
-              Ảnh bài viết (URL)
-              <input id="f-thumbnail" placeholder="https://..." />
-            </label>
-            <label>
-              Hoặc upload file
-              <input type="file" id="f-upload" accept="image/*" />
-            </label>
+            <label>Ảnh bài viết (URL)<input id="f-thumbnail" placeholder="https://..." /></label>
+            <label>Hoặc upload file<input type="file" id="f-upload" accept="image/*" /></label>
           </div>
           <div class="thumb-preview" id="thumb-preview"></div>
 
           <div class="form-row">
-            <label>
-              Thể loại
-              <select id="f-category"></select>
-            </label>
-            <label>
-              Tags (phẩy phân cách)
-              <input id="f-tags" placeholder="action, rpg, indie" />
-            </label>
+            <label>Thể loại<select id="f-category"></select></label>
+            <label>Tags (phẩy phân cách)<input id="f-tags" placeholder="action, rpg, indie" /></label>
           </div>
 
-          <label>
-            Link tải game
-            <input id="f-download" placeholder="https://..." />
-          </label>
+          <label>Link tải game<input id="f-download" placeholder="https://..." /></label>
 
           <label class="checkbox-label">
             <input type="checkbox" id="f-featured" />
@@ -202,24 +166,14 @@
         <div class="table-wrap">
           <table class="posts-table">
             <thead>
-              <tr>
-                <th>ID Bình luận</th>
-                <th>Thuộc Bài viết</th>
-                <th>Người gửi</th>
-                <th>Nội dung</th>
-                <th>Thao tác</th>
-              </tr>
+              <tr><th>ID</th><th>Bài viết</th><th>Người gửi</th><th>Nội dung</th><th>Thao tác</th></tr>
             </thead>
-            <tbody id="comments-tbody">
-              <tr><td colspan="5" style="text-align: center;">Bấm "Tải lại" để xem bình luận</td></tr>
-            </tbody>
+            <tbody id="comments-tbody"><tr><td colspan="5" style="text-align: center;">Bấm "Tải lại"</td></tr></tbody>
           </table>
         </div>
       </section>
 
-      <!-- ========================================== -->
-      <!-- TAB: QUẢN LÝ GIẢI ĐẤU                      -->
-      <!-- ========================================== -->
+      <!-- TAB: QUẢN LÝ GIẢI ĐẤU -->
       <section class="tab-panel" data-panel="tournaments">
         <div class="panel-header">
           <h2>Quản lý Giải Đấu</h2>
@@ -229,52 +183,25 @@
           </div>
         </div>
         
-        <!-- Form Tạo/Sửa Giải Đấu (Ẩn mặc định) -->
         <div id="tournament-form-wrap" style="display: none; margin-bottom: 2rem; background: var(--bg-panel); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
           <h3 id="tournament-form-title" style="color: var(--primary); margin-bottom: 1.5rem; font-family: 'Orbitron';">Tạo Giải Đấu Mới</h3>
           <form id="tournament-form" class="admin-form" style="border: none; padding: 0; background: transparent; max-width: none;">
             <input type="hidden" id="t-id" />
-            
             <div class="form-row">
-              <label>
-                Tên Giải Đấu *
-                <input id="t-title" required placeholder="VD: Siêu Cúp GTA V..." />
-              </label>
-              <label>
-                Tựa Game *
-                <input id="t-game" required placeholder="VD: eFootball, GTA V..." />
-              </label>
+              <label>Tên Giải Đấu *<input id="t-title" required /></label>
+              <label>Tựa Game *<input id="t-game" required /></label>
             </div>
-
             <div class="form-row">
-              <label>
-                Thể thức
-                <input id="t-format" placeholder="VD: Đấu 1v1, Đội 4 người..." />
-              </label>
-              <label>
-                Giải thưởng
-                <input id="t-prize" placeholder="VD: 2.000.000 VNĐ..." />
-              </label>
+              <label>Thể thức<input id="t-format" /></label>
+              <label>Giải thưởng<input id="t-prize" /></label>
             </div>
-
             <div class="form-row">
-              <label>
-                Ngày bắt đầu
-                <input type="date" id="t-start" />
-              </label>
-              <label>
-                Ngày kết thúc
-                <input type="date" id="t-end" />
-              </label>
+              <label>Ngày bắt đầu<input type="date" id="t-start" /></label>
+              <label>Ngày kết thúc<input type="date" id="t-end" /></label>
             </div>
-
             <div class="form-row">
-              <label>
-                Link đăng ký (Form, Discord...)
-                <input id="t-register" placeholder="https://..." />
-              </label>
-              <label>
-                Trạng thái
+              <label>Link đăng ký<input id="t-register" placeholder="https://..." /></label>
+              <label>Trạng thái
                 <select id="t-status">
                   <option value="upcoming">Sắp diễn ra</option>
                   <option value="ongoing">Đang diễn ra</option>
@@ -282,17 +209,8 @@
                 </select>
               </label>
             </div>
-
-            <label>
-              Link Ảnh Banner
-              <input id="t-banner" placeholder="https://..." />
-            </label>
-            
-            <label>
-              Thể lệ & Mô tả (Hỗ trợ HTML)
-              <textarea id="t-content" rows="8" placeholder="<h2>Thể lệ...</h2>"></textarea>
-            </label>
-
+            <label>Link Ảnh Banner<input id="t-banner" placeholder="https://..." /></label>
+            <label>Thể lệ & Mô tả<textarea id="t-content" rows="6"></textarea></label>
             <div class="form-actions" style="border-top: none; padding-top: 0;">
               <button type="submit" class="btn btn-primary" id="btn-save-tournament">💾 Lưu Giải Đấu</button>
               <button type="button" class="btn btn-ghost" id="btn-cancel-tournament">Hủy</button>
@@ -303,46 +221,82 @@
         <div class="table-wrap">
           <table class="posts-table">
             <thead>
-              <tr>
-                <th>STT</th>
-                <th>Banner</th>
-                <th>Tên Giải Đấu</th>
-                <th>Game</th>
-                <th>Thời gian</th>
-                <th>Trạng thái</th>
-                <th>Thao tác</th>
-              </tr>
+              <tr><th>STT</th><th>Banner</th><th>Tên Giải</th><th>Game</th><th>Thời gian</th><th>Trạng thái</th><th>Thao tác</th></tr>
             </thead>
-            <tbody id="tournaments-tbody">
-              <tr><td colspan="7" style="text-align:center;">Bấm "Tải lại" để xem</td></tr>
-            </tbody>
+            <tbody id="tournaments-tbody"><tr><td colspan="7" style="text-align:center;">Bấm "Tải lại"</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- TAB MỚI: QUẢN LÝ MÁY CHỦ GAME              -->
+      <!-- ========================================== -->
+      <section class="tab-panel" data-panel="servers">
+        <div class="panel-header">
+          <h2>Quản lý Máy Chủ Game</h2>
+          <div class="panel-actions">
+            <button class="btn btn-ghost" id="btn-reload-servers">↻ Tải lại</button>
+            <button class="btn btn-primary" id="btn-new-server">+ Thêm Server Mới</button>
+          </div>
+        </div>
+        
+        <div id="server-form-wrap" style="display: none; margin-bottom: 2rem; background: var(--bg-panel); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+          <h3 id="server-form-title" style="color: var(--primary); margin-bottom: 1.5rem; font-family: 'Orbitron';">Thêm Máy Chủ Mới</h3>
+          <form id="server-form" class="admin-form" style="border: none; padding: 0; background: transparent; max-width: none;">
+            <input type="hidden" id="sv-id" />
+            
+            <div class="form-row">
+              <label>Tên Server *<input id="sv-name" required placeholder="VD: Minecraft Survival..." /></label>
+              <label>Tựa Game *<input id="sv-game" required placeholder="VD: Minecraft, CS:GO..." /></label>
+            </div>
+
+            <div class="form-row">
+              <label>Địa chỉ IP *<input id="sv-ip" required placeholder="play.namgmvn.com" /></label>
+              <label>Phiên bản<input id="sv-version" placeholder="VD: 1.20.4" /></label>
+            </div>
+
+            <div class="form-row">
+              <label>Số người chơi<input id="sv-players" placeholder="VD: 45/100" /></label>
+              <label>Trạng thái
+                <select id="sv-status">
+                  <option value="online">Online</option>
+                  <option value="offline">Offline</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-row">
+              <label>Link Ảnh Banner<input id="sv-banner" placeholder="https://..." /></label>
+              <label>Link Tham Gia (Join URL)<input id="sv-join" placeholder="steam://connect/... hoặc minecraft://..." /></label>
+            </div>
+
+            <div class="form-actions" style="border-top: none; padding-top: 0;">
+              <button type="submit" class="btn btn-primary" id="btn-save-server">💾 Lưu Server</button>
+              <button type="button" class="btn btn-ghost" id="btn-cancel-server">Hủy</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="table-wrap">
+          <table class="posts-table">
+            <thead>
+              <tr><th>STT</th><th>Banner</th><th>Tên Server</th><th>Game</th><th>IP</th><th>Trạng thái</th><th>Thao tác</th></tr>
+            </thead>
+            <tbody id="servers-tbody"><tr><td colspan="7" style="text-align:center;">Bấm "Tải lại"</td></tr></tbody>
           </table>
         </div>
       </section>
 
       <!-- TAB: HUẤN LUYỆN AI -->
       <section class="tab-panel" data-panel="ai-trainer">
-        <div class="panel-header">
-          <h2>Phòng Huấn Luyện AI</h2>
-        </div>
-        
+        <div class="panel-header"><h2>Phòng Huấn Luyện AI</h2></div>
         <div style="display: flex; gap: 20px; height: calc(100vh - 200px); flex-wrap: wrap;">
           <div class="admin-form" style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; margin: 0; max-width: none;">
-            <label>
-              Cloudflare Worker URL (Link AI của bạn)
-              <input id="ai-worker-url" placeholder="https://ai.vuhoangannam345.workers.dev/">
-            </label>
-            <label>
-              Tính cách AI (System Prompt)
-              <textarea id="ai-system-prompt" rows="5" placeholder="Bạn là trợ lý ảo của Nam Gaming"></textarea>
-            </label>
-            <label>
-              Dữ liệu nạp vào (Knowledge Base)
-              <textarea id="ai-knowledge" rows="8" placeholder="Danh sách game..."></textarea>
-            </label>
+            <label>Cloudflare Worker URL<input id="ai-worker-url" placeholder="https://..."></label>
+            <label>Tính cách AI (System Prompt)<textarea id="ai-system-prompt" rows="5"></textarea></label>
+            <label>Dữ liệu nạp vào (Knowledge Base)<textarea id="ai-knowledge" rows="8"></textarea></label>
             <button class="btn btn-primary" id="btn-save-ai-config">💾 Lưu Cấu Hình AI</button>
           </div>
-
           <div style="flex: 1; min-width: 300px; border: 1px solid var(--border); border-radius: 8px; display: flex; flex-direction: column; background: var(--bg-panel);">
             <div style="padding: 15px; border-bottom: 1px solid var(--border); color: var(--primary); font-weight: bold; font-family: 'Orbitron';">Test Chat AI</div>
             <div id="ai-test-messages" style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
@@ -358,54 +312,24 @@
 
       <!-- TAB: SITE -->
       <section class="tab-panel" data-panel="site">
-        <div class="panel-header">
-          <h2>Cài đặt site</h2>
-        </div>
+        <div class="panel-header"><h2>Cài đặt site</h2></div>
         <form id="site-form" class="admin-form">
-          <label>
-            Tên web
-            <input id="s-name" />
-          </label>
-          <label>
-            Logo URL (để trống dùng emoji)
-            <input id="s-logo" placeholder="https://..." />
-          </label>
-          <label>
-            Mô tả
-            <textarea id="s-desc" rows="3"></textarea>
-          </label>
-          <label>
-            Màu chủ đạo
-            <input type="color" id="s-color" />
-          </label>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">💾 Lưu cài đặt</button>
-          </div>
+          <label>Tên web<input id="s-name" /></label>
+          <label>Logo URL<input id="s-logo" placeholder="https://..." /></label>
+          <label>Mô tả<textarea id="s-desc" rows="3"></textarea></label>
+          <label>Màu chủ đạo<input type="color" id="s-color" /></label>
+          <div class="form-actions"><button type="submit" class="btn btn-primary">💾 Lưu cài đặt</button></div>
         </form>
       </section>
 
       <!-- TAB: GITHUB -->
       <section class="tab-panel" data-panel="github">
-        <div class="panel-header">
-          <h2>Cấu hình GitHub</h2>
-        </div>
+        <div class="panel-header"><h2>Cấu hình GitHub</h2></div>
         <form id="gh-form" class="admin-form" autocomplete="off">
-          <label>
-            Username
-            <input id="g-user" placeholder="your-username" />
-          </label>
-          <label>
-            Repo
-            <input id="g-repo" placeholder="my-game-blog" />
-          </label>
-          <label>
-            Branch
-            <input id="g-branch" placeholder="main" value="main" />
-          </label>
-          <label>
-            Personal Access Token (fine-grained, chỉ Contents: Read & Write)
-            <input type="password" id="g-pat" placeholder="github_pat_..." />
-          </label>
+          <label>Username<input id="g-user" /></label>
+          <label>Repo<input id="g-repo" /></label>
+          <label>Branch<input id="g-branch" value="main" /></label>
+          <label>Personal Access Token<input type="password" id="g-pat" /></label>
           <div class="form-actions">
             <button type="submit" class="btn btn-primary">💾 Lưu cấu hình</button>
             <button type="button" class="btn btn-ghost" id="btn-test-conn">🔍 Kiểm tra kết nối</button>
