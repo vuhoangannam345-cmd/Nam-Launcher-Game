@@ -55,6 +55,8 @@
         <button class="dash-tab active" data-tab="posts">Các Bài viết</button>
         <button class="dash-tab" data-tab="compose">Soạn bài</button>
         <button class="dash-tab" data-tab="comments">Các Bình luận</button>
+        <!-- TAB GIẢI ĐẤU MỚI -->
+        <button class="dash-tab" data-tab="tournaments">🏆 Giải Đấu</button>
         <!-- TAB HUẤN LUYỆN AI -->
         <button class="dash-tab" data-tab="ai-trainer">Khu Tự Trị AI (GROQ)</button>
         <button class="dash-tab" data-tab="site">Cài đặt website</button>
@@ -210,6 +212,109 @@
             </thead>
             <tbody id="comments-tbody">
               <tr><td colspan="5" style="text-align: center;">Bấm "Tải lại" để xem bình luận</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- TAB: QUẢN LÝ GIẢI ĐẤU                      -->
+      <!-- ========================================== -->
+      <section class="tab-panel" data-panel="tournaments">
+        <div class="panel-header">
+          <h2>Quản lý Giải Đấu</h2>
+          <div class="panel-actions">
+            <button class="btn btn-ghost" id="btn-reload-tournaments">↻ Tải lại</button>
+            <button class="btn btn-primary" id="btn-new-tournament">+ Tạo Giải Mới</button>
+          </div>
+        </div>
+        
+        <!-- Form Tạo/Sửa Giải Đấu (Ẩn mặc định) -->
+        <div id="tournament-form-wrap" style="display: none; margin-bottom: 2rem; background: var(--bg-panel); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+          <h3 id="tournament-form-title" style="color: var(--primary); margin-bottom: 1.5rem; font-family: 'Orbitron';">Tạo Giải Đấu Mới</h3>
+          <form id="tournament-form" class="admin-form" style="border: none; padding: 0; background: transparent; max-width: none;">
+            <input type="hidden" id="t-id" />
+            
+            <div class="form-row">
+              <label>
+                Tên Giải Đấu *
+                <input id="t-title" required placeholder="VD: Siêu Cúp GTA V..." />
+              </label>
+              <label>
+                Tựa Game *
+                <input id="t-game" required placeholder="VD: eFootball, GTA V..." />
+              </label>
+            </div>
+
+            <div class="form-row">
+              <label>
+                Thể thức
+                <input id="t-format" placeholder="VD: Đấu 1v1, Đội 4 người..." />
+              </label>
+              <label>
+                Giải thưởng
+                <input id="t-prize" placeholder="VD: 2.000.000 VNĐ..." />
+              </label>
+            </div>
+
+            <div class="form-row">
+              <label>
+                Ngày bắt đầu
+                <input type="date" id="t-start" />
+              </label>
+              <label>
+                Ngày kết thúc
+                <input type="date" id="t-end" />
+              </label>
+            </div>
+
+            <div class="form-row">
+              <label>
+                Link đăng ký (Form, Discord...)
+                <input id="t-register" placeholder="https://..." />
+              </label>
+              <label>
+                Trạng thái
+                <select id="t-status">
+                  <option value="upcoming">Sắp diễn ra</option>
+                  <option value="ongoing">Đang diễn ra</option>
+                  <option value="finished">Đã kết thúc</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Link Ảnh Banner
+              <input id="t-banner" placeholder="https://..." />
+            </label>
+            
+            <label>
+              Thể lệ & Mô tả (Hỗ trợ HTML)
+              <textarea id="t-content" rows="8" placeholder="<h2>Thể lệ...</h2>"></textarea>
+            </label>
+
+            <div class="form-actions" style="border-top: none; padding-top: 0;">
+              <button type="submit" class="btn btn-primary" id="btn-save-tournament">💾 Lưu Giải Đấu</button>
+              <button type="button" class="btn btn-ghost" id="btn-cancel-tournament">Hủy</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="table-wrap">
+          <table class="posts-table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Banner</th>
+                <th>Tên Giải Đấu</th>
+                <th>Game</th>
+                <th>Thời gian</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="tournaments-tbody">
+              <tr><td colspan="7" style="text-align:center;">Bấm "Tải lại" để xem</td></tr>
             </tbody>
           </table>
         </div>
