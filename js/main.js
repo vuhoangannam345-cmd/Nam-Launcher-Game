@@ -44,6 +44,18 @@
     }
   }
 
+  async function loadServers() {
+    try {
+      const res = await fetch("data/servers.json?v=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("not found");
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
+    } catch (e) {
+      console.error("Không load được servers.json:", e);
+      return [];
+    }
+  }
+
   // ---------- Header ----------
   function renderHeader(site) {
     const el = document.getElementById("site-header");
@@ -61,6 +73,7 @@
         <nav class="header-nav" id="main-nav">
           <a href="index.html">Trang chủ</a>
           <a href="index.html#categories">Thể loại</a>
+          <a href="servers.html">Máy Chủ Game</a> <!-- NÚT MỚI -->
           <a href="tournaments.html">Giải Đấu</a>
           <a href="admin.html">Quản trị</a>
         </nav>
@@ -98,6 +111,7 @@
         <div>
           <h4>Liên kết</h4>
           <p><a href="index.html">Trang chủ</a></p>
+          <p><a href="servers.html">Máy Chủ Game</a></p>
           <p><a href="tournaments.html">Giải Đấu</a></p>
           <p><a href="admin.html">Nam Panel</a></p>
           <p><a href="https://byvn.net/G5Y8">AboutMe!</a></p> 
@@ -496,6 +510,67 @@
     chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendToAI(); });
   }
 
+  // ---------- Init Trang Máy Chủ Game ----------
+  async function initServers() {
+    state.site = await loadSite();
+    const servers = await loadServers();
+    
+    renderHeader(state.site);
+    renderFooter(state.site);
+    
+    const grid = document.getElementById("servers-grid");
+    if (!grid) return;
+
+    if (servers.length === 0) {
+      grid.innerHTML = "<div class='empty' style='grid-column:1/-1; text-align:center; padding: 3rem;'>Hiện tại chưa có server nào. Hãy quay lại sau nhé!</div>";
+      initAIChat();
+      return;
+    }
+
+    grid.innerHTML = servers.map(s => {
+      let statusBadge = s.status === "online" 
+        ? '<span class="badge" style="background: rgba(0, 255, 0, 0.1); color: #00ff00; border: 1px solid #00ff00; padding: 2px 8px; border-radius: 4px;">Online</span>' 
+        : '<span class="badge" style="background: rgba(255, 0, 85, 0.1); color: #ff0055; border: 1px solid #ff0055; padding: 2px 8px; border-radius: 4px;">Offline</span>';
+        
+      return `
+        <div class="post-card" style="cursor: default;">
+          <div class="post-thumb">
+            <img src="${escapeHtml(s.banner || 'https://i.postimg.cc/Dw7jST9s/2aa9b0ff-4e2b-488c-bb0e-e2fb800cecc8.png')}" alt="${escapeHtml(s.name)}" loading="lazy" />
+            <span class="post-cat" style="background: var(--primary-2); color: #fff;">${escapeHtml(s.game || "Server")}</span>
+          </div>
+          <div class="post-body">
+            <h3 class="post-title" style="color: var(--primary); margin-bottom: 0.5rem;">${escapeHtml(s.name)}</h3>
+            
+            <div class="tournament-info-row">
+              <span>Trạng thái:</span>
+              <div>${statusBadge}</div>
+            </div>
+            
+            <div class="tournament-info-row">
+              <span>IP:</span>
+              <span style="font-family: monospace; color: var(--accent); font-size: 0.95rem;">${escapeHtml(s.ip)}</span>
+            </div>
+
+            <div class="tournament-info-row">
+              <span>Người chơi:</span>
+              <span>${escapeHtml(s.players || "0/0")}</span>
+            </div>
+
+            <div class="tournament-info-row" style="margin-bottom: 1.5rem;">
+              <span>Phiên bản:</span>
+              <span>${escapeHtml(s.version || "N/A")}</span>
+            </div>
+
+            ${s.joinUrl 
+              ? `<a href="${escapeHtml(s.joinUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: auto; display: block; line-height: 2;">THAM GIA NGAY</a>` 
+              : '<button class="btn btn-ghost" style="width: 100%; margin-top: auto;" disabled>Server Offline</button>'}
+          </div>
+        </div>
+      `}).join("");
+    
+    initAIChat();
+  }
+
   // ---------- Init Trang Giải Đấu ----------
   async function initTournaments() {
     state.site = await loadSite();
@@ -623,7 +698,7 @@
     initAIChat();
   }
 
-  // ---------- Init ----------
+  // ---------- Init Trang Chủ ----------
   async function initHome() {
     state.site = await loadSite();
     const posts = await loadPosts();
@@ -639,6 +714,7 @@
     initAIChat();
   }
 
+  // ---------- Init Trang Đọc Bài ----------
   async function initPost() {
     state.site = await loadSite();
     const posts = await loadPosts();
@@ -667,10 +743,12 @@
     initAIChat();
   }
 
+  // ---------- Router ----------
   document.addEventListener("DOMContentLoaded", () => {
     const page = document.body.dataset.page;
     if (page === "home") initHome();
     else if (page === "post") initPost();
+    else if (page === "servers") initServers(); // THÊM DÒNG NÀY
     else if (page === "tournaments") initTournaments();
     else if (page === "tournament") initTournamentDetail();
   });
