@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": "sv_1793889099202",
+    "name": "2K2P Server",
+    "game": "Minecraft",
+    "ip": "2k2plabs.ddns.net",
+    "version": "IDK",
+    "players": "IDK",
+    "status": "online",
+    "banner": "https://i.ibb.co/mrTtxKd5/image.png",
+    "joinUrl": "",
+    "createdAt": "2026-11-05T14:31:39.202Z"
+  }
+]
